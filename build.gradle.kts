@@ -35,3 +35,11 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 }
+
+tasks {
+    processResources {
+        filesMatching("**/*.yml") {
+            expand(project.properties)
+        }
+    }
+}
