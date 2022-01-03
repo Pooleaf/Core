@@ -6,7 +6,7 @@ public class SqlContextModule extends CoreModule {
 
     @Override
     public String getName() {
-        return "Dao";
+        return "SqlContext";
     }
 
     @Override

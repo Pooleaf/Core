@@ -78,7 +78,7 @@ public class ModuleManager {
         if (canEnable) {
           module.onEnable(Core.getPlugin());
           module.setEnable(true);
-          Bukkit.getConsoleSender().sendMessage(module.getName() + " v" + module.getVersion() + " 이(가) 초기화되었습니다.");
+          Bukkit.getConsoleSender().sendMessage(module.getName() + "이(가) 초기화되었습니다.");
 
           count++;
         }

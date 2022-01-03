@@ -1,15 +1,8 @@
-buildscript{
-    repositories{
-        jcenter()
-    }
-
-    dependencies{
-        classpath("com.github.jengelman.gradle.plugins:shadow:5.2.0")
-    }
-}
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     kotlin("jvm") version "1.5.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "net.pooleaf"
@@ -26,8 +19,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     compileOnly("org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT")
-    compileOnly("net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT")
-    compileOnly("net.md-5:bungeecord-proxy:1.17-R0.1-SNAPSHOT")
+    compileOnly("net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT")
 
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jooq:jooq:3.15.5")
@@ -41,5 +33,9 @@ tasks {
         filesMatching("**/*.yml") {
             expand(project.properties)
         }
+    }
+
+    withType<ShadowJar> {
+        archiveClassifier.set("")
     }
 }

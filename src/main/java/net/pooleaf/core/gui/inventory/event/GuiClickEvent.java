@@ -5,6 +5,8 @@ import net.pooleaf.core.event.bukkit.event.CancellableEvent;
 import net.pooleaf.core.gui.inventory.Gui;
 import net.pooleaf.core.gui.inventory.GuiClickAction;
 import net.pooleaf.core.gui.inventory.GuiManager;
+import net.pooleaf.core.gui.inventory.Icon;
+import net.pooleaf.core.gui.inventory.Panel;
 import net.pooleaf.core.gui.inventory.PositionCalculator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
