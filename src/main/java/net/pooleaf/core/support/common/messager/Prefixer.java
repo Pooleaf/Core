@@ -1,0 +1,63 @@
+package net.pooleaf.core.support.common.messager;
+
+import com.google.common.base.Preconditions;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import net.pooleaf.core.Core;
+import net.pooleaf.core.plugin.CorePlugin;
+import net.pooleaf.core.plugin.CorePluginManager;
+
+public class Prefixer {
+
+  @Getter
+  private static Map<String, String> prefixes = new HashMap<>();
+
+
+  /**
+   * 해당 Package의 Prefix를 설정합니다.
+   * @param prefix 설정할 Prefix
+   */
+  public static void registerPrefix(String prefix) {
+    // 패키지로 CorePlugin 찾아서 prefix 찾기
+    String classPackage = Core.getLastClassName();
+    CorePlugin plugin = CorePluginManager.getPluginByPackage(classPackage);
+    Preconditions.checkNotNull(plugin, "해당 Package의 CorePlugin을 찾을 수 없습니다. (Package: %s)", classPackage);
+
+    registerPrefix(plugin.getPluginPackage(), prefix);
+  }
+
+  /**
+   * 해당 Package의 Prefix를 설정합니다.
+   * @param prefix 설정할 Prefix
+   */
+  public static void registerPrefix(String pluginPackage, String prefix) {
+    if (prefix == null) {
+      prefixes.remove(pluginPackage);
+    } else {
+      prefixes.put(pluginPackage, prefix);
+    }
+  }
+
+  /**
+   * 현재 CorePlugin의 Prefix를 불러옵니다.
+   * @return 현재 CorePlugin의 Prefix
+   */
+  protected static String getCurrentPluginPrefix() {
+    String prefix = null;
+
+    // 패키지로 CorePlugin 찾아서 Prefix 찾기
+    CorePlugin plugin = CorePluginManager.getPluginByPackage(Core.getLastClassName());
+    if (plugin != null) {
+      prefix = prefixes.get(plugin.getPluginPackage());
+    }
+
+    // Prefix 못찾았으면 빈문자열로
+    if (prefix == null) {
+      prefix = prefixes.get(Core.getPlugin().getPluginPackage());
+    }
+
+    return prefix;
+  }
+
+}
