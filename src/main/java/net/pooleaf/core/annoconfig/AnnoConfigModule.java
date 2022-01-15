@@ -1,7 +1,7 @@
 package net.pooleaf.core.annoconfig;
 
 import net.pooleaf.core.CoreModule;
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.annoconfig.serializer.bukkit.LocationSerializer;
 import net.pooleaf.core.support.common.platform.Platform;
 

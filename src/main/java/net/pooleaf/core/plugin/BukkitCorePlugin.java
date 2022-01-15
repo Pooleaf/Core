@@ -1,14 +1,24 @@
-package net.pooleaf.core;
+package net.pooleaf.core.plugin;
 
 import java.io.File;
+import lombok.Getter;
+import lombok.Setter;
+import net.pooleaf.core.Core;
+import net.pooleaf.core.plugin.CorePlugin;
+import net.pooleaf.core.support.common.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
+  @Getter
+  private String prefix;
+
+
   @Override
   public final void onEnable() {
-    Core.init(this);
+    CorePluginManager.registerPlugin(this);
+    setPrefix("§7[ " + getName() + " ] ");
 
     onStart();
   }
@@ -30,6 +40,11 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   @Override
   public String getPluginPackage() {
     return getDescription().getMain().substring(0, getDescription().getMain().lastIndexOf("."));
+  }
+
+  public void setPrefix(String prefix) {
+    this.prefix = prefix;
+    Logger.registerPrefix(getPluginPackage(), prefix);
   }
 
   @Override

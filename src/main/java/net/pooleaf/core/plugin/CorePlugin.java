@@ -1,4 +1,4 @@
-package net.pooleaf.core;
+package net.pooleaf.core.plugin;
 
 import java.io.File;
 import java.io.InputStream;
@@ -9,6 +9,7 @@ public interface CorePlugin {
   void onEnd();
 
   String getName();
+  String getPrefix();
   String getVersion();
   String getPluginPackage();
 

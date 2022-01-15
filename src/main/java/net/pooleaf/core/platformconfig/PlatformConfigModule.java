@@ -9,4 +9,9 @@ public class PlatformConfigModule extends CoreModule {
     return "PlatformConfig";
   }
 
+  @Override
+  public String[] getDepends() {
+    return new String[] { "Support" };
+  }
+
 }

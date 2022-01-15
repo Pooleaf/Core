@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.pooleaf.core.support.common.logger.Logger;
 import net.pooleaf.core.support.common.util.ReflectionUtil;
 import org.bukkit.Bukkit;
 
@@ -78,7 +79,7 @@ public class ModuleManager {
         if (canEnable) {
           module.onEnable(Core.getPlugin());
           module.setEnable(true);
-          Bukkit.getConsoleSender().sendMessage(module.getName() + "이(가) 초기화되었습니다.");
+          Logger.log(module.getName() + "이(가) 초기화되었습니다.");
 
           count++;
         }

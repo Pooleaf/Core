@@ -1,6 +1,7 @@
 package net.pooleaf.core;
 
 import lombok.Getter;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public class Core {
 
@@ -22,7 +23,9 @@ public class Core {
     StackTraceElement[] ste = new Throwable().getStackTrace();
 
     for (int i = 0; i < ste.length; i++) {
-      if (!ste[i].getClassName().startsWith(Core.class.getPackageName())) return ste[i].getClassName();
+      if (!ste[i].getClassName().startsWith(Core.class.getPackageName())) {
+        return ste[i].getClassName();
+      }
     }
 
     return null;

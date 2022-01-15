@@ -1,6 +1,6 @@
 package net.pooleaf.core.annocommand;
 
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public interface PlatformAdapter {
 

@@ -1,7 +1,7 @@
 package net.pooleaf.core.gui;
 
 import net.pooleaf.core.CoreModule;
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.gui.inventory.GuiManager;
 import net.pooleaf.core.gui.inventory.event.GuiListener;
 import net.pooleaf.core.gui.quickbar.event.QuickBarListener;

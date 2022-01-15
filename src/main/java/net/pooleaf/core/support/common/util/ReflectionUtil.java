@@ -15,7 +15,7 @@ import java.util.zip.ZipInputStream;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @UtilityClass
 public class ReflectionUtil {

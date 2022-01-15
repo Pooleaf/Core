@@ -1,7 +1,7 @@
 package net.pooleaf.core.annocommand;
 
 import net.pooleaf.core.CoreModule;
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public class AnnoCommandModule extends CoreModule {
 

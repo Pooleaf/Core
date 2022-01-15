@@ -1,7 +1,7 @@
 package net.pooleaf.core.support;
 
 import net.pooleaf.core.CoreModule;
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.support.bukkit.nms.NmsDetector;
 import net.pooleaf.core.support.common.logger.LoggerInitializer;
 import net.pooleaf.core.support.common.platform.PlatformDetector;

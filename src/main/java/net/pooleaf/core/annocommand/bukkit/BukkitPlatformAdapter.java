@@ -3,7 +3,7 @@ package net.pooleaf.core.annocommand.bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.annocommand.AnnoCommand;
 import net.pooleaf.core.annocommand.PlatformAdapter;
 import net.pooleaf.core.support.bukkit.util.BukkitReflectionUtil;

@@ -3,6 +3,7 @@ package net.pooleaf.core;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public abstract class CoreModule {
 

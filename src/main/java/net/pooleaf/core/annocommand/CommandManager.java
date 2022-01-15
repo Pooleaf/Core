@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.pooleaf.core.CorePlugin;
+import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.support.common.util.ReflectionUtil;
 
 @UtilityClass
