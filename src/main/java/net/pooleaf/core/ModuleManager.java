@@ -79,7 +79,7 @@ public class ModuleManager {
         if (canEnable) {
           module.onEnable(Core.getPlugin());
           module.setEnable(true);
-          Logger.log(module.getName() + "이(가) 초기화되었습니다.");
+          Logger.log(module.getName() + " Module이 초기화되었습니다.");
 
           count++;
         }
