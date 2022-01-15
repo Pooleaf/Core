@@ -1,11 +1,8 @@
 package net.pooleaf.core;
 
 import java.io.File;
-
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 

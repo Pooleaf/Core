@@ -38,4 +38,14 @@ tasks {
     withType<ShadowJar> {
         archiveClassifier.set("")
     }
+
+    register<Copy>("copyToServer") {
+        from(shadowJar)
+        into("E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\plugins")
+    }
+
+//    shadowJar {
+//        exclude("net/pooleaf/core/test")
+//        exclude("net/pooleaf/core/test/**")
+//    }
 }

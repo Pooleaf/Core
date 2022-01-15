@@ -176,8 +176,8 @@ public class Gui {
             int panelY = PositionCalculator.getY(panelPosition, 9);
 
             panel.getItems().forEach((itemPosition, item) -> {
-                int offsetX = PositionCalculator.getX(panelPosition, panel.getWidth());
-                int offsetY = PositionCalculator.getY(panelPosition, panel.getWidth());
+                int offsetX = PositionCalculator.getX(itemPosition, panel.getWidth());
+                int offsetY = PositionCalculator.getY(itemPosition, panel.getWidth());
 
                 int realX = panelX + offsetX - 1;
                 int realY = panelY + offsetY - 1;
@@ -187,6 +187,7 @@ public class Gui {
                 if (item instanceof ItemStack) {
                     inventory.setItem(realPosition, (ItemStack) item);
                 } else if (item instanceof Icon) {
+                    ((Icon) item).update();
                     inventory.setItem(realPosition, ((Icon) item).getItem());
                 }
             });

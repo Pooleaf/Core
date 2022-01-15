@@ -8,7 +8,7 @@ public class Core {
   private static CorePlugin plugin;
 
 
-  public static void init(CorePlugin plugin) {
+  protected static void init(CorePlugin plugin) {
     Core.plugin = plugin;
 
     // 모듈 자동 등록
@@ -17,5 +17,16 @@ public class Core {
     // 모듈 초기화
     ModuleManager.initModules();
   }
+
+  public static String getLastClassName() {
+    StackTraceElement[] ste = new Throwable().getStackTrace();
+
+    for (int i = 0; i < ste.length; i++) {
+      if (!ste[i].getClassName().startsWith(Core.class.getPackageName())) return ste[i].getClassName();
+    }
+
+    return null;
+  }
+
 
 }

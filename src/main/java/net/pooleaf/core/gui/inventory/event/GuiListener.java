@@ -75,8 +75,9 @@ public class GuiListener implements Listener {
         if (gui == null) return;
 
         // Gui 범위 밖 클릭 캔슬
-        if (event.getRawSlot() < 0) {
+        if (event.getSlot() < 0) {
             event.setCancelled(true);
+            return;
         }
 
         // GuiClickEvent
