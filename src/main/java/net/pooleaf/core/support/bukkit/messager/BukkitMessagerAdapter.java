@@ -2,6 +2,7 @@ package net.pooleaf.core.support.bukkit.messager;
 
 import com.google.common.base.Preconditions;
 import net.pooleaf.core.support.common.messager.MessagerAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,12 @@ public class BukkitMessagerAdapter implements MessagerAdapter {
         // 플레이어가 접속 중이 아닐 경우 무시
         if (sender instanceof Player && !((Player) sender).isOnline()) return;
 
-        ((CommandSender) sender).sendMessage(message.toString());
+        ((CommandSender) sender).sendMessage((String) message);
+    }
+
+    @Override
+    public void broadcast(Object message) {
+        Bukkit.broadcastMessage((String) message);
     }
 
 }

@@ -2,6 +2,7 @@ package net.pooleaf.core.support.bungee.messager;
 
 import com.google.common.base.Preconditions;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.pooleaf.core.support.common.messager.MessagerAdapter;
 import org.bukkit.entity.Player;
@@ -15,7 +16,12 @@ public class BungeeMessagerAdapter implements MessagerAdapter {
         // 플레이어가 접속 중이 아닐 경우 무시
         if (sender instanceof Player && !((ProxiedPlayer) sender).isConnected()) return;
 
-        ((CommandSender) sender).sendMessage(message.toString());
+        ((CommandSender) sender).sendMessage((String) message);
+    }
+
+    @Override
+    public void broadcast(Object message) {
+        ProxyServer.getInstance().broadcast((String) message);
     }
 
 }

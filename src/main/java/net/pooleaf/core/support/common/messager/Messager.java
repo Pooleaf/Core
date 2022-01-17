@@ -25,4 +25,12 @@ public class Messager extends Prefixer {
         warning(sender, String.format((String) message, params));
     }
 
+    public static void broadcast(Object message) {
+        broadcast(getCurrentPluginPrefix() + " §f" + message);
+    }
+
+    public static void nbroadcast(Object message) {
+        broadcast(message);
+    }
+
 }
