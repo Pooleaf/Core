@@ -7,7 +7,7 @@ public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
   @Override
   public void onStart() {
     Core.init(this);
-    setPrefix("§e[ Core ] §f");
+    setPrefix("§e[ Core ]");
   }
 
 }
