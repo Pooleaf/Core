@@ -25,6 +25,11 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_12
+    targetCompatibility = JavaVersion.VERSION_12
+}
+
 tasks {
     processResources {
         filesMatching("**/*.yml") {
