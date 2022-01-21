@@ -10,6 +10,7 @@ repositories {
 
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
+    maven(url = "https://repo.dmulloy2.net/repository/public/")
 }
 
 dependencies {
@@ -17,6 +18,8 @@ dependencies {
 
     compileOnly("org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT")
     compileOnly("net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT")
+
+    compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
 
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.jooq:jooq:3.15.5")

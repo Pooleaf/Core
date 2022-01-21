@@ -2,10 +2,8 @@ package net.pooleaf.core.plugin;
 
 import java.io.File;
 import lombok.Getter;
-import lombok.Setter;
 import net.pooleaf.core.Core;
-import net.pooleaf.core.plugin.CorePlugin;
-import net.pooleaf.core.support.common.logger.Logger;
+import net.pooleaf.core.modules.support.common.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,7 +15,7 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   @Override
   public final void onEnable() {
-    CorePluginManager.registerPlugin(this);
+    Core.getCorePluginManager().register(this);
     setPrefix("§7[ " + getName() + " ] ");
 
     onStart();

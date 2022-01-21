@@ -1,22 +1,30 @@
 package net.pooleaf.core;
 
 import lombok.Getter;
+import net.pooleaf.core.module.ModuleManager;
 import net.pooleaf.core.plugin.CorePlugin;
+import net.pooleaf.core.plugin.CorePluginManager;
 
 public class Core {
 
   @Getter
   private static CorePlugin plugin;
 
+  @Getter
+  private static ModuleManager moduleManager = new ModuleManager();
+
+  @Getter
+  private static CorePluginManager corePluginManager = new CorePluginManager();
+
 
   protected static void init(CorePlugin plugin) {
     Core.plugin = plugin;
 
     // 모듈 자동 등록
-    ModuleManager.registerModules();
+    moduleManager.registerModules();
 
     // 모듈 초기화
-    ModuleManager.initModules();
+    moduleManager.initModules();
   }
 
   public static String getLastClassName() {

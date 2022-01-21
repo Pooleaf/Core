@@ -1,13 +1,12 @@
 package net.pooleaf.core.test;
 
-import net.pooleaf.core.annocommand.Command;
-import net.pooleaf.core.annocommand.CommandResult;
-import net.pooleaf.core.gui.inventory.Gui;
-import net.pooleaf.core.gui.inventory.Icon;
-import net.pooleaf.core.support.bukkit.util.ItemBuilder;
-import net.pooleaf.core.support.common.logger.Logger;
+import net.pooleaf.core.modules.annocommand.Command;
+import net.pooleaf.core.modules.annocommand.CommandResult;
+import net.pooleaf.core.modules.gui.inventory.InventoryGui;
+import net.pooleaf.core.modules.gui.inventory.InventoryIcon;
+import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
+import net.pooleaf.core.modules.support.common.logger.Logger;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,8 +16,8 @@ public class TestCommand {
       name = {"test"}
   )
   public static void test(Player player, CommandResult result) {
-    Gui gui = new Gui("Test Gui", 3);
-    Icon icon = new Icon() {
+    InventoryGui gui = new InventoryGui("Test Gui", 3);
+    InventoryIcon icon = new InventoryIcon() {
       @Override
       protected ItemStack updateItem() {
         return new ItemBuilder(Material.GRASS).build();

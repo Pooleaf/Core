@@ -5,7 +5,8 @@ import java.io.InputStream;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.pooleaf.core.support.common.logger.Logger;
+import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.support.common.logger.Logger;
 
 public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
@@ -15,7 +16,7 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
   @Override
   public void onEnable() {
-    CorePluginManager.registerPlugin(this);
+    Core.getCorePluginManager().register(this);
     setPrefix("§7[ " + getName() + " ] ");
 
     super.onEnable();
