@@ -1,4 +1,4 @@
-package net.pooleaf.core.modules.support.common.util;
+package net.pooleaf.core.modules.support.common.manager;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +23,19 @@ public abstract class AbstractManager<K, V> {
 
     public V getOrDefault(K key, V defaultValue) {
         return datas.getOrDefault(key, defaultValue);
+    }
+
+    public V load(K key) {
+        new UnsupportedOperationException("불러오기가 구현되지 않았습니다.");
+
+        return null;
+    }
+
+    public V getOrLoad(K key) {
+        V value = load(key);
+        datas.put(key, value);
+
+        return value;
     }
 
     public boolean exists(K key) {

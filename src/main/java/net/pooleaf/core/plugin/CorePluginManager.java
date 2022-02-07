@@ -1,6 +1,6 @@
 package net.pooleaf.core.plugin;
 
-import net.pooleaf.core.modules.support.common.util.AbstractManager;
+import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 
 public class CorePluginManager extends AbstractManager<String, CorePlugin> {
 

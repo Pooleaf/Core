@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.gui;
 
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.gui.quickbar.QuickBarManager;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.gui.inventory.InventoryGuiManager;
 import net.pooleaf.core.modules.gui.inventory.event.InventoryGuiListener;
@@ -13,6 +14,9 @@ public class GuiModule extends CoreModule {
 
   @Getter
   private static InventoryGuiManager inventoryGuiManager = new InventoryGuiManager();
+
+  @Getter
+  private static QuickBarManager quickBarManager = new QuickBarManager();
 
 
   @Override
@@ -39,4 +43,5 @@ public class GuiModule extends CoreModule {
             .filter(player -> player != null)
             .forEach(player -> player.closeInventory());
   }
+
 }

@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier;
 import lombok.SneakyThrows;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.logger.Logger;
-import net.pooleaf.core.modules.support.common.util.AbstractManager;
+import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 
 public class ModuleManager extends AbstractManager<String, CoreModule> {
