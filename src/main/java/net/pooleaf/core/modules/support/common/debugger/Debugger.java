@@ -55,11 +55,11 @@ public class Debugger {
      * @param message 보낼 메시지
      */
     public static void log(Object message) {
-        String prefix = "§e[DEBUG] §f";
+        String prefix = "§e[DEBUG]§f";
 
         CorePlugin plugin = Core.getCorePluginManager().getCurrentPlugin();
         if (plugin != null) {
-            prefix += plugin.getPrefix() + " §f";
+            prefix += plugin.getPrefix() + "§f";
         }
 
         for (Object listener : listeners) {
