@@ -32,4 +32,6 @@ public class CachedResult {
         return results.get(index);
     }
 
+    // TODO ObjectMap? getString getInt..
+
 }
