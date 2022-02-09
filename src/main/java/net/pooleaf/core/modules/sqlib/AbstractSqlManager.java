@@ -2,12 +2,19 @@ package net.pooleaf.core.modules.sqlib;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.AccessLevel;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.sqlib.config.SqlConfig;
+import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
+import net.pooleaf.core.modules.support.common.util.StringUtil;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,10 +68,39 @@ public class AbstractSqlManager {
         Logger.log(config.getSqlType().name() + " 연결을 종료했습니다.");
     }
 
+    @SneakyThrows
+    public Connection getConnection() {
+        return dataSource.getConnection();
+    }
+
 
     @SneakyThrows
-    public void update(String sql) {
-        
+    public void update(String sql, Object... params) {
+        Debugger.log("[SQLib] update SQL: " + sql);
+        Debugger.log("[SQLib] update Parameters: " + StringUtil.joinArray(", ", params));
+
+        @Cleanup PreparedStatement state = getConnection().prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            state.setObject(i + 1, params[i]);
+        }
+        state.executeUpdate();
     }
+
+    @SneakyThrows
+    public CachedResult getResult(String sql, Object... params) {
+        Debugger.log("[SQLib] getResult SQL: " + sql);
+        Debugger.log("[SQLib] getResult Parameters: " + StringUtil.joinArray(", ", params));
+
+        @Cleanup PreparedStatement state = getConnection().prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            state.setObject(i + 1, params[i]);
+        }
+        @Cleanup ResultSet resultSet = state.executeQuery();
+
+        CachedResult cachedResult = new CachedResult(resultSet);
+        return cachedResult;
+    }
+
+
 
 }
