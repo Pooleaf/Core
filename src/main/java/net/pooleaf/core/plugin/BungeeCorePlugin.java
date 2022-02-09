@@ -7,6 +7,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.logger.Logger;
+import net.pooleaf.core.modules.support.common.messager.Messager;
 
 public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
@@ -48,7 +49,14 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
   public void setPrefix(String prefix) {
     this.prefix = prefix;
+  }
+
+  public void registerLoggerPrefix() {
     Logger.registerPrefix(getPluginPackage(), prefix);
+  }
+
+  public void registerMessagerPrefix() {
+    Messager.registerPrefix(getPluginPackage(), prefix);
   }
 
   @Override

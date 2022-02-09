@@ -4,8 +4,10 @@ import java.io.File;
 import lombok.Getter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.logger.Logger;
+import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.Messenger;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
@@ -42,7 +44,14 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   public void setPrefix(String prefix) {
     this.prefix = prefix;
+  }
+
+  public void registerLoggerPrefix() {
     Logger.registerPrefix(getPluginPackage(), prefix);
+  }
+
+  public void registerMessagerPrefix() {
+    Messager.registerPrefix(getPluginPackage(), prefix);
   }
 
   @Override
