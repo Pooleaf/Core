@@ -1,4 +1,4 @@
-package net.pooleaf.core.modules.sqlcontext.config;
+package net.pooleaf.core.modules.sqlib.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import lombok.Data;

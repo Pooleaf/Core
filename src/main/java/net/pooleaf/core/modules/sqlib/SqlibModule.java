@@ -1,8 +1,8 @@
-package net.pooleaf.core.modules.sqlcontext;
+package net.pooleaf.core.modules.sqlib;
 
 import net.pooleaf.core.module.CoreModule;
 
-public class SqlContextModule extends CoreModule {
+public class SqlibModule extends CoreModule {
 
     @Override
     public String getName() {

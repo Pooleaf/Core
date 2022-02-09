@@ -1,19 +1,17 @@
-package net.pooleaf.core.modules.sqlcontext;
+package net.pooleaf.core.modules.sqlib;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.pooleaf.core.modules.sqlcontext.config.SqlConfig;
+import net.pooleaf.core.modules.sqlib.config.SqlConfig;
 import net.pooleaf.core.modules.support.common.logger.Logger;
-import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 
 import javax.sql.DataSource;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AbstractSqlContextManager {
+public class AbstractSqlManager {
 
     @Getter
     private static SqlConfig config = new SqlConfig();
@@ -63,11 +61,10 @@ public class AbstractSqlContextManager {
         Logger.log(config.getSqlType().name() + " 연결을 종료했습니다.");
     }
 
-    @SneakyThrows
-    public DSLContext getContext() {
-        if (dataSource == null) return null;
 
-        return DSL.using(dataSource.getConnection(), config.getSqlDialect());
+    @SneakyThrows
+    public void update(String sql) {
+        
     }
 
 }
