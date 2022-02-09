@@ -46,7 +46,7 @@ public class Prefixer {
     String prefix = null;
 
     // 패키지로 CorePlugin 찾아서 Prefix 찾기
-    CorePlugin plugin = Core.getCorePluginManager().getPluginByPackage(Core.getLastClassName());
+    CorePlugin plugin = Core.getCorePluginManager().getCurrentPlugin();
     if (plugin != null) {
       prefix = prefixes.get(plugin.getPluginPackage());
     }

@@ -1,5 +1,6 @@
 package net.pooleaf.core.plugin;
 
+import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 
 public class CorePluginManager extends AbstractManager<String, CorePlugin> {
@@ -50,6 +51,15 @@ public class CorePluginManager extends AbstractManager<String, CorePlugin> {
     }
 
     return null;
+  }
+
+  /**
+   * 현재 Package로 CorePlugin을 찾아 불러옵니다.
+   * @return 현재 CorePlugin
+   */
+  public CorePlugin getCurrentPlugin() {
+    CorePlugin plugin = getPluginByPackage(Core.getLastClassName());
+    return plugin;
   }
 
 }
