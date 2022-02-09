@@ -51,4 +51,24 @@ public class StringUtil {
     return count;
   }
 
+  /**
+   * 배열을 특정 문자로 이어줍니다.
+   * @param array 이어줄 배열
+   * @param connectChar 이어줄 문자
+   * @return 배열을 이어준 문자열
+   */
+  public static String joinArray(String connectChar, Object[] array) {
+    StringBuilder builder = new StringBuilder();
+
+    for (Object object : array) {
+      if (builder.length() < 1) {
+        builder.append(object);
+      } else {
+        builder.append(connectChar + object);
+      }
+    }
+
+    return builder.toString();
+  }
+
 }
