@@ -22,7 +22,6 @@ dependencies {
     compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
 
     implementation("com.zaxxer:HikariCP:4.0.3")
-    implementation("org.jooq:jooq:3.15.5")
 
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
