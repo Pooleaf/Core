@@ -71,4 +71,28 @@ public class StringUtil {
     return builder.toString();
   }
 
+  /**
+   * SnakeCase문자를 LowerCamelCase 문자로 변환합니다.
+   * @param snake 변환할 SnakeCase 문자
+   * @return 변환된 LowerCamelCase 문자
+   */
+  public static String convertSnakeCaseToLowerCamelCase(String snake) {
+    StringBuilder builder = new StringBuilder();
+
+    boolean requireUpperCase = false;
+    for (char c : snake.toCharArray()) {
+      String charString = Character.toString(c);
+      if ("_".equals(charString)) {
+        requireUpperCase = true;
+      } else if (requireUpperCase) {
+        builder.append(charString.toUpperCase());
+        requireUpperCase = false;
+      } else {
+        builder.append(charString);
+      }
+    }
+
+    return builder.toString();
+  }
+
 }
