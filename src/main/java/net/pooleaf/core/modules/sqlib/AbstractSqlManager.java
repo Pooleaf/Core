@@ -21,7 +21,7 @@ import java.util.Set;
 public class AbstractSqlManager {
 
     @Getter
-    private static SqlConfig config = new SqlConfig();
+    private SqlConfig config = new SqlConfig();
 
     @Getter
     private DataSource dataSource;
@@ -79,7 +79,8 @@ public class AbstractSqlManager {
         Debugger.log("[SQLib] update SQL: " + sql);
         Debugger.log("[SQLib] update Parameters: " + StringUtil.joinArray(", ", params));
 
-        @Cleanup PreparedStatement state = getConnection().prepareStatement(sql);
+        @Cleanup Connection connection = getConnection();
+        @Cleanup PreparedStatement state = connection.prepareStatement(sql);
         for (int i = 0; i < params.length; i++) {
             state.setObject(i + 1, params[i]);
         }
@@ -91,7 +92,8 @@ public class AbstractSqlManager {
         Debugger.log("[SQLib] getResult SQL: " + sql);
         Debugger.log("[SQLib] getResult Parameters: " + StringUtil.joinArray(", ", params));
 
-        @Cleanup PreparedStatement state = getConnection().prepareStatement(sql);
+        @Cleanup Connection connection = getConnection();
+        @Cleanup PreparedStatement state = connection.prepareStatement(sql);
         for (int i = 0; i < params.length; i++) {
             state.setObject(i + 1, params[i]);
         }
@@ -101,6 +103,16 @@ public class AbstractSqlManager {
         return cachedResult;
     }
 
+    public void createTable(String tableName, String... columnString) {
+        update("CREATE TABLE IF NOT EXISTS " + tableName + " (" + columnString + ")");
+    }
 
+    public void dropTable(String tableName) {
+        update("DROP TABLE " + tableName);
+    }
+
+    public void truncateTable(String tableName) {
+        update("TRUNCATE TABLE " + tableName);
+    }
 
 }

@@ -1,37 +1,37 @@
 package net.pooleaf.core.modules.sqlib;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Data
+@Getter
+@ToString
 public class CachedResult {
 
-    private List<Map<String, Object>> results = new ArrayList<>();
+    private List<CachedResultRow> rows = new ArrayList<>();
 
 
     @SneakyThrows
     public CachedResult(ResultSet resultSet) {
         while (resultSet.next()) {
-            Map<String, Object> resultRow = new HashMap<>();
+            Map<String, Object> resultRowDatas = new HashMap<>();
 
             for (int column = 0; column < resultSet.getMetaData().getColumnCount(); column++) {
-                resultRow.put(resultSet.getMetaData().getColumnName(column), resultSet.getObject(column + 1));
+                resultRowDatas.put(resultSet.getMetaData().getColumnName(column), resultSet.getObject(column + 1));
             }
 
-            results.add(resultRow);
+            CachedResultRow resultRow = new CachedResultRow(resultRowDatas);
+            rows.add(resultRow);
         }
+
+        Collections.unmodifiableList(rows);
     }
 
-    public Map<String, Object> getRow(int index) {
-        return results.get(index);
+    public CachedResultRow getRow(int index) {
+        return rows.get(index);
     }
-
-    // TODO ObjectMap? getString getInt..
 
 }
