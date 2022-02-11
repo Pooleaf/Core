@@ -43,7 +43,7 @@ public class PlayerInfoDao extends SqlDao {
 
     public PlayerInfo selectPlayerInfoByDisplayName(String displayName) {
         return (PlayerInfo) playerInfoTable.select()
-                .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?") // TODO
+                .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?")
                 .parameters(displayName)
                 .execute(PlayerInfo.class).get(0);
     }
