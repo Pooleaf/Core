@@ -81,4 +81,16 @@ public class PlayerInfoModule extends CoreModule {
         return getDisplayName(player.getUniqueId());
     }
 
+    public static PlayerInfo getPlayerInfo(UUID uuid) {
+        return playerInfoManager.getOrLoad(uuid);
+    }
+
+    public static PlayerInfo getPlayerInfoByName(String name) {
+        return playerInfoManager.getOrLoadByName(name);
+    }
+
+    public static PlayerInfo getPlayerInfoByDisplayName(String displayName) {
+        return playerInfoManager.getOrLoadByDisplayName(displayName);
+    }
+
 }
