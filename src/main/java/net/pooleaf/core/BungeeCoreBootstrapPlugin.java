@@ -11,6 +11,8 @@ public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
     setPrefix("§e[ Core ]");
     registerLoggerPrefix();
     registerMessagerPrefix();
+
+    Core.getCoreSqlManager().connect();
   }
 
 }

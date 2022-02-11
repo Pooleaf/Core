@@ -11,6 +11,8 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
     setPrefix("§e[ Core ]");
     registerLoggerPrefix();
     registerMessagerPrefix();
+
+    Core.getCoreSqlManager().connect();
   }
 
 }

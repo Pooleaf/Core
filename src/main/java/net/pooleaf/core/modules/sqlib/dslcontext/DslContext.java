@@ -1,95 +1,50 @@
 package net.pooleaf.core.modules.sqlib.dslcontext;
 
 import net.pooleaf.core.modules.sqlib.AbstractSqlManager;
+import net.pooleaf.core.modules.sqlib.SqlTable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DslContext<T extends DslContext> {
+public abstract class DslContext<T extends DslContext> {
 
-    protected AbstractSqlManager sqlManager;
-
+    protected final AbstractSqlManager sqlManager;
+    protected final SqlTable sqlTable;
 
     protected Map<String, String> sqls = new HashMap<>();
-    protected Object[] parameters;
+    protected Object[] values;
 
 
-    public DslContext(AbstractSqlManager sqlManager) {
+    public DslContext(AbstractSqlManager sqlManager, SqlTable sqlTable) {
         this.sqlManager = sqlManager;
+        this.sqlTable = sqlTable;
     }
 
 
-    public T from(String tableName) {
-        sqls.put("FROM", tableName);
+    /**
+     * 완성된 SQL문 끝에 SQL문을 작성합니다.
+     * @param sql SQL문
+     */
+    public T sql(String sql) {
+        sqls.put("SQL", sql);
         return (T) this;
     }
 
-    public DslContext where(String conditions) {
-        sqls.put("WHERE", conditions);
-        return (T) this;
-    }
-
-    public DslContext groupBy(String columns) {
-        sqls.put("GROUP BY", columns);
-        return (T) this;
-    }
-
-    public DslContext having(String conditions) {
-        sqls.put("HAVING", conditions);
-        return (T) this;
-    }
-
-    public DslContext orderBy(String columns) {
-        sqls.put("ORDER BY", columns);
-        return (T) this;
-    }
-
-    public DslContext orderBy(String columns, boolean asc) {
-        sqls.put("ORDER BY", columns + " " + (asc ? "ASC" : "DESC"));
-        return (T) this;
-    }
-
-    public DslContext limit(int count) {
-        sqls.put("LIMIT", count + "");
-        return (T) this;
-    }
-
-    public DslContext limit(int offset, int count) {
-        sqls.put("LIMIT", offset + ", " + count);
-        return (T) this;
-    }
-
-    public DslContext parameters(Object... parameters) {
-        this.parameters = parameters;
-        return (T) this;
-    }
 
     protected String getSql(String key) {
         String sql = "";
 
         if (sqls.containsKey(key)) {
-            if (!key.equals("MAIN")) {
-                sql += " ";
+            if (key.equals("MAIN")) {
+                sql = sqls.get(key);
+            } else {
+                sql += key + " " + sqls.get(key);
             }
-            sql += key + " " + sqls.get(key);
         }
 
         return sql;
     }
 
-    protected String buildSql() {
-        String sql = "";
-
-        sql += getSql("MAIN");
-        sql += getSql("FROM");
-        sql += getSql("WHERE");
-        sql += getSql("GROUP BY");
-        sql += getSql("HAVING");
-        sql += getSql("ORDER BY");
-        sql += getSql("LIMIT");
-
-        return sql;
-    }
-
+    public abstract String buildSql();
 
 }

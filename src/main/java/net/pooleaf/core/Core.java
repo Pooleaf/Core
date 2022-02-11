@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.pooleaf.core.module.ModuleManager;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.plugin.CorePluginManager;
+import net.pooleaf.core.sql.CoreSqlManager;
 
 public class Core {
 
@@ -15,6 +16,9 @@ public class Core {
 
   @Getter
   private static CorePluginManager corePluginManager = new CorePluginManager();
+
+  @Getter
+  private static CoreSqlManager coreSqlManager = new CoreSqlManager();
 
 
   protected static void init(CorePlugin plugin) {

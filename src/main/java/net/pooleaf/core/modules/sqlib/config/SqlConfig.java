@@ -7,12 +7,14 @@ import net.pooleaf.core.modules.annoconfig.SimpleAnnoConfig;
 import net.pooleaf.core.modules.annoconfig.anno.ConfigAes256;
 import net.pooleaf.core.modules.annoconfig.anno.ConfigName;
 import net.pooleaf.core.modules.annoconfig.anno.ConfigSerialize;
-import org.jooq.SQLDialect;
 
 import java.io.File;
 
 @Data
 public class SqlConfig extends SimpleAnnoConfig {
+
+    @ConfigName("Core 플러그인 DataSource 사용")
+    private Boolean useCorePluginDataSource = true;
 
     @ConfigSerialize(SqlTypeSerializer.class)
     @ConfigName("종류")
@@ -69,19 +71,6 @@ public class SqlConfig extends SimpleAnnoConfig {
         }
 
         return config;
-    }
-
-    public SQLDialect getSqlDialect() {
-        switch (sqlType) {
-            case SQLITE:
-                return SQLDialect.SQLITE;
-            case MYSQL:
-                return SQLDialect.MYSQL;
-            case MARIADB:
-                return SQLDialect.MARIADB;
-        }
-
-        return null;
     }
 
 }

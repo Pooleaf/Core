@@ -2,6 +2,10 @@ package net.pooleaf.core.modules.sqlib;
 
 import lombok.Data;
 import net.pooleaf.core.modules.sqlib.config.SqlType;
+import net.pooleaf.core.modules.sqlib.dslcontext.DeleteContext;
+import net.pooleaf.core.modules.sqlib.dslcontext.InsertContext;
+import net.pooleaf.core.modules.sqlib.dslcontext.SelectContext;
+import net.pooleaf.core.modules.sqlib.dslcontext.UpdateContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,21 +74,94 @@ public class SqlTable {
         return null;
     }
 
+    /**
+     * 테이블을 생성합니다.
+     */
     public SqlTable create() {
         sqlManager.createTable(name, columnString);
         return this;
     }
 
+    /**
+     * 테이블을 삭제합니다.
+     */
     public void drop() {
         sqlManager.dropTable(name);
     }
 
+    /**
+     * 테이블을 초기화시킵니다 (복구 불가)
+     */
     public void truncate() {
         sqlManager.truncateTable(name);
     }
 
-    public void insert(Object... values) {
+    /**
+     * SelectContext를 작성합니다.
+     * @param columns , 로 이어진 컬럼명
+     */
+    public SelectContext select(String columns) {
+        SelectContext context = new SelectContext(sqlManager, this);
+        return context.select(columns);
+    }
 
+    /**
+     * 모든 Column을 조회하는 SelectContext를 작성합니다.
+     * @param columns , 로 이어진 컬럼명
+     */
+    public SelectContext select() {
+        SelectContext context = new SelectContext(sqlManager, this);
+        return context.select("*");
+    }
+
+    /**
+     * DeleteContext를 작성합니다.
+     */
+    public DeleteContext delete() {
+        DeleteContext context = new DeleteContext(sqlManager, this);
+        return context;
+    }
+
+    /**
+     * UpdateContext를 작성합니다.
+     */
+    public UpdateContext update() {
+        UpdateContext context = new UpdateContext(sqlManager, this);
+        return context;
+    }
+
+    /**
+     * InsertContext를 작성합니다.
+     */
+    public InsertContext insertInto() {
+        InsertContext context = new InsertContext(sqlManager, this);
+        return context.insertInto();
+    }
+
+    /**
+     * InsertContext를 작성합니다.
+     * @param columns , 로 이어진 컬럼명
+     */
+    public InsertContext insertInto(String columns) {
+        InsertContext context = new InsertContext(sqlManager, this);
+        return context.insertInto(columns);
+    }
+
+    /**
+     * InsertContext를 작성합니다.
+     */
+    public InsertContext insertIgnoreInto() {
+        InsertContext context = new InsertContext(sqlManager, this);
+        return context.insertIgnoreInto();
+    }
+
+    /**
+     * InsertContext를 작성합니다.
+     * @param columns , 로 이어진 컬럼명
+     */
+    public InsertContext insertIgnoreInto(String columns) {
+        InsertContext context = new InsertContext(sqlManager, this);
+        return context.insertIgnoreInto(columns);
     }
 
 }
