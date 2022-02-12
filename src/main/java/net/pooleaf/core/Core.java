@@ -18,11 +18,14 @@ public class Core {
   private static CorePluginManager corePluginManager = new CorePluginManager();
 
   @Getter
-  private static CoreSqlManager coreSqlManager = new CoreSqlManager();
+  private static CoreSqlManager coreSqlManager;
 
 
   protected static void init(CorePlugin plugin) {
     Core.plugin = plugin;
+
+    // Manager 초기화
+    coreSqlManager = new CoreSqlManager();
 
     // 모듈 자동 등록
     moduleManager.registerModules();
