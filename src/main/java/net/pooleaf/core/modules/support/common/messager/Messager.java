@@ -10,7 +10,7 @@ public class Messager extends Prefixer {
 
 
     public static void nmessage(Object sender, Object message) {
-        messagerAdapter.message(sender, getCurrentPluginPrefix() + " §f" + message);
+        messagerAdapter.message(sender, getCurrentPluginPrefix(" §f") + message);
     }
 
     public static void nmessage(Object sender, Object message, Object... params) {
@@ -18,7 +18,7 @@ public class Messager extends Prefixer {
     }
 
     public static void message(Object sender, Object message) {
-        nmessage(sender, getCurrentPluginPrefix() + " §f" + message);
+        nmessage(sender, getCurrentPluginPrefix(" §f") + message);
     }
 
     public static void message(Object sender, Object message, Object... params) {
@@ -35,7 +35,7 @@ public class Messager extends Prefixer {
     }
 
     public static void warning(Object sender, Object message) {
-        nmessage(sender, getCurrentPluginPrefix() + " §c" + message);
+        nmessage(sender, getCurrentPluginPrefix(" §c") + message);
     }
 
     public static void warning(Object sender, Object message, Object... params) {
@@ -52,7 +52,7 @@ public class Messager extends Prefixer {
     }
 
     public static void broadcast(Object message) {
-        nbroadcast(getCurrentPluginPrefix() + " §f" + message);
+        nbroadcast(getCurrentPluginPrefix(" §f") + message);
     }
 
     public static void broadcast(Object message, Object... params) {

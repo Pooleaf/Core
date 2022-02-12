@@ -42,18 +42,18 @@ public class Prefixer {
    * 현재 CorePlugin의 Prefix를 불러옵니다.
    * @return 현재 CorePlugin의 Prefix
    */
-  protected static String getCurrentPluginPrefix() {
+  protected static String getCurrentPluginPrefix(String suffix) {
     String prefix = null;
 
     // 패키지로 CorePlugin 찾아서 Prefix 찾기
     CorePlugin plugin = Core.getCorePluginManager().getCurrentPlugin();
     if (plugin != null) {
-      prefix = prefixes.get(plugin.getPluginPackage());
+      prefix = prefixes.get(plugin.getPluginPackage()) + suffix;
     }
 
     // Prefix 못찾았으면 빈문자열로
     if (prefix == null) {
-      prefix = prefixes.get(Core.getPlugin().getPluginPackage());
+      prefix = "";
     }
 
     return prefix;

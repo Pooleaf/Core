@@ -11,11 +11,11 @@ public class Logger extends Prefixer {
 
 
   public static void log(Object log) {
-    loggerAdapter.log(getCurrentPluginPrefix() + " §f" + log);
+    loggerAdapter.log(getCurrentPluginPrefix(" §f") + log);
   }
 
   public static void warning(Object log) {
-    log(getCurrentPluginPrefix() + " §c" + log);
+    log(getCurrentPluginPrefix(" §c") + log);
   }
 
 }
