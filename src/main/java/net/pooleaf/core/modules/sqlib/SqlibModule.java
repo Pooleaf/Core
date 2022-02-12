@@ -6,7 +6,7 @@ public class SqlibModule extends CoreModule {
 
     @Override
     public String getName() {
-        return "SqlContext";
+        return "Sqlib";
     }
 
     @Override
