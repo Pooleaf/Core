@@ -33,9 +33,9 @@ public class AbstractSqlManager {
         try {
             config.load();
             config.save();
-            Logger.log(getClass().getName() + ": DB 설정을 불러왔습니다.");
+            Logger.log(getClass().getSimpleName() + ": DB 설정을 불러왔습니다.");
         } catch (Exception e) {
-            Logger.warning(getClass().getName() + ": DB 설정을 불러올 수 없습니다.");
+            Logger.warning(getClass().getSimpleName() + ": DB 설정을 불러올 수 없습니다.");
             e.printStackTrace();
         }
     }
@@ -48,11 +48,11 @@ public class AbstractSqlManager {
             loadConfig();
 
             // DB에 연결
-            if (config.getUseCorePluginDataSource()) {
-                Logger.log(getClass().getName() + ": Core 플러그인의 DataSource를 사용합니다.");
+            if (config.getUseCorePluginDataSource() != null && config.getUseCorePluginDataSource()) {
+                Logger.log(getClass().getSimpleName() + ": Core 플러그인의 DataSource를 사용합니다.");
             } else {
                 dataSource = new HikariDataSource(config.getHikariConfig());
-                Logger.log(getClass().getName() + ": " + config.getSqlType().name() + "에 연결되었습니다.");
+                Logger.log(getClass().getSimpleName() + ": " + config.getSqlType().name() + "에 연결되었습니다.");
             }
 
             onConnected();
@@ -63,7 +63,7 @@ public class AbstractSqlManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.warning(getClass().getName() + ": " + config.getSqlType().name() + "에 연결할 수 없습니다.");
+            Logger.warning(getClass().getSimpleName() + ": " + config.getSqlType().name() + "에 연결할 수 없습니다.");
 
             return false;
         }
@@ -75,7 +75,7 @@ public class AbstractSqlManager {
         if (dataSource == null || ((HikariDataSource) dataSource).isClosed()) return;
 
         ((HikariDataSource) dataSource).close();
-        Logger.log(getClass().getName() + ": " + config.getSqlType().name() + " 연결을 종료했습니다.");
+        Logger.log(getClass().getSimpleName() + ": " + config.getSqlType().name() + " 연결을 종료했습니다.");
     }
 
     @SneakyThrows
