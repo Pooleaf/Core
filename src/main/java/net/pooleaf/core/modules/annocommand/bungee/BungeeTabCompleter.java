@@ -4,7 +4,6 @@ import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
-import net.pooleaf.core.modules.annocommand.CommandManager;
 
 import java.util.List;
 

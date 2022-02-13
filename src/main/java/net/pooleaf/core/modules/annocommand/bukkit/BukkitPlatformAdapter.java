@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.pooleaf.core.plugin.CorePlugin;
-import net.pooleaf.core.modules.annocommand.AnnoCommand;
-import net.pooleaf.core.modules.annocommand.PlatformAdapter;
+import net.pooleaf.core.modules.annocommand.common.AnnoCommand;
+import net.pooleaf.core.modules.annocommand.common.PlatformAdapter;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;

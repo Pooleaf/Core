@@ -1,7 +1,6 @@
 package net.pooleaf.core.modules.annocommand.bukkit;
 
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
-import net.pooleaf.core.modules.annocommand.CommandManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

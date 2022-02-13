@@ -5,8 +5,8 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.pooleaf.core.plugin.CorePlugin;
-import net.pooleaf.core.modules.annocommand.AnnoCommand;
-import net.pooleaf.core.modules.annocommand.PlatformAdapter;
+import net.pooleaf.core.modules.annocommand.common.AnnoCommand;
+import net.pooleaf.core.modules.annocommand.common.PlatformAdapter;
 import org.bukkit.command.ConsoleCommandSender;
 
 public class BungeePlatformAdapter implements PlatformAdapter {

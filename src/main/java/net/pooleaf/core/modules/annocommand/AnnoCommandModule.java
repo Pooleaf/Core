@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.annocommand;
 
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.annocommand.common.CommandManager;
 import net.pooleaf.core.plugin.CorePlugin;
 
 public class AnnoCommandModule extends CoreModule {

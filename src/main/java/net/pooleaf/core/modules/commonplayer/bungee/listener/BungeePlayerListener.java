@@ -1,0 +1,35 @@
+package net.pooleaf.core.modules.commonplayer.bungee.listener;
+
+import java.time.LocalDateTime;
+import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
+import net.pooleaf.core.modules.commonplayer.CommonPlayerModule;
+import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
+import net.pooleaf.core.modules.support.common.logger.Logger;
+
+public class BungeePlayerListener implements Listener {
+
+    @EventHandler
+    public void onPreLogin(LoginEvent e) {
+        // 불러오기
+        CommonPlayer player = CommonPlayerModule.getPlayerInfoManager().load(e.getConnection().getUniqueId());
+        player.setName(e.getConnection().getName());
+        player.setIp(e.getConnection().getAddress().getAddress().getHostAddress());
+        player.setLastLogin(LocalDateTime.now());
+
+        // 로그
+        Logger.log("플레이어 정보: " + player);
+
+        // 저장
+        CommonPlayerModule.getPlayerInfoDao().insertPlayerInfo(player);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerDisconnectEvent e) {
+        // 메모리 해제
+        CommonPlayerModule.getPlayerInfoManager().remove(e.getPlayer().getUniqueId());
+    }
+
+}

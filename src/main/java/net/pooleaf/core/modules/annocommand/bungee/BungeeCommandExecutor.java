@@ -3,7 +3,6 @@ package net.pooleaf.core.modules.annocommand.bungee;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
-import net.pooleaf.core.modules.annocommand.CommandManager;
 
 public class BungeeCommandExecutor extends Command {
 

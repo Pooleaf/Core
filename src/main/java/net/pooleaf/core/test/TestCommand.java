@@ -1,9 +1,9 @@
 package net.pooleaf.core.test;
 
-import net.pooleaf.core.modules.annocommand.Command;
-import net.pooleaf.core.modules.annocommand.CommandResult;
-import net.pooleaf.core.modules.gui.inventory.InventoryGui;
-import net.pooleaf.core.modules.gui.inventory.InventoryIcon;
+import net.pooleaf.core.modules.annocommand.common.Command;
+import net.pooleaf.core.modules.annocommand.common.CommandResult;
+import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
+import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryIcon;
 import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import org.bukkit.Material;

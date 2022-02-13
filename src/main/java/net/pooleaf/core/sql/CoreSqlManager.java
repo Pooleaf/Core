@@ -1,6 +1,6 @@
 package net.pooleaf.core.sql;
 
-import net.pooleaf.core.modules.sqlib.AbstractSqlManager;
+import net.pooleaf.core.modules.sqlib.common.AbstractSqlManager;
 
 public class CoreSqlManager extends AbstractSqlManager {
 
