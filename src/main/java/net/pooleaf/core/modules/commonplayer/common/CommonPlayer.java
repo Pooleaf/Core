@@ -46,8 +46,21 @@ public abstract class CommonPlayer<T> { // T: 각 Platform에 맞는 Player
         return getPlatformPlayer() != null;
     }
 
+    /**
+     * 플레이어에게 메시지를 보냅니다.
+     * Messager에 등록된 Prefix를 사용합니다.
+     * @param message
+     */
     public void message(String message) {
         Messager.message(getPlatformPlayer(), message);
+    }
+
+    /**
+     * 플레이어에게 Prefix가 없는 메시지를 보냅니다.
+     * @param message
+     */
+    public void nmessage(String message) {
+        Messager.nmessage(getPlatformPlayer(), message);
     }
 
     public abstract void kickPlayer(String message);
