@@ -1,10 +1,13 @@
 package net.pooleaf.core;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import net.pooleaf.core.module.ModuleManager;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.plugin.CorePluginManager;
 import net.pooleaf.core.sql.CoreSqlManager;
+
+import java.io.File;
 
 public class Core {
 
@@ -34,6 +37,10 @@ public class Core {
     moduleManager.initModules();
   }
 
+  /**
+   * 마지막으로 사용한 클래스 이름을 반환합니다.
+   * @return 마지막으로 사용한 클래스 이름
+   */
   public static String getLastClassName() {
     StackTraceElement[] ste = new Throwable().getStackTrace();
 
@@ -46,5 +53,15 @@ public class Core {
     return null;
   }
 
+  /**
+   * 서버 폴더 이름을 반환합니다.
+   * @return 서버 폴더 이름
+   */
+  @SneakyThrows
+  public static String getServerFolderName() {
+    String path = new File("").getCanonicalPath();
+    String folderName = path.substring(path.lastIndexOf(File.separator) + 1, path.length());
+    return folderName;
+  }
 
 }
