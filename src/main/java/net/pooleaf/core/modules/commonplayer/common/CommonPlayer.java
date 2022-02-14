@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.commonplayer.common;
 
 import lombok.Data;
+import net.pooleaf.core.modules.support.common.messager.Messager;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -43,6 +44,10 @@ public abstract class CommonPlayer<T> { // T: 각 Platform에 맞는 Player
      */
     public boolean isOnline() {
         return getPlatformPlayer() != null;
+    }
+
+    public void message(String message) {
+        Messager.message(getPlatformPlayer(), message);
     }
 
     public abstract void kickPlayer(String message);
