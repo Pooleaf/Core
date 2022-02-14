@@ -3,7 +3,7 @@ package net.pooleaf.core.modules.commonplayer;
 import java.util.UUID;
 import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
 
-public abstract class CommonPlayerService<E extends CommonPlayer> {
+public abstract class CommonPlayerAdapter<E extends CommonPlayer> {
 
   public abstract void registerListeners();
 

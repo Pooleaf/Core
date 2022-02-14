@@ -3,6 +3,9 @@ package net.pooleaf.core.plugin;
 import java.io.File;
 import lombok.Getter;
 import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
+import net.pooleaf.core.modules.commonevent.CommonEventModule;
+import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
@@ -62,6 +65,21 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   @Override
   public boolean detectPlugin(String name) {
     return Bukkit.getPluginManager().getPlugin(name) != null;
+  }
+
+  @Override
+  public int registerEventListeners() {
+    return BukkitReflectionUtil.registerListeners(this);
+  }
+
+  @Override
+  public void registerCommonEventListeners() {
+    CommonEventModule.registerListeners(this);
+  }
+
+  @Override
+  public void registerCommands() {
+    AnnoCommandModule.registerCommands(this);
   }
 
 }

@@ -3,8 +3,8 @@ package net.pooleaf.core.modules.commonplayer;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
-import net.pooleaf.core.modules.commonplayer.bukkit.BukkitPlayerService;
-import net.pooleaf.core.modules.commonplayer.bungee.BungeePlayerService;
+import net.pooleaf.core.modules.commonplayer.bukkit.BukkitPlayerAdapter;
+import net.pooleaf.core.modules.commonplayer.bungee.BungeePlayerAdapter;
 import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
 import net.pooleaf.core.modules.commonplayer.common.CommonPlayerManager;
 import net.pooleaf.core.modules.commonplayer.common.sql.CommonPlayerDao;
@@ -13,6 +13,10 @@ import net.pooleaf.core.plugin.CorePlugin;
 
 import java.util.UUID;
 
+/**
+ * 플랫폼에 상관없이 사용할 수 있는 플레이어 객체를 제공하고,
+ * 플레이어 정보를 저장하여 관리합니다.
+ */
 public class CommonPlayerModule extends CoreModule {
 
     @Getter
@@ -22,9 +26,9 @@ public class CommonPlayerModule extends CoreModule {
     private static CommonPlayerDao playerInfoDao;
 
 
-    private static CommonPlayerService commonPlayerService;
-    private static BukkitPlayerService bukkitPlayerService;
-    private static BungeePlayerService bungeePlayerService;
+    private static CommonPlayerAdapter commonPlayerAdapter;
+    private static BukkitPlayerAdapter bukkitPlayerAdapter;
+    private static BungeePlayerAdapter bungeePlayerAdapter;
 
 
     @Override
@@ -43,28 +47,28 @@ public class CommonPlayerModule extends CoreModule {
 
         switch (Platform.getCurrentPlatform()) {
             case BUKKIT:
-                bukkitPlayerService = new BukkitPlayerService();
-                commonPlayerService = bukkitPlayerService;
+                bukkitPlayerAdapter = new BukkitPlayerAdapter();
+                commonPlayerAdapter = bukkitPlayerAdapter;
                 break;
             case BUNGEECORD:
-                bungeePlayerService = new BungeePlayerService();
-                commonPlayerService = bungeePlayerService;
+                bungeePlayerAdapter = new BungeePlayerAdapter();
+                commonPlayerAdapter = bungeePlayerAdapter;
                 break;
         }
 
         // 접속 불러오기, 퇴장 메모리 해제 Listener
-        commonPlayerService.registerListeners();
+        commonPlayerAdapter.registerListeners();
     }
 
 
-    public static BukkitPlayerService bukkit() {
-        Preconditions.checkNotNull(bungeePlayerService, "Bukkit에서만 사용할 수 있습니다.");
-        return bukkitPlayerService;
+    public static BukkitPlayerAdapter bukkit() {
+        Preconditions.checkNotNull(bungeePlayerAdapter, "Bukkit에서만 사용할 수 있습니다.");
+        return bukkitPlayerAdapter;
     }
 
-    public static BungeePlayerService bungee() {
-        Preconditions.checkNotNull(bungeePlayerService, "BungeeCord에서만 사용할 수 있습니다.");
-        return bungeePlayerService;
+    public static BungeePlayerAdapter bungee() {
+        Preconditions.checkNotNull(bungeePlayerAdapter, "BungeeCord에서만 사용할 수 있습니다.");
+        return bungeePlayerAdapter;
     }
 
 
@@ -110,7 +114,7 @@ public class CommonPlayerModule extends CoreModule {
      * @return 해당 UUID를 가진 플레이어
      */
     public static CommonPlayer getPlayer(UUID uuid) {
-        return commonPlayerService.getPlayer(uuid);
+        return commonPlayerAdapter.getPlayer(uuid);
     }
 
     /**
@@ -119,7 +123,7 @@ public class CommonPlayerModule extends CoreModule {
      * @return 해당 닉네임을 가진 플레이어
      */
     public static CommonPlayer getPlayerByName(String name) {
-        return commonPlayerService.getPlayerByName(name);
+        return commonPlayerAdapter.getPlayerByName(name);
     }
 
     /**
@@ -128,7 +132,7 @@ public class CommonPlayerModule extends CoreModule {
      * @return 해당 가상닉네임을 가진 플레이어
      */
     public static CommonPlayer getPlayerByDisplayName(String displayName) {
-        return commonPlayerService.getPlayerByDisplayName(displayName);
+        return commonPlayerAdapter.getPlayerByDisplayName(displayName);
     }
 
 }

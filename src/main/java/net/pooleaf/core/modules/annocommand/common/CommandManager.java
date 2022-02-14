@@ -26,7 +26,7 @@ public class CommandManager {
     private List<AnnoCommand> commands = new ArrayList<>();
 
 
-    protected void init(CorePlugin plugin) {
+    public void init(CorePlugin plugin) {
         platformAdapter = PlatformAdapterFactory.createPlatformAdapter();
 
         platformAdapter.init(plugin);

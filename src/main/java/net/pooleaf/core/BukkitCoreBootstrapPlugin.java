@@ -1,8 +1,6 @@
 package net.pooleaf.core;
 
-import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.plugin.BukkitCorePlugin;
-import org.bukkit.Bukkit;
 
 public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
 
@@ -13,6 +11,9 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
     registerMessagerPrefix();
 
     Core.init(this);
+
+    registerEventListeners();
+    registerCommands();
 
     Core.getCoreSqlManager().connect();
   }

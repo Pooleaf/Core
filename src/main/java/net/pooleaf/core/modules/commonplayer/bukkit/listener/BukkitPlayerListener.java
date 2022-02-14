@@ -4,6 +4,7 @@ import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
 import net.pooleaf.core.modules.commonplayer.CommonPlayerModule;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 
 public class BukkitPlayerListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(AsyncPlayerPreLoginEvent e) {
         // 불러오기
         CommonPlayer player = CommonPlayerModule.getPlayerInfoManager().load(e.getUniqueId());
@@ -27,7 +28,7 @@ public class BukkitPlayerListener implements Listener {
         CommonPlayerModule.getPlayerInfoDao().insertPlayerInfo(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent e) {
         // 메모리 해제
         CommonPlayerModule.getPlayerInfoManager().remove(e.getPlayer().getUniqueId());

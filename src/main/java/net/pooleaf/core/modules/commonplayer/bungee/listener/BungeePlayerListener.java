@@ -5,13 +5,14 @@ import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import net.pooleaf.core.modules.commonplayer.CommonPlayerModule;
 import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 
 public class BungeePlayerListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(LoginEvent e) {
         // 불러오기
         CommonPlayer player = CommonPlayerModule.getPlayerInfoManager().load(e.getConnection().getUniqueId());
@@ -26,7 +27,7 @@ public class BungeePlayerListener implements Listener {
         CommonPlayerModule.getPlayerInfoDao().insertPlayerInfo(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerDisconnectEvent e) {
         // 메모리 해제
         CommonPlayerModule.getPlayerInfoManager().remove(e.getPlayer().getUniqueId());

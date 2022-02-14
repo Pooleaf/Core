@@ -13,10 +13,31 @@ public interface CorePlugin {
   String getVersion();
   String getPluginPackage();
 
+  boolean isEnabled();
+
   File getFile();
   File getDataFolder();
   InputStream getResource(String path);
 
+  /**
+   * 해당 이름을 가진 플러그인이 존재하는지 확인합니다.
+   */
   boolean detectPlugin(String name);
+
+  /**
+   * 해당 플러그인의 플랫폼에 맞는 모든 Event Listener을 등록합니다.
+   * @return 등록된 Listener 개수
+   */
+  int registerEventListeners();
+
+  /**
+   * 해당 플러그인의 모든 Common Event Listener을 등록합니다.
+   */
+  void registerCommonEventListeners();
+
+  /**
+   * 해당 플러그인의 모든 Command를 등록합니다.
+   */
+  void registerCommands();
 
 }
