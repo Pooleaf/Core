@@ -3,3 +3,5 @@ BungeePacketModule
 CommonLocation
 CommonSound
 RedisLibModule
+
+CommonPlayer 못불러오는 오류 있음. 저장됐는지 체크도 해야함
