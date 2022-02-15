@@ -15,6 +15,11 @@ public abstract class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각
     protected LocalDateTime lastLogin; // 마지막 로그인
 
 
+    @Override
+    public boolean isConsole() {
+        return false;
+    }
+
     public abstract T getPlatformSender();
 
     /**

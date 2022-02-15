@@ -23,6 +23,8 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
         return hasDisplayName() ? displayName : name;
     }
 
+    public abstract boolean isConsole();
+
     /**
      * 각 Platform에 맞는 Sender 객체를 반환합니다.
      * @return 각 Platform에 맞는 Sender 객체

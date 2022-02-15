@@ -7,6 +7,11 @@ public abstract class CommonConsoleSender<T> extends CommonCommandSender<T> {
         this.displayName = "콘솔";
     }
 
+    @Override
+    public boolean isConsole() {
+        return true;
+    }
+
     public abstract T getPlatformSender();
 
 }
