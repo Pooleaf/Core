@@ -18,5 +18,6 @@ public @interface Command {
     String permission() default "";
 
     boolean helpCommand() default false;
+    boolean asyncCommand() default true; // TODO
 
 }
