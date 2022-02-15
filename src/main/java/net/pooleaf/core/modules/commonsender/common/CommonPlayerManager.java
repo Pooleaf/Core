@@ -33,6 +33,16 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         return playerInfo;
     }
 
+    public CommonPlayer getOrLoadNoCacheByName(String name) {
+        CommonPlayer playerInfo = getByName(name);
+
+        if (playerInfo == null) {
+            return CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByName(name);
+        }
+
+        return playerInfo;
+    }
+
     public CommonPlayer getByDisplayName(String displayName) {
         displayName = CommonChatColor.stripColor(displayName);
 
@@ -50,6 +60,16 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
 
         if (playerInfo == null) {
             CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByDisplayName(displayName);
+        }
+
+        return playerInfo;
+    }
+
+    public CommonPlayer getOrLoadNoCacheByDisplayName(String displayName) {
+        CommonPlayer playerInfo = getByDisplayName(displayName);
+
+        if (playerInfo == null) {
+            return CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByDisplayName(displayName);
         }
 
         return playerInfo;
