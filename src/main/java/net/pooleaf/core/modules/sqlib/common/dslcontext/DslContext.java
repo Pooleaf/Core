@@ -38,7 +38,7 @@ public abstract class DslContext<T extends DslContext> {
             if (key.equals("MAIN")) {
                 sql = sqls.get(key);
             } else {
-                sql += key + " " + sqls.get(key);
+                sql = " " + key + " " + sqls.get(key);
             }
         }
 
