@@ -31,21 +31,21 @@ public class CommonPlayerDao extends SqlDao {
         return (CommonPlayer) playerInfoTable.select()
                 .where("uuid = ?")
                 .parameters(uuid)
-                .execute(CommonPlayer.class).get(0);
+                .execute(CommonPlayer.class);
     }
 
     public CommonPlayer selectPlayerInfoByName(String name) {
         return (CommonPlayer) playerInfoTable.select()
                 .where("name = ?")
                 .parameters(name)
-                .execute(CommonPlayer.class).get(0);
+                .execute(CommonPlayer.class);
     }
 
     public CommonPlayer selectPlayerInfoByDisplayName(String displayName) {
         return (CommonPlayer) playerInfoTable.select()
                 .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?")
                 .parameters(displayName)
-                .execute(CommonPlayer.class).get(0);
+                .execute(CommonPlayer.class);
     }
 
     public void insertPlayerInfo(CommonPlayer playerInfo) {
