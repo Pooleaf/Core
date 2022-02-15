@@ -4,6 +4,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.annocommand.common.AnnoCommand;
 import net.pooleaf.core.modules.annocommand.common.PlatformAdapter;
@@ -23,16 +24,18 @@ public class BungeePlatformAdapter implements PlatformAdapter {
 
     @Override
     public boolean registerCommand(AnnoCommand command) {
+        Class firstParameterType = command.getExecuteMethod().getParameterTypes()[0];
+
         /* Player Only */
-        if (command.getExecuteMethod().getParameterTypes()[0].equals(ProxiedPlayer.class)) {
+        if (firstParameterType.equals(ProxiedPlayer.class) || CommonPlayer.class.isAssignableFrom(firstParameterType)) {
             command.setPlayerOnly(true);
         }
         /* Console Only */
-        else if (command.getExecuteMethod().getParameterTypes()[0].equals(ConsoleCommandSender.class)) {
+        else if (firstParameterType.equals(ConsoleCommandSender.class) || ConsoleCommandSender.class.isAssignableFrom(firstParameterType)) {
             command.setConsoleOnly(true);
         }
         /* Invalid Parameter Type */
-        else if (!command.getExecuteMethod().getParameterTypes()[0].isAssignableFrom(CommandSender.class)) return false;
+        else if (!firstParameterType.isAssignableFrom(CommandSender.class)) return false;
 
         /* Register to BungeeCord */
         if (!command.hasParent()) {

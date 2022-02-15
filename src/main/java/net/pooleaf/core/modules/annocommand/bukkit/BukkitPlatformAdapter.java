@@ -3,6 +3,8 @@ package net.pooleaf.core.modules.annocommand.bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.annocommand.common.AnnoCommand;
 import net.pooleaf.core.modules.annocommand.common.PlatformAdapter;
@@ -28,16 +30,18 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
 
     @Override
     public boolean registerCommand(AnnoCommand command) {
+        Class firstParameterType = command.getExecuteMethod().getParameterTypes()[0];
+
         /* Player Only */
-        if (command.getExecuteMethod().getParameterTypes()[0].equals(Player.class)) {
+        if (firstParameterType.equals(Player.class) || CommonPlayer.class.isAssignableFrom(firstParameterType)) {
             command.setPlayerOnly(true);
         }
         /* Console Only */
-        else if (command.getExecuteMethod().getParameterTypes()[0].equals(ConsoleCommandSender.class)) {
+        else if (firstParameterType.equals(ConsoleCommandSender.class) || CommonCommandSender.class.isAssignableFrom(firstParameterType)) {
             command.setConsoleOnly(true);
         }
         /* Invalid Parameter Type */
-        else if (!command.getExecuteMethod().getParameterTypes()[0].isAssignableFrom(CommandSender.class)) return false;
+        else if (!firstParameterType.isAssignableFrom(CommandSender.class)) return false;
 
 
         /* Register to Bukkit */
