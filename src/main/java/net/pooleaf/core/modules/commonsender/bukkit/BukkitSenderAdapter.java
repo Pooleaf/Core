@@ -20,20 +20,20 @@ public class BukkitSenderAdapter extends CommonSenderAdapter<BukkitPlayer, Bukki
   }
 
   @Override
-  public BukkitPlayer getCommonPlayerByPlatformSender(Object platformSender) {
+  public BukkitPlayer getPlayerByPlatformSender(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof Player, "platformSender가 Player가 아닙니다.");
 
     return (BukkitPlayer) CommonSenderModule.getPlayer(((Player) platformSender).getUniqueId());
   }
 
   @Override
-  public CommonCommandSender getCommonCommandSenderByPlatformSender(Object platformSender) {
+  public CommonCommandSender getCommandSenderByPlatformSender(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof CommandSender, "platformSender가 CommandSender가 아닙니다.");
 
     if (platformSender instanceof ConsoleCommandSender) { // 콘솔일 경우
       return CommonSenderModule.getConsoleSender();
     } else { // 플레이어일 경우
-      return getCommonPlayerByPlatformSender(platformSender);
+      return getPlayerByPlatformSender(platformSender);
     }
   }
 

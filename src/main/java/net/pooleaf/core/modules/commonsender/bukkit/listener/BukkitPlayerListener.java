@@ -16,7 +16,7 @@ public class BukkitPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(AsyncPlayerPreLoginEvent e) {
         // 불러오기
-        CommonPlayer player = CommonSenderModule.getPlayerInfoManager().load(e.getUniqueId());
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getUniqueId());
         player.setName(e.getName());
         player.setIp(e.getAddress().getHostAddress());
         player.setLastLogin(LocalDateTime.now());
@@ -31,7 +31,7 @@ public class BukkitPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent e) {
         // 메모리 해제
-        CommonSenderModule.getPlayerInfoManager().remove(e.getPlayer().getUniqueId());
+        CommonSenderModule.getCommonPlayerManager().remove(e.getPlayer().getUniqueId());
     }
 
 }

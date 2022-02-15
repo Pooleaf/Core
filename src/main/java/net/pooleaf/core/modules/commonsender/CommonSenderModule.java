@@ -24,7 +24,7 @@ import java.util.UUID;
 public class CommonSenderModule extends CoreModule {
 
     @Getter
-    private static CommonPlayerManager playerInfoManager = new CommonPlayerManager();
+    private static CommonPlayerManager commonPlayerManager = new CommonPlayerManager();
 
     @Getter
     private static CommonPlayerDao playerInfoDao;
@@ -83,65 +83,52 @@ public class CommonSenderModule extends CoreModule {
 
     /**
      * 플레이어의 UUID로 닉네임을 불러옵니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param uuid 닉네임을 불러올 플레이어의 UUID
      * @return 닉네임
      */
     public static String getName(UUID uuid) {
-        return playerInfoManager.getOrLoad(uuid).getName();
+        return commonPlayerManager.getOrLoadNoCache(uuid).getName();
     }
 
     /**
      * 플레이어의 UUID로 가상닉네임을 불러옵니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param uuid 가상닉네임을 불러올 플레이어의 UUID
      * @return 가상닉네임
      */
     public static String getDisplayName(UUID uuid) {
-        return playerInfoManager.getOrLoad(uuid).getDisplayName();
-    }
-
-    /**
-     * 해당 플레이어의 가상닉네임을 불러옵니다.
-     * @param player 가상닉네임을 불러올 플레이어
-     * @return 가상닉네임
-     */
-    public static String getDisplayName(org.bukkit.entity.Player player) {
-        return getDisplayName(player.getUniqueId());
-    }
-
-    /**
-     * 해당 플레이어의 가상닉네임을 불러옵니다.
-     * @param player 가상닉네임을 불러올 플레이어
-     * @return 가상닉네임
-     */
-    public static String getDisplayName(net.md_5.bungee.api.connection.ProxiedPlayer player) {
-        return getDisplayName(player.getUniqueId());
+        return commonPlayerManager.getOrLoadNoCache(uuid).getDisplayName();
     }
 
     /**
      * 해당 UUID를 가진 플레이어를 반환합니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param uuid 찾을 플레이어의 UUID
      * @return 해당 UUID를 가진 플레이어
      */
-    public static CommonPlayer getPlayer(UUID uuid) {
-        return commonSenderAdapter.getPlayer(uuid);
+    public static CommonPlayer getOnlinePlayer(UUID uuid) {
+        return commonPlayerManager.get(uuid);
     }
 
     /**
      * 해당 닉네임을 가진 플레이어를 반환합니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param name 찾을 플레이어의 닉네임
      * @return 해당 닉네임을 가진 플레이어
      */
-    public static CommonPlayer getPlayerByName(String name) {
-        return commonSenderAdapter.getPlayerByName(name);
+    public static CommonPlayer getOnlinePlayerByName(String name) {
+        return commonPlayerManager.getByName(name);
     }
 
     /**
      * 해당 가상닉네임을 가진 플레이어를 반환합니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param displayName 찾을 플레이어의 가상닉네임
      * @return 해당 가상닉네임을 가진 플레이어
      */
-    public static CommonPlayer getPlayerByDisplayName(String displayName) {
-        return commonSenderAdapter.getPlayerByDisplayName(displayName);
+    public static CommonPlayer getOnlinePlayerByDisplayName(String displayName) {
+        return commonPlayerManager.getByDisplayName(displayName);
     }
 
     /**
@@ -149,8 +136,8 @@ public class CommonSenderModule extends CoreModule {
      * @param platformSender 플랫폼에 맞는 Player
      * @return 해당 Player에 맞는 CommonPlayer
      */
-    public static CommonPlayer getCommonPlayerByPlatformSender(Object platformSender) {
-        return commonSenderAdapter.getCommonPlayerByPlatformSender(platformSender);
+    public static CommonPlayer getOnlinePlayerByPlatformSender(Object platformSender) {
+        return commonSenderAdapter.getPlayerByPlatformSender(platformSender);
     }
 
     /**
@@ -158,8 +145,38 @@ public class CommonSenderModule extends CoreModule {
      * @param platformSender 플랫폼에 맞는 Sender
      * @return 해당 Sender에 맞는 CommonCommandSender
      */
-    public static CommonCommandSender getCommonCommandSenderByPlatformSender(Object platformSender) {
-        return commonSenderAdapter.getCommonCommandSenderByPlatformSender(platformSender);
+    public static CommonCommandSender getOnlineCommandSenderByPlatformSender(Object platformSender) {
+        return commonSenderAdapter.getCommandSenderByPlatformSender(platformSender);
+    }
+
+    /**
+     * 해당 UUID를 가진 플레이어를 반환합니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * @param uuid 찾을 플레이어의 UUID
+     * @return 해당 UUID를 가진 플레이어
+     */
+    public static CommonPlayer getPlayer(UUID uuid) {
+        return commonPlayerManager.getOrLoadNoCache(uuid);
+    }
+
+    /**
+     * 해당 닉네임을 가진 플레이어를 반환합니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * @param name 찾을 플레이어의 닉네임
+     * @return 해당 닉네임을 가진 플레이어
+     */
+    public static CommonPlayer getPlayerByName(String name) {
+        return commonPlayerManager.getOrLoadNoCacheByName(name);
+    }
+
+    /**
+     * 해당 가상닉네임을 가진 플레이어를 반환합니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * @param displayName 찾을 플레이어의 가상닉네임
+     * @return 해당 가상닉네임을 가진 플레이어
+     */
+    public static CommonPlayer getPlayerByDisplayName(String displayName) {
+        return commonPlayerManager.getOrLoadNoCacheByDisplayName(displayName);
     }
 
 }

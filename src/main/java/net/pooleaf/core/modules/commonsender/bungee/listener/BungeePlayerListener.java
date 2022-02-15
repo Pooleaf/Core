@@ -15,7 +15,7 @@ public class BungeePlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(LoginEvent e) {
         // 불러오기
-        CommonPlayer player = CommonSenderModule.getPlayerInfoManager().load(e.getConnection().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getConnection().getUniqueId());
         player.setName(e.getConnection().getName());
         player.setIp(e.getConnection().getAddress().getAddress().getHostAddress());
         player.setLastLogin(LocalDateTime.now());
@@ -30,7 +30,7 @@ public class BungeePlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerDisconnectEvent e) {
         // 메모리 해제
-        CommonSenderModule.getPlayerInfoManager().remove(e.getPlayer().getUniqueId());
+        CommonSenderModule.getCommonPlayerManager().remove(e.getPlayer().getUniqueId());
     }
 
 }

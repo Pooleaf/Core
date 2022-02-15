@@ -19,6 +19,9 @@ public class DisplayNameCommand {
         String displayName = result.subArgument(1);
 
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(name);
+        if (targetPlayer == null) {
+
+        }
 
         if (name.equalsIgnoreCase(displayName)) { // 원래 닉네임과 같게 입력할 경우 삭제
             targetPlayer.setDisplayName(null);

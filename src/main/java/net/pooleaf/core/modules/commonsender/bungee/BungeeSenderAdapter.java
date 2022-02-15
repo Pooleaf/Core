@@ -19,20 +19,20 @@ public class BungeeSenderAdapter extends CommonSenderAdapter<BungeePlayer, Bunge
   }
 
   @Override
-  public BungeePlayer getCommonPlayerByPlatformSender(Object platformSender) {
+  public BungeePlayer getPlayerByPlatformSender(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof ProxiedPlayer, "platformSender가 ProxiedPlayer가 아닙니다.");
 
     return (BungeePlayer) CommonSenderModule.getPlayer(((ProxiedPlayer) platformSender).getUniqueId());
   }
 
   @Override
-  public CommonCommandSender getCommonCommandSenderByPlatformSender(Object platformSender) {
+  public CommonCommandSender getCommandSenderByPlatformSender(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof CommandSender, "platformSender가 CommandSender가 아닙니다.");
 
     if (!(platformSender instanceof ProxiedPlayer)) { // 콘솔일 경우
       return CommonSenderModule.getConsoleSender();
     } else { // 플레이어일 경우
-      return getCommonPlayerByPlatformSender(platformSender);
+      return getPlayerByPlatformSender(platformSender);
     }
   }
 

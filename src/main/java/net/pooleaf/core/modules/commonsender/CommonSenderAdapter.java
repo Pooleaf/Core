@@ -11,19 +11,19 @@ public abstract class CommonSenderAdapter<P extends CommonPlayer, C extends Comm
   public abstract void registerListeners();
 
   public P getPlayer(UUID uuid) {
-    return (P) CommonSenderModule.getPlayerInfoManager().getOrLoad(uuid);
+    return (P) CommonSenderModule.getCommonPlayerManager().getOrLoadNoCache(uuid);
   }
 
   public P getPlayerByName(String name) {
-    return (P) CommonSenderModule.getPlayerInfoManager().getOrLoadByName(name);
+    return (P) CommonSenderModule.getCommonPlayerManager().getOrLoadNoCacheByName(name);
   }
 
   public P getPlayerByDisplayName(String displayName) {
-    return (P) CommonSenderModule.getPlayerInfoManager().getOrLoadByDisplayName(displayName);
+    return (P) CommonSenderModule.getCommonPlayerManager().getOrLoadNoCacheByDisplayName(displayName);
   }
 
-  public abstract P getCommonPlayerByPlatformSender(Object platformSender);
+  public abstract P getPlayerByPlatformSender(Object platformSender);
 
-  public abstract CommonCommandSender getCommonCommandSenderByPlatformSender(Object platformSender);
+  public abstract CommonCommandSender getCommandSenderByPlatformSender(Object platformSender);
 
 }
