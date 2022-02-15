@@ -32,13 +32,23 @@ public abstract class AbstractManager<K, V> {
     }
 
     public V getOrLoad(K key) {
+        if (datas.containsKey(key)) {
+            return datas.get(key);
+        }
+
         V value = load(key);
-        datas.put(key, value);
+        if (value != null) {
+            datas.put(key, value);
+        }
 
         return value;
     }
 
     public V getOrLoadNoCache(K key) {
+        if (datas.containsKey(key)) {
+            return datas.get(key);
+        }
+
         V value = load(key);
 
         return value;
