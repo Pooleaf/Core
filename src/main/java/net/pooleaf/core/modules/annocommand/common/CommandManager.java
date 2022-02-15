@@ -86,6 +86,9 @@ public class CommandManager {
             // 도움말 명령어인지
             command.setHelpCommand(anno.helpCommand());
 
+            // 비동기 명령어인지
+            command.setAsync(anno.async());
+
             // 명령어 메소드
             command.setExecuteMethod(method);
 
@@ -257,7 +260,11 @@ public class CommandManager {
             }
             // 명령어 실행
             else {
-                command.execute(new CommandResult(command, sender, commandLine));
+                if (command.isAsync()) {
+                    command.executeAsync(new CommandResult(command, sender, commandLine));
+                } else {
+                    command.execute(new CommandResult(command, sender, commandLine));
+                }
             }
 
             return true;

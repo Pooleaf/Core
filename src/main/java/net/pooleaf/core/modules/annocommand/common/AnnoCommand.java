@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Data;
 import lombok.SneakyThrows;
+import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.commonscheduler.CommonSchedulerModule;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 
@@ -30,6 +32,7 @@ public class AnnoCommand {
     private boolean consoleOnly;
 
     private boolean helpCommand;
+    private boolean async;
 
     private Method executeMethod;
 
@@ -97,6 +100,10 @@ public class AnnoCommand {
         } else {
             executeMethod.invoke(null, result.getSender(), result);
         }
+    }
+
+    public void executeAsync(CommandResult result) {
+        CommonSchedulerModule.getScheduler().runAsync(Core.getPlugin(), () -> execute(result));
     }
 
 }
