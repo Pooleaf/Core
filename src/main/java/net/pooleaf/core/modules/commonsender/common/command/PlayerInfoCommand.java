@@ -18,7 +18,7 @@ public class PlayerInfoCommand {
     public static void playerInfo(CommonCommandSender sender, CommandResult result) {
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(result.getArgument(0));
         if (targetPlayer == null) {
-            targetPlayer.warning("존재하지 않는 플레이어입니다.");
+            sender.warning("존재하지 않는 플레이어입니다.");
             return;
         }
 

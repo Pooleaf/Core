@@ -20,7 +20,7 @@ public class DisplayNameCommand {
 
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(name);
         if (targetPlayer == null) {
-            targetPlayer.warning("존재하지 않는 플레이어입니다.");
+            sender.warning("존재하지 않는 플레이어입니다.");
             return;
         }
 
