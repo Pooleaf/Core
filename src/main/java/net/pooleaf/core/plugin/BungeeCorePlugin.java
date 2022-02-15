@@ -1,10 +1,12 @@
 package net.pooleaf.core.plugin;
 
+import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
+import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.support.bungee.util.BungeeReflectionUtil;
 import net.pooleaf.core.modules.support.common.logger.Logger;
@@ -20,6 +22,9 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
   @Getter
   private boolean enabled;
+
+  @Getter
+  private SimpleAnnoConfig config;
 
 
   @Override
@@ -40,6 +45,20 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   public void onStart() {}
 
   public void onEnd() {}
+
+  @Override
+  public void loadConfig() {
+    Preconditions.checkNotNull(config, "config가 설정되지 않았습니다.");
+
+    long startTime = System.currentTimeMillis();
+
+    config.load();
+    config.save();
+
+    onConfigLoaded();
+
+    Logger.log("설정을 불러왔습니다. (" + (System.currentTimeMillis() - startTime) + " ms)");
+  }
 
   @Override
   public String getName() {

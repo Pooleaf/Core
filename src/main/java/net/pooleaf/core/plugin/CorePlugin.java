@@ -19,6 +19,9 @@ public interface CorePlugin {
   File getDataFolder();
   InputStream getResource(String path);
 
+  void onConfigLoaded();
+  void loadConfig();
+
   /**
    * 해당 이름을 가진 플러그인이 존재하는지 확인합니다.
    */
@@ -39,5 +42,6 @@ public interface CorePlugin {
    * 해당 플러그인의 모든 Command를 등록합니다.
    */
   void registerCommands();
+
 
 }

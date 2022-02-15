@@ -1,21 +1,26 @@
 package net.pooleaf.core.plugin;
 
 import java.io.File;
+
+import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
+import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.Messenger;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   @Getter
   private String prefix;
+
+  @Getter
+  private SimpleAnnoConfig config;
 
 
   @Override
@@ -34,6 +39,23 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   public void onStart() {}
 
   public void onEnd() {}
+
+  @Override
+  public void onConfigLoaded() {}
+
+  @Override
+  public void loadConfig() {
+    Preconditions.checkNotNull(config, "config가 설정되지 않았습니다.");
+
+    long startTime = System.currentTimeMillis();
+
+    config.load();
+    config.save();
+
+    onConfigLoaded();
+
+    Logger.log("설정을 불러왔습니다. (" + (System.currentTimeMillis() - startTime) + " ms)");
+  }
 
   @Override
   public String getVersion() {
