@@ -22,7 +22,7 @@ public class AnnoConfigModule extends CoreModule {
 
   @Override
   public String[] getDepends() {
-    return new String[] { "Support", "PlatformConfig" };
+    return new String[] { "Support", "CommonConfig" };
   }
 
   @Override
