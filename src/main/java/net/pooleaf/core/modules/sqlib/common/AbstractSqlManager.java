@@ -58,7 +58,9 @@ public class AbstractSqlManager {
             onConnected();
 
             // DAO onConnected 메소드 호출
-            daos.forEach(SqlDao::onConnected);
+            for (SqlDao dao : daos) {
+                dao.onConnected();
+            }
 
             return true;
         } catch (Exception e) {
@@ -104,7 +106,7 @@ public class AbstractSqlManager {
         int result = statement.executeUpdate();
         Debugger.log("[SQLib] update Result: " + result);
 
-        Debugger.log("[SQLib] update Executed in: " + (System.currentTimeMillis() - startTime));
+        Debugger.log("[SQLib] update Executed in: " + (System.currentTimeMillis() - startTime) + " ms");
 
         return result;
     }
@@ -123,13 +125,13 @@ public class AbstractSqlManager {
         @Cleanup ResultSet resultSet = statement.executeQuery();
         CachedResult cachedResult = new CachedResult(resultSet);
 
-        Debugger.log("[SQLib] getResult Executed in: " + (System.currentTimeMillis() - startTime));
+        Debugger.log("[SQLib] getResult Executed in: " + (System.currentTimeMillis() - startTime) + " ms");
 
         return cachedResult;
     }
 
     public void createTable(String tableName, String... columnString) {
-        update("CREATE TABLE IF NOT EXISTS " + tableName + " (" + columnString + ")");
+        update("CREATE TABLE IF NOT EXISTS " + tableName + " (" + String.join(", ", columnString) + ")");
     }
 
     public void dropTable(String tableName) {
