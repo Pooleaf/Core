@@ -15,10 +15,12 @@ public class BungeePlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(LoginEvent e) {
         // 불러오기
-        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getConnection().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().getOrLoad(e.getConnection().getUniqueId());
         player.setName(e.getConnection().getName());
         player.setIp(e.getConnection().getAddress().getAddress().getHostAddress());
         player.setLastLogin(LocalDateTime.now());
+
+        CommonSenderModule.getCommonPlayerManager().set(player.getUuid(), player);
 
         // 로그
         Logger.log("플레이어 정보: " + player);

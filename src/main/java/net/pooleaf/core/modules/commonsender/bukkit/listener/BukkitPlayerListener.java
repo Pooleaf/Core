@@ -16,10 +16,12 @@ public class BukkitPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(AsyncPlayerPreLoginEvent e) {
         // 불러오기
-        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getUniqueId());
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().getOrLoad(e.getUniqueId());
         player.setName(e.getName());
         player.setIp(e.getAddress().getHostAddress());
         player.setLastLogin(LocalDateTime.now());
+
+        CommonSenderModule.getCommonPlayerManager().set(player.getUuid(), player);
 
         // 로그
         Logger.log("플레이어 정보: " + player);
