@@ -20,7 +20,8 @@ public class DisplayNameCommand {
 
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(name);
         if (targetPlayer == null) {
-
+            targetPlayer.warning("존재하지 않는 플레이어입니다.");
+            return;
         }
 
         if (name.equalsIgnoreCase(displayName)) { // 원래 닉네임과 같게 입력할 경우 삭제

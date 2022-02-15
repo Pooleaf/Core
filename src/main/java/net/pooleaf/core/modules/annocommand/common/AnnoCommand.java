@@ -93,7 +93,7 @@ public class AnnoCommand {
     public void execute(CommandResult result) {
         // 메소드 첫번째 파라미터가 CommonCommandSender일 경우 변환해서 호출
         if (CommonCommandSender.class.isAssignableFrom(executeMethod.getParameterTypes()[0])) {
-            executeMethod.invoke(null, CommonSenderModule.getCommonCommandSenderByPlatformSender(result.getSender()), result);
+            executeMethod.invoke(null, CommonSenderModule.getOnlineCommandSenderByPlatformSender(result.getSender()), result);
         } else {
             executeMethod.invoke(null, result.getSender(), result);
         }
