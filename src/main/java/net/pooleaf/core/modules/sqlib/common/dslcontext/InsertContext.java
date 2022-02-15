@@ -105,7 +105,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
             questionMarkBuilder.append("?");
         }
 
-        sqls.put("VALUES", "VALUES (" + questionMarkBuilder.toString() + ")");
+        sqls.put("VALUES", "(" + questionMarkBuilder.toString() + ")");
         this.values = values;
         addBatch();
 
@@ -121,7 +121,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
             questionMarkBuilder.append("?");
         }
 
-        sqls.put("VALUES", "VALUES (" + questionMarkBuilder.toString() + ")");
+        sqls.put("VALUES", "(" + questionMarkBuilder.toString() + ")");
         this.values = values;
         addBatch();
 
@@ -143,7 +143,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
         }
 
 
-        sqls.put("ON DUPLICATE KEY UPDATE ", sqlBuilder.toString());
+        sqls.put("ON DUPLICATE KEY UPDATE", sqlBuilder.toString());
         return this;
     }
 
