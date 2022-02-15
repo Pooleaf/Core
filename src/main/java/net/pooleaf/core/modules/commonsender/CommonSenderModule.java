@@ -4,9 +4,10 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
 import net.pooleaf.core.modules.commonsender.bukkit.BukkitConsoleSender;
-import net.pooleaf.core.modules.commonsender.bukkit.BukkitPlayerAdapter;
+import net.pooleaf.core.modules.commonsender.bukkit.BukkitSenderAdapter;
 import net.pooleaf.core.modules.commonsender.bungee.BungeeConsoleSender;
-import net.pooleaf.core.modules.commonsender.bungee.BungeePlayerAdapter;
+import net.pooleaf.core.modules.commonsender.bungee.BungeeSenderAdapter;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.commonsender.common.CommonConsoleSender;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayerManager;
@@ -32,9 +33,9 @@ public class CommonSenderModule extends CoreModule {
     private static CommonConsoleSender consoleSender;
 
 
-    private static CommonSenderAdapter commonPlayerAdapter;
-    private static BukkitPlayerAdapter bukkitPlayerAdapter;
-    private static BungeePlayerAdapter bungeePlayerAdapter;
+    private static CommonSenderAdapter commonSenderAdapter;
+    private static BukkitSenderAdapter bukkitSenderAdapter;
+    private static BungeeSenderAdapter bungeeSenderAdapter;
 
 
     @Override
@@ -53,30 +54,30 @@ public class CommonSenderModule extends CoreModule {
 
         switch (Platform.getCurrentPlatform()) {
             case BUKKIT:
-                bukkitPlayerAdapter = new BukkitPlayerAdapter();
-                commonPlayerAdapter = bukkitPlayerAdapter;
+                bukkitSenderAdapter = new BukkitSenderAdapter();
+                commonSenderAdapter = bukkitSenderAdapter;
                 consoleSender = new BukkitConsoleSender();
                 break;
             case BUNGEECORD:
-                bungeePlayerAdapter = new BungeePlayerAdapter();
-                commonPlayerAdapter = bungeePlayerAdapter;
+                bungeeSenderAdapter = new BungeeSenderAdapter();
+                commonSenderAdapter = bungeeSenderAdapter;
                 consoleSender = new BungeeConsoleSender();
                 break;
         }
 
         // 접속 불러오기, 퇴장 메모리 해제 Listener
-        commonPlayerAdapter.registerListeners();
+        commonSenderAdapter.registerListeners();
     }
 
 
-    public static BukkitPlayerAdapter bukkit() {
-        Preconditions.checkNotNull(bungeePlayerAdapter, "Bukkit에서만 사용할 수 있습니다.");
-        return bukkitPlayerAdapter;
+    public static BukkitSenderAdapter bukkit() {
+        Preconditions.checkNotNull(bungeeSenderAdapter, "Bukkit에서만 사용할 수 있습니다.");
+        return bukkitSenderAdapter;
     }
 
-    public static BungeePlayerAdapter bungee() {
-        Preconditions.checkNotNull(bungeePlayerAdapter, "BungeeCord에서만 사용할 수 있습니다.");
-        return bungeePlayerAdapter;
+    public static BungeeSenderAdapter bungee() {
+        Preconditions.checkNotNull(bungeeSenderAdapter, "BungeeCord에서만 사용할 수 있습니다.");
+        return bungeeSenderAdapter;
     }
 
 
@@ -122,7 +123,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 UUID를 가진 플레이어
      */
     public static CommonPlayer getPlayer(UUID uuid) {
-        return commonPlayerAdapter.getPlayer(uuid);
+        return commonSenderAdapter.getPlayer(uuid);
     }
 
     /**
@@ -131,7 +132,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 닉네임을 가진 플레이어
      */
     public static CommonPlayer getPlayerByName(String name) {
-        return commonPlayerAdapter.getPlayerByName(name);
+        return commonSenderAdapter.getPlayerByName(name);
     }
 
     /**
@@ -140,7 +141,25 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 가상닉네임을 가진 플레이어
      */
     public static CommonPlayer getPlayerByDisplayName(String displayName) {
-        return commonPlayerAdapter.getPlayerByDisplayName(displayName);
+        return commonSenderAdapter.getPlayerByDisplayName(displayName);
+    }
+
+    /**
+     * 플랫폼에 맞는 Player를 CommonPlayer로 변환하여 반환합니다.
+     * @param platformSender 플랫폼에 맞는 Player
+     * @return 해당 Player에 맞는 CommonPlayer
+     */
+    public static CommonPlayer getCommonPlayerByPlatformSender(Object platformSender) {
+        return commonSenderAdapter.getCommonPlayerByPlatformSender(platformSender);
+    }
+
+    /**
+     * 플랫폼에 맞는 Sender를 CommonCommandSender로 변환하여 반환합니다.
+     * @param platformSender 플랫폼에 맞는 Sender
+     * @return 해당 Sender에 맞는 CommonCommandSender
+     */
+    public static CommonCommandSender getCommonCommandSenderByPlatformSender(Object platformSender) {
+        return commonSenderAdapter.getCommonCommandSenderByPlatformSender(platformSender);
     }
 
 }
