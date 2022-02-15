@@ -1,6 +1,6 @@
-package net.pooleaf.core.modules.commonplayer.common;
+package net.pooleaf.core.modules.commonsender.common;
 
-import net.pooleaf.core.modules.commonplayer.CommonPlayerModule;
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 
@@ -10,7 +10,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
 
     @Override
     public CommonPlayer load(UUID key) {
-        return CommonPlayerModule.getPlayerInfoDao().selectPlayerInfoByUuid(key);
+        return CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByUuid(key);
     }
 
     public CommonPlayer getByName(String name) {
@@ -27,7 +27,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         CommonPlayer playerInfo = getByName(name);
 
         if (playerInfo == null) {
-            CommonPlayerModule.getPlayerInfoDao().selectPlayerInfoByName(name);
+            CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByName(name);
         }
 
         return playerInfo;
@@ -49,7 +49,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         CommonPlayer playerInfo = getByDisplayName(displayName);
 
         if (playerInfo == null) {
-            CommonPlayerModule.getPlayerInfoDao().selectPlayerInfoByDisplayName(displayName);
+            CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByDisplayName(displayName);
         }
 
         return playerInfo;

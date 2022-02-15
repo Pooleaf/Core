@@ -2,7 +2,7 @@ package net.pooleaf.core.modules.support.common.messager;
 
 import lombok.AccessLevel;
 import lombok.Setter;
-import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 
 public class Messager extends Prefixer {
 
@@ -13,7 +13,7 @@ public class Messager extends Prefixer {
     public static void nmessage(Object sender, Object message) {
         // CommonPlayer를 Platform에 맞는 Player로 변경
         if (sender instanceof CommonPlayer) {
-            sender = ((CommonPlayer) sender).getPlatformPlayer();
+            sender = ((CommonPlayer) sender).getPlatformSender();
         }
 
         messagerAdapter.message(sender, getCurrentPluginPrefix(" §f") + message);

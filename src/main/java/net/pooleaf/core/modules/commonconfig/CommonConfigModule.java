@@ -10,7 +10,7 @@ public class CommonConfigModule extends CoreModule {
 
   @Override
   public String getName() {
-    return "PlatformConfig";
+    return "CommonConfig";
   }
 
   @Override

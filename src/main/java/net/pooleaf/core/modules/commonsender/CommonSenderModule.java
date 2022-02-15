@@ -1,13 +1,16 @@
-package net.pooleaf.core.modules.commonplayer;
+package net.pooleaf.core.modules.commonsender;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
-import net.pooleaf.core.modules.commonplayer.bukkit.BukkitPlayerAdapter;
-import net.pooleaf.core.modules.commonplayer.bungee.BungeePlayerAdapter;
-import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
-import net.pooleaf.core.modules.commonplayer.common.CommonPlayerManager;
-import net.pooleaf.core.modules.commonplayer.common.sql.CommonPlayerDao;
+import net.pooleaf.core.modules.commonsender.bukkit.BukkitConsoleSender;
+import net.pooleaf.core.modules.commonsender.bukkit.BukkitPlayerAdapter;
+import net.pooleaf.core.modules.commonsender.bungee.BungeeConsoleSender;
+import net.pooleaf.core.modules.commonsender.bungee.BungeePlayerAdapter;
+import net.pooleaf.core.modules.commonsender.common.CommonConsoleSender;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayerManager;
+import net.pooleaf.core.modules.commonsender.common.sql.CommonPlayerDao;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.plugin.CorePlugin;
 
@@ -17,7 +20,7 @@ import java.util.UUID;
  * 플랫폼에 상관없이 사용할 수 있는 플레이어 객체를 제공하고,
  * 플레이어 정보를 저장하여 관리합니다.
  */
-public class CommonPlayerModule extends CoreModule {
+public class CommonSenderModule extends CoreModule {
 
     @Getter
     private static CommonPlayerManager playerInfoManager = new CommonPlayerManager();
@@ -25,15 +28,18 @@ public class CommonPlayerModule extends CoreModule {
     @Getter
     private static CommonPlayerDao playerInfoDao;
 
+    @Getter
+    private static CommonConsoleSender consoleSender;
 
-    private static CommonPlayerAdapter commonPlayerAdapter;
+
+    private static CommonSenderAdapter commonPlayerAdapter;
     private static BukkitPlayerAdapter bukkitPlayerAdapter;
     private static BungeePlayerAdapter bungeePlayerAdapter;
 
 
     @Override
     public String getName() {
-        return "Player";
+        return "CommonSender";
     }
 
     @Override
@@ -49,10 +55,12 @@ public class CommonPlayerModule extends CoreModule {
             case BUKKIT:
                 bukkitPlayerAdapter = new BukkitPlayerAdapter();
                 commonPlayerAdapter = bukkitPlayerAdapter;
+                consoleSender = new BukkitConsoleSender();
                 break;
             case BUNGEECORD:
                 bungeePlayerAdapter = new BungeePlayerAdapter();
                 commonPlayerAdapter = bungeePlayerAdapter;
+                consoleSender = new BungeeConsoleSender();
                 break;
         }
 

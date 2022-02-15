@@ -5,8 +5,8 @@ import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerCha
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerJoinEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerLoginEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerQuitEvent;
-import net.pooleaf.core.modules.commonplayer.CommonPlayerModule;
-import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -18,7 +18,7 @@ public class BukkitCommonPlayerEventListener implements Listener {
 
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent e) {
-        CommonPlayer player = CommonPlayerModule.getPlayer(e.getUniqueId());
+        CommonPlayer player = CommonSenderModule.getPlayer(e.getUniqueId());
 
         CommonPlayerLoginEvent event = new CommonPlayerLoginEvent(player);
         CommonEventModule.callEvent(event);
@@ -30,7 +30,7 @@ public class BukkitCommonPlayerEventListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        CommonPlayer player = CommonPlayerModule.getPlayer(e.getPlayer().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerJoinEvent event = new CommonPlayerJoinEvent(player);
         CommonEventModule.callEvent(event);
@@ -38,7 +38,7 @@ public class BukkitCommonPlayerEventListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        CommonPlayer player = CommonPlayerModule.getPlayer(e.getPlayer().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerQuitEvent event = new CommonPlayerQuitEvent(player);
         CommonEventModule.callEvent(event);
@@ -46,7 +46,7 @@ public class BukkitCommonPlayerEventListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        CommonPlayer player = CommonPlayerModule.getPlayer(e.getPlayer().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerChatEvent event = new CommonPlayerChatEvent(player, e.getMessage());
         CommonEventModule.callEvent(event);

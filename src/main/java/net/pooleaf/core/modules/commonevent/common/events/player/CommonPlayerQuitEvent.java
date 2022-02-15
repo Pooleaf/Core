@@ -3,7 +3,7 @@ package net.pooleaf.core.modules.commonevent.common.events.player;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.pooleaf.core.modules.commonevent.common.CommonEvent;
-import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 
 @Getter
 @RequiredArgsConstructor

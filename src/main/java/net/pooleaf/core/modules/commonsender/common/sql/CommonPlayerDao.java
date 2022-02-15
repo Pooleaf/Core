@@ -1,7 +1,7 @@
-package net.pooleaf.core.modules.commonplayer.common.sql;
+package net.pooleaf.core.modules.commonsender.common.sql;
 
 import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.commonplayer.common.CommonPlayer;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.sqlib.common.SqlDao;
 import net.pooleaf.core.modules.sqlib.common.SqlTable;
 
