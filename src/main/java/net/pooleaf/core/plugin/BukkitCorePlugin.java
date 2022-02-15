@@ -10,6 +10,7 @@ import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
+import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
@@ -21,13 +22,15 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   private String prefix;
 
   @Getter
-  private SimpleAnnoConfig config;
+  private SimpleAnnoConfig coreConfig;
 
 
   @Override
   public final void onEnable() {
     Core.getCorePluginManager().register(this);
     setPrefix("§7[ " + getName() + " ] ");
+
+    Debugger.addListener(Bukkit.getConsoleSender());
 
     onStart();
   }
@@ -53,12 +56,12 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   @Override
   public void loadConfig(CommonCommandSender sender) {
-    Preconditions.checkNotNull(config, "config가 설정되지 않았습니다.");
+    Preconditions.checkNotNull(coreConfig, "config가 설정되지 않았습니다.");
 
     long startTime = System.currentTimeMillis();
 
-    config.load();
-    config.save();
+    coreConfig.load();
+    coreConfig.save();
 
     onConfigLoaded();
 
