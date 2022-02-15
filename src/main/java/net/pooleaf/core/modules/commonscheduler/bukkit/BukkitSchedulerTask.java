@@ -12,17 +12,17 @@ public abstract class BukkitSchedulerTask extends CommonSchedulerTask {
 
 
     public BukkitSchedulerTask runSync() {
-        taskId = CommonSchedulerModule.getBukkitScheduler().runSync(plugin, this);
+        taskId = CommonSchedulerModule.bukkit().getScheduler().runSync(plugin, this);
         return this;
     }
 
     public BukkitSchedulerTask runSync(long delayTick) {
-        taskId = CommonSchedulerModule.getBukkitScheduler().runSync(plugin, this, delayTick);
+        taskId = CommonSchedulerModule.bukkit().getScheduler().runSync(plugin, this, delayTick);
         return this;
     }
 
     public BukkitSchedulerTask runSync(long delayTick, long periodTick) {
-        taskId = CommonSchedulerModule.getBukkitScheduler().runSync(plugin, this, delayTick, periodTick);
+        taskId = CommonSchedulerModule.bukkit().getScheduler().runSync(plugin, this, delayTick, periodTick);
         return this;
     }
 }

@@ -2,10 +2,7 @@ package net.pooleaf.core.modules.commonscheduler;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
-import net.pooleaf.core.Core;
 import net.pooleaf.core.module.CoreModule;
-import net.pooleaf.core.modules.commonevent.common.CommonEvent;
-import net.pooleaf.core.modules.commonevent.common.CommonEventListener;
 import net.pooleaf.core.modules.commonscheduler.bukkit.BukkitScheduler;
 import net.pooleaf.core.modules.commonscheduler.bungee.BungeeScheduler;
 import net.pooleaf.core.modules.commonscheduler.common.CommonScheduler;
@@ -16,6 +13,8 @@ public class CommonSchedulerModule extends CoreModule {
 
     @Getter
     private static CommonScheduler scheduler;
+
+    private static CommonSchedulerAdapter schedulerAdapter;
 
 
     @Override
@@ -33,6 +32,7 @@ public class CommonSchedulerModule extends CoreModule {
         switch (Platform.getCurrentPlatform()) {
             case BUKKIT:
                 scheduler = new BukkitScheduler();
+                schedulerAdapter = new CommonSchedulerAdapter<BukkitScheduler>();
                 break;
             case BUNGEECORD:
                 scheduler = new BungeeScheduler();
@@ -41,10 +41,16 @@ public class CommonSchedulerModule extends CoreModule {
     }
 
 
-    public static BukkitScheduler getBukkitScheduler() {
-        Preconditions.checkArgument(scheduler instanceof BukkitScheduler, "Bukkit에서만 사용할 수 있습니다.");
+    public static CommonSchedulerAdapter<BukkitScheduler> bukkit() {
+        Preconditions.checkArgument(Platform.getCurrentPlatform() == Platform.BUKKIT, "Bukkit에서만 사용할 수 있습니다.");
 
-        return (BukkitScheduler) scheduler;
+        return schedulerAdapter;
+    }
+
+    public static CommonSchedulerAdapter<BungeeScheduler> bungee() {
+        Preconditions.checkArgument(Platform.getCurrentPlatform() == Platform.BUNGEECORD, "Bukkit에서만 사용할 수 있습니다.");
+
+        return schedulerAdapter;
     }
 
 }
