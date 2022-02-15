@@ -24,6 +24,7 @@ public class BungeeReflectionUtil {
                 ProxyServer.getInstance().getPluginManager().registerListener((Plugin) plugin, listener);
                 count++;
             } catch (Exception e) {
+            } catch (Error e) {
             }
         }
 

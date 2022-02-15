@@ -154,8 +154,8 @@ public class ReflectionUtil {
             try {
                 Class targetClass = Class.forName(className);
                 classes.add(targetClass);
-            } catch (Error e) {
             } catch (Exception e) {
+            } catch (Error e) {
             }
         }
 

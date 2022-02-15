@@ -86,6 +86,7 @@ public class BukkitReflectionUtil {
         Bukkit.getPluginManager().registerEvents(listener, (Plugin) plugin);
         count++;
       } catch (Exception e) {
+      } catch (Error e) {
       }
     }
 
