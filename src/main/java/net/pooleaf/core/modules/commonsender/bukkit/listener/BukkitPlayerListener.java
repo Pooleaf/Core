@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.commonsender.bukkit.listener;
 
+import net.pooleaf.core.modules.commonsender.bukkit.BukkitPlayer;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.support.common.logger.Logger;
@@ -17,6 +18,10 @@ public class BukkitPlayerListener implements Listener {
     public void onPreLogin(AsyncPlayerPreLoginEvent e) {
         // 불러오기
         CommonPlayer player = CommonSenderModule.getCommonPlayerManager().getOrLoad(e.getUniqueId());
+        if (player == null) {
+            player = new BukkitPlayer();
+            player.setUuid(e.getUniqueId());
+        }
         player.setName(e.getName());
         player.setIp(e.getAddress().getHostAddress());
         player.setLastLogin(LocalDateTime.now());
