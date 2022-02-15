@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.support;
 
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.support.common.messager.MessagerInitializer;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.support.bukkit.nms.NmsDetector;
 import net.pooleaf.core.modules.support.common.logger.LoggerInitializer;
@@ -23,6 +24,9 @@ public class SupportModule extends CoreModule {
 
     // Logger
     LoggerInitializer.init();
+
+    // Messager
+    MessagerInitializer.init();
   }
 
 }
