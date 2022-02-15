@@ -50,7 +50,10 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
 
             /* Alias */
             if (command.getName().size() > 1) {
-                List<String> aliases = new ArrayList<>(command.getName());
+                List<String> aliases = new ArrayList<>();
+                for (String alias : command.getName()) {
+                    aliases.add(alias.toLowerCase());
+                }
                 aliases.remove(0);
 
                 pluginCommand.setAliases(aliases);
