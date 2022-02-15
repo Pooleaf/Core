@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 
@@ -202,12 +203,14 @@ public class CommandManager {
         AnnoCommand command = getCommand(commandLine);
         if (command != null) {
             // 플레이어만
-            if (command.isPlayerOnly() && !platformAdapter.isPlayer(sender)) {
+            if (command.isPlayerOnly()
+                    && (!platformAdapter.isPlayer(sender) || (sender instanceof CommonCommandSender && ((CommonCommandSender) sender).isConsole()))) {
                 platformAdapter.sendMessage(sender, "§c플레이어만 사용할 수 있는 명령어입니다.");
                 return true;
             }
             // 콘솔만
-            else if (command.isConsoleOnly() && !platformAdapter.isConsole(sender)) {
+            else if (command.isConsoleOnly() && !platformAdapter.isConsole(sender)
+                    && (!platformAdapter.isPlayer(sender) || (sender instanceof CommonCommandSender && !((CommonCommandSender) sender).isConsole()))) {
                 platformAdapter.sendMessage(sender, "§c콘솔에서만 사용할 수 있는 명령어입니다.");
                 return true;
             }

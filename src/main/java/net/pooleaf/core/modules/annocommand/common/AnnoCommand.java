@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Data;
 import lombok.SneakyThrows;
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 
 @Data
 public class AnnoCommand {
@@ -89,7 +91,12 @@ public class AnnoCommand {
 
     @SneakyThrows
     public void execute(CommandResult result) {
-        executeMethod.invoke(null, result.getSender(), result);
+        // 메소드 첫번째 파라미터가 CommonCommandSender일 경우 변환해서 호출
+        if (CommonCommandSender.class.isAssignableFrom(executeMethod.getParameterTypes()[0])) {
+            executeMethod.invoke(null, CommonSenderModule.getCommonCommandSenderByPlatformSender(result.getSender()), result);
+        } else {
+            executeMethod.invoke(null, result.getSender(), result);
+        }
     }
 
 }
