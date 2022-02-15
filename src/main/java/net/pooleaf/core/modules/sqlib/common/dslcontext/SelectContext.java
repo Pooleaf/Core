@@ -101,7 +101,7 @@ public class SelectContext extends DslContext<SelectContext> {
      * @return SQL문 실행 결과 객체
      */
     @SneakyThrows
-    public List<Object> execute(Class objectClass) {
+    public List<Object> executeList(Class objectClass) {
         List<Object> resultObjects = new ArrayList<>();
 
         CachedResult result = execute();
@@ -119,6 +119,16 @@ public class SelectContext extends DslContext<SelectContext> {
         }
 
         return resultObjects;
+    }
+
+    public Object execute(Class objectClass) {
+        List<Object> objects = executeList(objectClass);
+
+        if (objects.isEmpty()) {
+            return null;
+        }
+
+        return objects.get(0);
     }
 
 }
