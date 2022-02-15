@@ -8,6 +8,7 @@ import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bungee.util.BungeeReflectionUtil;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
@@ -42,12 +43,22 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
     enabled = false;
   }
 
+  @Override
   public void onStart() {}
 
+  @Override
   public void onEnd() {}
 
   @Override
+  public void onConfigLoaded() {}
+
+  @Override
   public void loadConfig() {
+    loadConfig(null);
+  }
+
+  @Override
+  public void loadConfig(CommonCommandSender sender) {
     Preconditions.checkNotNull(config, "config가 설정되지 않았습니다.");
 
     long startTime = System.currentTimeMillis();
@@ -57,7 +68,11 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
     onConfigLoaded();
 
-    Logger.log("설정을 불러왔습니다. (" + (System.currentTimeMillis() - startTime) + " ms)");
+    String message = "설정을 불러왔습니다. (" + (System.currentTimeMillis() - startTime) + " ms)";
+    Logger.log(message);
+    if (sender != null && !sender.isConsole()) {
+      sender.message(message);
+    }
   }
 
   @Override

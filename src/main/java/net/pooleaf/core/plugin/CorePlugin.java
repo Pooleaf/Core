@@ -1,5 +1,7 @@
 package net.pooleaf.core.plugin;
 
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+
 import java.io.File;
 import java.io.InputStream;
 
@@ -21,6 +23,7 @@ public interface CorePlugin {
 
   void onConfigLoaded();
   void loadConfig();
+  void loadConfig(CommonCommandSender sender);
 
   /**
    * 해당 이름을 가진 플러그인이 존재하는지 확인합니다.
