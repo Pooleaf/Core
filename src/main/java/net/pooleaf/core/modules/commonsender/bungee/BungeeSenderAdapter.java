@@ -6,7 +6,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.commonsender.CommonSenderAdapter;
+import net.pooleaf.core.modules.commonsender.common.CommonSenderAdapter;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.bungee.listener.BungeePlayerListener;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;

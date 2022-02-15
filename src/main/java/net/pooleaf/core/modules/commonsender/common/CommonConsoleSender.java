@@ -12,6 +12,4 @@ public abstract class CommonConsoleSender<T> extends CommonCommandSender<T> {
         return true;
     }
 
-    public abstract T getPlatformSender();
-
 }

@@ -1,7 +1,8 @@
-package net.pooleaf.core.modules.commonsender;
+package net.pooleaf.core.modules.commonsender.common;
 
 import java.util.UUID;
 
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.commonsender.common.CommonConsoleSender;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;

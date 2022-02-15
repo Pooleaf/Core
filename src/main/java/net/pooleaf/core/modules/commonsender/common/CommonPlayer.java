@@ -20,8 +20,6 @@ public abstract class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각
         return false;
     }
 
-    public abstract T getPlatformSender();
-
     /**
      * 플레이어가 서버에 접속 중인지 확인합니다.
      * @return 플레이어의 서버 접속 상태

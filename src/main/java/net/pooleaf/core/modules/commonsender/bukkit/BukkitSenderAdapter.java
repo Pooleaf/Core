@@ -2,7 +2,7 @@ package net.pooleaf.core.modules.commonsender.bukkit;
 
 import com.google.common.base.Preconditions;
 import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.commonsender.CommonSenderAdapter;
+import net.pooleaf.core.modules.commonsender.common.CommonSenderAdapter;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.bukkit.listener.BukkitPlayerListener;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
