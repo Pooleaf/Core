@@ -38,6 +38,12 @@ public abstract class AbstractManager<K, V> {
         return value;
     }
 
+    public V getOrLoadNoCache(K key) {
+        V value = load(key);
+
+        return value;
+    }
+
     public boolean exists(K key) {
         return datas.containsKey(key);
     }
