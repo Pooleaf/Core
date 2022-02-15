@@ -34,7 +34,7 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
     /**
      * Sender에게 메시지를 보냅니다.
      * Messager에 등록된 Prefix를 사용합니다.
-     * @param message
+     * @param message 메시지
      */
     public void message(String message) {
         Messager.message(getPlatformSender(), message);
@@ -42,10 +42,26 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
 
     /**
      * Sender에게 Prefix가 없는 메시지를 보냅니다.
-     * @param message
+     * @param message 메시지
      */
     public void nmessage(String message) {
         Messager.nmessage(getPlatformSender(), message);
+    }
+
+    /**
+     * Sender에게 경고 메시지를 보냅니다.
+     * @param message 경고 메시지
+     */
+    public void warning(String message) {
+        Messager.warning(getPlatformSender(), message);
+    }
+
+    /**
+     * Sender에게 Prefix가 없는 경고 메시지를 보냅니다.
+     * @param message 경고 메시지
+     */
+    public void nwarning(String message) {
+        Messager.nwarning(getPlatformSender(), message);
     }
 
 }
