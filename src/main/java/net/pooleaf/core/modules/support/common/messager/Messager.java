@@ -20,7 +20,7 @@ public class Messager extends Prefixer {
             sender = ((CommonPlayer) sender).getPlatformSender();
         }
 
-        messagerAdapter.message(sender, getCurrentPluginPrefix(" §f") + message);
+        messagerAdapter.message(sender, message);
     }
 
     public static void nmessage(Object sender, Object message, Object... params) {

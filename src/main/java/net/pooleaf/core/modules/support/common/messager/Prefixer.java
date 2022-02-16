@@ -51,9 +51,9 @@ public class Prefixer {
       prefix = prefixes.get(plugin.getPluginPackage()) + suffix;
     }
 
-    // Prefix 못찾았으면 빈문자열로
+    // Prefix 못찾았으면 Core Prefix로
     if (prefix == null) {
-      prefix = "";
+      prefix = Core.getPlugin().getPrefix() + suffix;
     }
 
     return prefix;
