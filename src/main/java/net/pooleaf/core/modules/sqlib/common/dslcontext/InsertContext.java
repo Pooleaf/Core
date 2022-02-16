@@ -142,8 +142,9 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
 
     public InsertContext onDuplicateKeyUpdate() {
         StringBuilder sqlBuilder = new StringBuilder();
-        int i = 0;
-        for (SqlColumn insertColumn : insertColumns) {
+        for (int i = 0; i < insertColumns.size(); i++) {
+            SqlColumn insertColumn = insertColumns.get(i);
+
             // PK면 생략
             if (insertColumn.isPrimaryKey()) {
                 continue;
@@ -155,9 +156,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
             sqlBuilder.append(insertColumn.getName() + " = ?");
 
             values.add(values.get(i));
-            i++;
         }
-
 
         sqls.put("ON DUPLICATE KEY UPDATE", sqlBuilder.toString());
         return this;
