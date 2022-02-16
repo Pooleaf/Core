@@ -52,7 +52,11 @@ public class AnnoConfig {
                     String key = field.getAnnotation(ConfigAes256.class).value();
                     Preconditions.checkArgument(key.length() >= 16, name + ": AES256의 Key는 16글자여야 합니다.");
 
-                    value = EncryptionUtil.decryptAes256(key, value.toString());
+                    try {
+                        value = EncryptionUtil.decryptAes256(key, value.toString());
+                    } catch (Exception e) {
+                        value = value;
+                    }
                 } else if (field.getAnnotation(ConfigSerialize.class) != null) {
                     value = field.getAnnotation(ConfigSerialize.class).value().newInstance().deserialize(value.toString());
                 } else if (defaultSerializer.containsKey(field.getType())) {
