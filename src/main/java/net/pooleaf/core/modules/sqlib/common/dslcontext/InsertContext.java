@@ -7,8 +7,10 @@ import net.pooleaf.core.modules.sqlib.common.SqlColumn;
 import net.pooleaf.core.modules.sqlib.common.SqlTable;
 import net.pooleaf.core.modules.sqlib.common.config.SqlType;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
+import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.modules.support.common.util.StringUtil;
 
+import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -18,7 +20,9 @@ import java.util.stream.Collectors;
 
 public class InsertContext extends DslContext<InsertContext> implements Cloneable {
 
-    private List<Object[]> batches = new ArrayList<>(); // Batch로 Insert문 여러개 사용할 때 값들을 저장해둘 List
+    private List<Object> values;
+
+    private List<List<Object>> batches = new ArrayList<>(); // Batch로 Insert문 여러개 사용할 때 값들을 저장해둘 List
 
     private List<SqlColumn> insertColumns = new ArrayList<>(); // INSERT INTO에 적어준 Column
 
@@ -97,6 +101,8 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
     }
 
     public InsertContext values(Object... values) {
+        this.values = new ArrayList<>();
+
         StringBuilder questionMarkBuilder = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
             if (questionMarkBuilder.length() > 0) {
@@ -106,30 +112,37 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
         }
 
         sqls.put("VALUES", "(" + questionMarkBuilder.toString() + ")");
-        this.values = values;
-        addBatch();
+        Arrays.stream(values).forEach(value -> this.values.add(sqlManager.convertValue(value)));
 
         return this;
     }
 
+    @SneakyThrows
     public InsertContext valuesByObject(Object valueObject) {
+        this.values = new ArrayList<>();
+
         StringBuilder questionMarkBuilder = new StringBuilder();
-        for (int i = 0; i < valueObject.getClass().getDeclaredFields().length; i++) {
+        for (SqlColumn insertColumn : insertColumns) {
             if (questionMarkBuilder.length() > 0) {
                 questionMarkBuilder.append(", ");
             }
             questionMarkBuilder.append("?");
+
+            // 객체에서 값 꺼내오기
+            Field field = ReflectionUtil.getFieldAll(valueObject.getClass(), StringUtil.convertSnakeCaseToLowerCamelCase(insertColumn.getName()));
+            field.setAccessible(true);
+            Object value = field.get(valueObject);
+            values.add(sqlManager.convertValue(value));
         }
 
         sqls.put("VALUES", "(" + questionMarkBuilder.toString() + ")");
-        this.values = values;
-        addBatch();
 
         return this;
     }
 
     public InsertContext onDuplicateKeyUpdate() {
         StringBuilder sqlBuilder = new StringBuilder();
+        int i = 0;
         for (SqlColumn insertColumn : insertColumns) {
             // PK면 생략
             if (insertColumn.isPrimaryKey()) {
@@ -140,6 +153,9 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
                 sqlBuilder.append(", ");
             }
             sqlBuilder.append(insertColumn.getName() + " = ?");
+
+            values.add(values.get(i));
+            i++;
         }
 
 
@@ -153,7 +169,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
      * @return
      */
     @SneakyThrows
-    private InsertContext addBatch() {
+    public InsertContext addBatch() {
         batches.add(values);
 
         // 값 초기화
@@ -171,17 +187,21 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
     public int[] execute() {
         long startTime = System.currentTimeMillis();
 
+        if (values != null && values.size() > 0) {
+            addBatch();
+        }
+
         String sql = buildSql();
         Debugger.log("[SQLib] Insert SQL: " + sql);
 
         @Cleanup PreparedStatement statement = sqlManager.preparedStatement(sql);
-        for (Object[] batchValues : batches) {
-            Debugger.log("[SQLib] Insert Parameters: " + StringUtil.joinArray(", ", batchValues));
+        for (List<Object> batchValues : batches) {
+            Debugger.log("[SQLib] Insert Parameters: [" + batchValues.stream().map(value -> (String) value).collect(Collectors.joining(", ")) + "]");
 
             // 값 처리
             int i = 1;
             for (Object batchValue : batchValues) {
-                statement.setObject(i, batchValue);
+                statement.setObject(i, sqlManager.convertValue(batchValue));
                 i++;
             }
 
@@ -194,7 +214,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
                         continue;
                     }
 
-                    statement.setObject(i, batchValue);
+                    statement.setObject(i, sqlManager.convertValue(batchValue));
                     i++;
                 }
             }
@@ -223,18 +243,22 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
     public Long executeWithGeneratedKey() {
         long startTime = System.currentTimeMillis();
 
+        if (values != null && values.size() > 0) {
+            addBatch();
+        }
+
         String sql = buildSql();
         Debugger.log("[SQLib] Insert SQL: " + sql);
 
-        Object[] batchValues = batches.get(0);
-        Debugger.log("[SQLib] Insert Parameters: " + StringUtil.joinArray(", ", batchValues));
+        List<Object> batchValues = batches.get(0);
+        Debugger.log("[SQLib] Insert Parameters: [" + batchValues.stream().map(value -> value.toString()).collect(Collectors.joining(", ")) + "]");
 
         @Cleanup PreparedStatement statement = sqlManager.preparedStatement(sql);
 
         // 값 처리
         int i = 1;
         for (Object batchValue : batchValues) {
-            statement.setObject(i, batchValue);
+            statement.setObject(i, sqlManager.convertValue(batchValue));
             i++;
         }
 
@@ -247,7 +271,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
                     continue;
                 }
 
-                statement.setObject(i, batchValue);
+                statement.setObject(i, sqlManager.convertValue(batchValue));
                 i++;
             }
         }

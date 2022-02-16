@@ -96,11 +96,11 @@ public class AbstractSqlManager {
         long startTime = System.currentTimeMillis();
 
         Debugger.log("[SQLib] update SQL: " + sql);
-        Debugger.log("[SQLib] update Parameters: " + StringUtil.joinArray(", ", params));
+        Debugger.log("[SQLib] update Parameters: [" + StringUtil.joinArray(", ", params) + "]");
 
         @Cleanup PreparedStatement statement = preparedStatement(sql);
         for (int i = 0; i < params.length; i++) {
-            statement.setObject(i + 1, params[i]);
+            statement.setObject(i + 1, convertValue(params[i]));
         }
 
         int result = statement.executeUpdate();
@@ -116,11 +116,11 @@ public class AbstractSqlManager {
         long startTime = System.currentTimeMillis();
 
         Debugger.log("[SQLib] getResult SQL: " + sql);
-        Debugger.log("[SQLib] getResult Parameters: " + StringUtil.joinArray(", ", params));
+        Debugger.log("[SQLib] getResult Parameters: [" + StringUtil.joinArray(", ", params) + "]");
 
         @Cleanup PreparedStatement statement = preparedStatement(sql);
         for (int i = 0; i < params.length; i++) {
-            statement.setObject(i + 1, params[i]);
+            statement.setObject(i + 1, convertValue(params[i]));
         }
         @Cleanup ResultSet resultSet = statement.executeQuery();
         CachedResult cachedResult = new CachedResult(resultSet);
@@ -140,6 +140,17 @@ public class AbstractSqlManager {
 
     public void truncateTable(String tableName) {
         update("TRUNCATE TABLE " + tableName);
+    }
+
+    @SneakyThrows
+    public Object convertValue(Object value) {
+        if (value == null) {
+            return null;
+        } else if (value.getClass().getPackage().getName().startsWith("java.lang")) {
+            return value;
+        } else {
+            return value.toString();
+        }
     }
 
 }
