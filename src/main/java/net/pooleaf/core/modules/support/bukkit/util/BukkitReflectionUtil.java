@@ -76,6 +76,11 @@ public class BukkitReflectionUtil {
 
     for (Class targetClass : ReflectionUtil.getClasses(plugin)) {
       try {
+        // Listener 클래스인지 확인
+        if (!(Listener.class.isAssignableFrom(targetClass))) {
+          continue;
+        }
+
         Listener listener = (Listener) targetClass.newInstance();
 
         // 자동 등록 제외 Listener
