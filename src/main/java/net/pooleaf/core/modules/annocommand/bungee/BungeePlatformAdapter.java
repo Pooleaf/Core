@@ -18,8 +18,6 @@ public class BungeePlatformAdapter implements PlatformAdapter {
     @Override
     public void init(CorePlugin plugin) {
         this.plugin = (Plugin) plugin;
-
-        ProxyServer.getInstance().getPluginManager().registerListener(this.plugin, new BungeeTabCompleter());
     }
 
     @Override

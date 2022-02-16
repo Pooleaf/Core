@@ -3,7 +3,9 @@ package net.pooleaf.core.plugin;
 import java.io.File;
 
 import com.google.common.base.Preconditions;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
@@ -21,6 +23,7 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   @Getter
   private String prefix;
 
+  @Setter(AccessLevel.PROTECTED)
   @Getter
   private SimpleAnnoConfig coreConfig;
 

@@ -1,7 +1,9 @@
 package net.pooleaf.core.plugin;
 
 import com.google.common.base.Preconditions;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.pooleaf.core.Core;
@@ -24,8 +26,9 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   @Getter
   private boolean enabled;
 
+  @Setter(AccessLevel.PROTECTED)
   @Getter
-  private SimpleAnnoConfig config;
+  private SimpleAnnoConfig coreConfig;
 
 
   @Override
@@ -59,12 +62,12 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
   @Override
   public void loadConfig(CommonCommandSender sender) {
-    Preconditions.checkNotNull(config, "config가 설정되지 않았습니다.");
+    Preconditions.checkNotNull(coreConfig, "config가 설정되지 않았습니다.");
 
     long startTime = System.currentTimeMillis();
 
-    config.load();
-    config.save();
+    coreConfig.load();
+    coreConfig.save();
 
     onConfigLoaded();
 

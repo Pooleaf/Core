@@ -15,11 +15,6 @@ import org.bukkit.plugin.Plugin;
 public class BukkitSenderAdapter extends CommonSenderAdapter<BukkitPlayer, BukkitConsoleSender> {
 
   @Override
-  public void registerListeners() {
-    Bukkit.getPluginManager().registerEvents(new BukkitPlayerListener(),(Plugin) Core.getPlugin());
-  }
-
-  @Override
   public BukkitPlayer getPlayerByPlatformSender(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof Player, "platformSender가 Player가 아닙니다.");
 

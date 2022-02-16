@@ -61,9 +61,6 @@ public class CommonSenderModule extends CoreModule {
                 consoleSender = new BungeeConsoleSender();
                 break;
         }
-
-        // 접속 불러오기, 퇴장 메모리 해제 Listener
-        commonSenderAdapter.registerListeners();
     }
 
 

@@ -2,21 +2,12 @@ package net.pooleaf.core.modules.commonsender.bungee;
 
 import com.google.common.base.Preconditions;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Plugin;
-import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.commonsender.common.CommonSenderAdapter;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
-import net.pooleaf.core.modules.commonsender.bungee.listener.BungeePlayerListener;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.commonsender.common.CommonSenderAdapter;
 
 public class BungeeSenderAdapter extends CommonSenderAdapter<BungeePlayer, BungeeConsoleSender> {
-
-  @Override
-  public void registerListeners() {
-    ProxyServer.getInstance().getPluginManager().registerListener((Plugin) Core.getPlugin(), new BungeePlayerListener());
-  }
 
   @Override
   public BungeePlayer getPlayerByPlatformSender(Object platformSender) {

@@ -2,13 +2,10 @@ package net.pooleaf.core.modules.gui;
 
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGuiManager;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBarManager;
 import net.pooleaf.core.plugin.CorePlugin;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGuiManager;
-import net.pooleaf.core.modules.gui.bukkit.inventory.event.InventoryGuiListener;
-import net.pooleaf.core.modules.gui.bukkit.quickbar.event.QuickBarListener;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 public class GuiModule extends CoreModule {
 
@@ -27,12 +24,6 @@ public class GuiModule extends CoreModule {
   @Override
   public String[] getDepends() {
     return new String[] { "Support", "Event" };
-  }
-
-  @Override
-  public void onEnable(CorePlugin plugin) {
-    Bukkit.getPluginManager().registerEvents(new InventoryGuiListener(), (Plugin) plugin);
-    Bukkit.getPluginManager().registerEvents(new QuickBarListener(), (Plugin) plugin);
   }
 
   @Override
