@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.support.common.util;
 
 import com.google.gson.*;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Type;
@@ -12,10 +13,14 @@ import java.util.Map;
 @UtilityClass
 public class GsonUtil {
 
+    @Getter
+    public static GsonBuilder gsonBuilder = new GsonBuilder()
+            .registerTypeAdapter(Map.class, new MapDeserializer())
+            .serializeNulls();
+
+
     public static Gson createGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(Map.class, new MapDeserializer())
-                .serializeNulls().create();
+        return gsonBuilder.create();
     }
 
 
