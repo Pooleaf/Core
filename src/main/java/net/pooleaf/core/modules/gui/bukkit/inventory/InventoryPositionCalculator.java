@@ -14,7 +14,6 @@ public class InventoryPositionCalculator {
     }
 
     public static int calculatePosition(int x, int y) {
-        System.out.println(x + " / " + y + " / " + (x + (y * 9) - 1));
         return x + ((y - 1) * 9) - 1;
     }
 
