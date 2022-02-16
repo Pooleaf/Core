@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.support.common.debugger;
 
 import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import net.pooleaf.core.plugin.CorePlugin;
 
@@ -55,13 +56,13 @@ public class Debugger {
      * @param message 보낼 메시지
      */
     public static void log(Object message) {
-        String prefix = "§6[DEBUG]§7";
+        String prefix = "§a[Debug]§7";
 
         CorePlugin plugin = Core.getCorePluginManager().getCurrentPlugin();
         if (plugin == null) {
             plugin = Core.getPlugin();
         }
-        prefix += plugin.getPrefix() + "§7";
+        prefix += CommonChatColor.stripColor(plugin.getPrefix()).replace(" ", "") + "§7";
 
         message = prefix + message;
 
