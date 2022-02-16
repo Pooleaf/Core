@@ -25,7 +25,7 @@ public class AbstractSqlManager {
     @Getter
     private DataSource dataSource;
 
-    @Getter(AccessLevel.PROTECTED)
+    @Getter
     private Set<SqlDao> daos = new HashSet<>();
 
 

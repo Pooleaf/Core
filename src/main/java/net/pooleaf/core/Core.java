@@ -45,7 +45,7 @@ public class Core {
     StackTraceElement[] ste = new Throwable().getStackTrace();
 
     for (int i = 0; i < ste.length; i++) {
-      if (!ste[i].getClassName().startsWith(Core.class.getPackageName())) {
+      if (!ste[i].getClassName().startsWith(Core.class.getPackage().getName())) {
         return ste[i].getClassName();
       }
     }
