@@ -6,3 +6,25 @@ RedisLibModule
 
 CommonPlayer 못불러오는 오류 있음. 저장됐는지 체크도 해야함
 Insert Values안에 아무것도 안들어감. valuesByObject 오류로 추정
+ㄴ 완료 2022-02-16
+
+[GameModule]
+
+Game 객체
+- 게임 ID
+- 게임 이름
+- 게임 상태
+- 게임 진행 시간
+- 게임에 참여한 플레이어
+
+GameMap 객체
+- 맵 이름
+- 맵 위치
+
+GamePhase 객체
+- 단계 이름
+- 단계 시작할 때, 진행 중일 때, 종료할 때 코드
+
+게임 시작 투표
+
+맵 투표
