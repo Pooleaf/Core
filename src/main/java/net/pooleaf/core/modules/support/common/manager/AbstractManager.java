@@ -2,6 +2,8 @@ package net.pooleaf.core.modules.support.common.manager;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,17 @@ public abstract class AbstractManager<K, V> {
 
     @Setter
     @Getter
-    protected Map<K, V> datas = new HashMap<>();
+    protected Map<K, V> datas;
+
+
+    public AbstractManager() {
+        datas = new HashMap<>();
+    }
+
+    @SneakyThrows
+    public AbstractManager(Class<? extends Map> mapClass) {
+        datas = mapClass.newInstance();
+    }
 
 
     public void set(K key, V value) {
