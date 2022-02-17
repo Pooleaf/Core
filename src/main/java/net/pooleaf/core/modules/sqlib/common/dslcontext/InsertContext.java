@@ -101,6 +101,8 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
     }
 
     public InsertContext values(Object... values) {
+        addBatch();
+
         this.values = new ArrayList<>();
 
         StringBuilder questionMarkBuilder = new StringBuilder();
@@ -119,6 +121,8 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
 
     @SneakyThrows
     public InsertContext valuesByObject(Object valueObject) {
+        addBatch();
+
         this.values = new ArrayList<>();
 
         StringBuilder questionMarkBuilder = new StringBuilder();
@@ -168,7 +172,12 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
      * @return
      */
     @SneakyThrows
-    public InsertContext addBatch() {
+    private InsertContext addBatch() {
+        // 값 설정 안돼있으면 실행 안함
+        if (values == null || values.isEmpty()) {
+            return this;
+        }
+
         batches.add(values);
 
         // 값 초기화
@@ -186,7 +195,8 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
     public int[] execute() {
         long startTime = System.currentTimeMillis();
 
-        if (values != null && values.size() > 0) {
+        // 설정된 값이 있으면 addBatch
+        if (values != null && !values.isEmpty()) {
             addBatch();
         }
 
