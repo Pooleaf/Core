@@ -113,6 +113,11 @@ public class NumberUtil {
     return Math.random();
   }
 
+  /**
+   * 0부터 i까지의 랜덤 숫자를 불러옵니다.
+   * @param i 최대 랜덤 범위
+   * @return 0부터 i까지의 랜덤 숫자
+   */
   public static int random(int i) {
     return (int) (random() * i);
   }
