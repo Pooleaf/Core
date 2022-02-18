@@ -14,6 +14,9 @@ PermissionAPI
 Redis
 Redis PubSub로 플레이어 데이터 Sync 맞출수있게
 
+DataSyncModule => Redis PubSub로 플레이어 데이터 Sync 맞출수있게
+ChannelModule => 서버 정보 실시간, 원격 명령어, 데이터 전송
+
 [GameModule]
 
 Game 객체
