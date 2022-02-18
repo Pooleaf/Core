@@ -22,6 +22,11 @@ public class BungeePlayer extends CommonPlayer<ProxiedPlayer> {
   }
 
   @Override
+  public boolean hasPermission(String permission) {
+    return getPlatformSender().hasPermission(permission);
+  }
+
+  @Override
   public void kickPlayer(String message) {
     getPlatformSender().disconnect(message);
   }

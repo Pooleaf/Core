@@ -32,6 +32,12 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
     public abstract T getPlatformSender();
 
     /**
+     * 해당 권한이 있는지 여부를 반환합니다.
+     * @return 해당 권한이 있는지 여부
+     */
+    public abstract boolean hasPermission(String permission);
+
+    /**
      * Sender에게 메시지를 보냅니다.
      * Messager에 등록된 Prefix를 사용합니다.
      * @param message 메시지

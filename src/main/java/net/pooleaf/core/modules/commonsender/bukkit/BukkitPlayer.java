@@ -22,6 +22,11 @@ public class BukkitPlayer extends CommonPlayer<Player> {
   }
 
   @Override
+  public boolean hasPermission(String node) {
+    return getPlatformSender().hasPermission(node);
+  }
+
+  @Override
   public void kickPlayer(String message) {
     getPlatformSender().kickPlayer(message);
   }

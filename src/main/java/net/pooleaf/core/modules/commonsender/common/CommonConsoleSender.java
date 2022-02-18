@@ -12,4 +12,8 @@ public abstract class CommonConsoleSender<T> extends CommonCommandSender<T> {
         return true;
     }
 
+    @Override
+    public boolean hasPermission(String permission) {
+        return true;
+    }
 }
