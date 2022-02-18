@@ -1,11 +1,11 @@
-package net.pooleaf.core.modules.sqlib.common.dslcontext;
+package net.pooleaf.core.modules.sqllib.common.dslcontext;
 
 import lombok.Cleanup;
 import lombok.SneakyThrows;
-import net.pooleaf.core.modules.sqlib.common.AbstractSqlManager;
-import net.pooleaf.core.modules.sqlib.common.SqlColumn;
-import net.pooleaf.core.modules.sqlib.common.SqlTable;
-import net.pooleaf.core.modules.sqlib.common.config.SqlType;
+import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
+import net.pooleaf.core.modules.sqllib.common.SqlColumn;
+import net.pooleaf.core.modules.sqllib.common.SqlTable;
+import net.pooleaf.core.modules.sqllib.common.config.SqlType;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.modules.support.common.util.StringUtil;

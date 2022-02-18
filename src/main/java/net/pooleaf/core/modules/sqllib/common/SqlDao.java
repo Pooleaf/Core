@@ -1,4 +1,4 @@
-package net.pooleaf.core.modules.sqlib.common;
+package net.pooleaf.core.modules.sqllib.common;
 
 public abstract class SqlDao {
 

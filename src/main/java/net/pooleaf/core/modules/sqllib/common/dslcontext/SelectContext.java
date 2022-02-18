@@ -1,10 +1,10 @@
-package net.pooleaf.core.modules.sqlib.common.dslcontext;
+package net.pooleaf.core.modules.sqllib.common.dslcontext;
 
 import lombok.SneakyThrows;
-import net.pooleaf.core.modules.sqlib.common.AbstractSqlManager;
-import net.pooleaf.core.modules.sqlib.common.CachedResult;
-import net.pooleaf.core.modules.sqlib.common.CachedResultRow;
-import net.pooleaf.core.modules.sqlib.common.SqlTable;
+import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
+import net.pooleaf.core.modules.sqllib.common.CachedResult;
+import net.pooleaf.core.modules.sqllib.common.CachedResultRow;
+import net.pooleaf.core.modules.sqllib.common.SqlTable;
 import net.pooleaf.core.modules.support.common.util.StringUtil;
 
 import java.lang.reflect.Field;

@@ -1,4 +1,4 @@
-package net.pooleaf.core.modules.sqlib.common.config;
+package net.pooleaf.core.modules.sqllib.common.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import lombok.Data;
@@ -13,8 +13,8 @@ import java.io.File;
 @Data
 public class SqlConfig extends SimpleAnnoConfig {
 
-    @ConfigName("Core 플러그인 DataSource 사용")
-    private Boolean useCorePluginDataSource = true;
+    @ConfigName("Core 플러그인 SqlManager 사용")
+    private Boolean useCorePluginSqlManager = true;
 
     @ConfigSerialize(SqlTypeSerializer.class)
     @ConfigName("종류")

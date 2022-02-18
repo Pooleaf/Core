@@ -1,11 +1,11 @@
-package net.pooleaf.core.modules.sqlib.common;
+package net.pooleaf.core.modules.sqllib.common;
 
 import lombok.Data;
-import net.pooleaf.core.modules.sqlib.common.config.SqlType;
-import net.pooleaf.core.modules.sqlib.common.dslcontext.DeleteContext;
-import net.pooleaf.core.modules.sqlib.common.dslcontext.InsertContext;
-import net.pooleaf.core.modules.sqlib.common.dslcontext.SelectContext;
-import net.pooleaf.core.modules.sqlib.common.dslcontext.UpdateContext;
+import net.pooleaf.core.modules.sqllib.common.config.SqlType;
+import net.pooleaf.core.modules.sqllib.common.dslcontext.DeleteContext;
+import net.pooleaf.core.modules.sqllib.common.dslcontext.InsertContext;
+import net.pooleaf.core.modules.sqllib.common.dslcontext.SelectContext;
+import net.pooleaf.core.modules.sqllib.common.dslcontext.UpdateContext;
 
 import java.util.ArrayList;
 import java.util.List;

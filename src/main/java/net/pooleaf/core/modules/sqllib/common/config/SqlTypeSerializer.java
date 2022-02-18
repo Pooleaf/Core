@@ -1,4 +1,4 @@
-package net.pooleaf.core.modules.sqlib.common.config;
+package net.pooleaf.core.modules.sqllib.common.config;
 
 import net.pooleaf.core.modules.annoconfig.common.anno.ConfigSerialize;
 

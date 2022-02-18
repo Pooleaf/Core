@@ -1,11 +1,10 @@
-package net.pooleaf.core.modules.sqlib.common;
+package net.pooleaf.core.modules.sqllib.common;
 
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.pooleaf.core.modules.sqlib.common.config.SqlConfig;
+import net.pooleaf.core.modules.sqllib.common.config.SqlConfig;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.util.StringUtil;
@@ -48,7 +47,7 @@ public class AbstractSqlManager {
             loadConfig();
 
             // DB에 연결
-            if (config.getUseCorePluginDataSource() != null && config.getUseCorePluginDataSource()) {
+            if (config.getUseCorePluginSqlManager() != null && config.getUseCorePluginSqlManager()) {
                 Logger.log(getClass().getSimpleName() + ": Core 플러그인의 DataSource를 사용합니다.");
             } else {
                 dataSource = new HikariDataSource(config.getHikariConfig());
@@ -73,7 +72,7 @@ public class AbstractSqlManager {
 
     @SneakyThrows
     public void close() {
-        if (config.getUseCorePluginDataSource()) return;
+        if (config.getUseCorePluginSqlManager()) return;
         if (dataSource == null || ((HikariDataSource) dataSource).isClosed()) return;
 
         ((HikariDataSource) dataSource).close();

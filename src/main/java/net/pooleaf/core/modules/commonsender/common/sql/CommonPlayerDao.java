@@ -2,8 +2,8 @@ package net.pooleaf.core.modules.commonsender.common.sql;
 
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
-import net.pooleaf.core.modules.sqlib.common.SqlDao;
-import net.pooleaf.core.modules.sqlib.common.SqlTable;
+import net.pooleaf.core.modules.sqllib.common.SqlDao;
+import net.pooleaf.core.modules.sqllib.common.SqlTable;
 
 import java.util.UUID;
 

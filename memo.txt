@@ -8,6 +8,12 @@ CommonPlayer 못불러오는 오류 있음. 저장됐는지 체크도 해야함
 Insert Values안에 아무것도 안들어감. valuesByObject 오류로 추정
 ㄴ 완료 2022-02-16
 
+
+
+PermissionAPI
+Redis
+Redis PubSub로 플레이어 데이터 Sync 맞출수있게
+
 [GameModule]
 
 Game 객체

@@ -1,7 +1,7 @@
-package net.pooleaf.core.modules.sqlib.common.dslcontext;
+package net.pooleaf.core.modules.sqllib.common.dslcontext;
 
-import net.pooleaf.core.modules.sqlib.common.AbstractSqlManager;
-import net.pooleaf.core.modules.sqlib.common.SqlTable;
+import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
+import net.pooleaf.core.modules.sqllib.common.SqlTable;
 
 import java.util.HashMap;
 import java.util.Map;
