@@ -20,7 +20,7 @@ public class Prefixer {
   public static void registerPrefix(String prefix) {
     // 패키지로 CorePlugin 찾아서 prefix 찾기
     String classPackage = Core.getLastClassName();
-    CorePlugin plugin = Core.getCorePluginManager().getPluginByPackage(classPackage);
+    CorePlugin plugin = Core.getPluginManager().getPluginByPackage(classPackage);
     Preconditions.checkNotNull(plugin, "해당 Package의 CorePlugin을 찾을 수 없습니다. (Package: %s)", classPackage);
 
     registerPrefix(plugin.getPluginPackage(), prefix);
@@ -46,7 +46,7 @@ public class Prefixer {
     String prefix = null;
 
     // 패키지로 CorePlugin 찾아서 Prefix 찾기
-    CorePlugin plugin = Core.getCorePluginManager().getCurrentPlugin();
+    CorePlugin plugin = Core.getPluginManager().getCurrentPlugin();
     if (plugin != null) {
       prefix = prefixes.get(plugin.getPluginPackage()) + suffix;
     }

@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import net.pooleaf.core.module.ModuleManager;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.plugin.CorePluginManager;
+import net.pooleaf.core.redis.CoreRedisManager;
 import net.pooleaf.core.sql.CoreSqlManager;
 
 import java.io.File;
@@ -18,17 +19,21 @@ public class Core {
   private static ModuleManager moduleManager = new ModuleManager();
 
   @Getter
-  private static CorePluginManager corePluginManager = new CorePluginManager();
+  private static CorePluginManager pluginManager = new CorePluginManager();
 
   @Getter
-  private static CoreSqlManager coreSqlManager;
+  private static CoreSqlManager sqlManager;
+
+  @Getter
+  private static CoreRedisManager redisManager;
 
 
   protected static void init(CorePlugin plugin) {
     Core.plugin = plugin;
 
     // Manager 초기화
-    coreSqlManager = new CoreSqlManager();
+    sqlManager = new CoreSqlManager();
+    redisManager = new CoreRedisManager();
 
     // 모듈 자동 등록
     moduleManager.registerModules();

@@ -16,16 +16,14 @@ import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class AbstractSqlManager {
 
-    @Getter
     private SqlConfig config = new SqlConfig();
 
-    @Getter
-    private DataSource dataSource;
-
-    @Getter
     private Set<SqlDao> daos = new HashSet<>();
+
+    private DataSource dataSource;
 
 
     public void loadConfig() {
@@ -48,7 +46,7 @@ public class AbstractSqlManager {
 
             // DB에 연결
             if (config.getUseCorePluginSqlManager() != null && config.getUseCorePluginSqlManager()) {
-                Logger.log(getClass().getSimpleName() + ": Core 플러그인의 DataSource를 사용합니다.");
+                Logger.log(getClass().getSimpleName() + ": Core 플러그인의 SqlManager를 사용합니다.");
             } else {
                 dataSource = new HikariDataSource(config.getHikariConfig());
                 Logger.log(getClass().getSimpleName() + ": " + config.getSqlType().name() + "에 연결되었습니다.");
@@ -72,8 +70,12 @@ public class AbstractSqlManager {
 
     @SneakyThrows
     public void close() {
-        if (config.getUseCorePluginSqlManager()) return;
-        if (dataSource == null || ((HikariDataSource) dataSource).isClosed()) return;
+        if (config.getUseCorePluginSqlManager()) {
+            return;
+        }
+        if (dataSource == null || ((HikariDataSource) dataSource).isClosed()) {
+            return;
+        }
 
         ((HikariDataSource) dataSource).close();
         Logger.log(getClass().getSimpleName() + ": " + config.getSqlType().name() + " 연결을 종료했습니다.");

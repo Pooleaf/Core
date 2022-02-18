@@ -13,7 +13,7 @@ public class CommonPlayerDao extends SqlDao {
 
 
     public CommonPlayerDao() {
-        super(Core.getCoreSqlManager());
+        super(Core.getSqlManager());
     }
 
     @Override

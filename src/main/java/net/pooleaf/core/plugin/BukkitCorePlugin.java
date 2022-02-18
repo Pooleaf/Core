@@ -30,7 +30,7 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   @Override
   public final void onEnable() {
-    Core.getCorePluginManager().register(this);
+    Core.getPluginManager().register(this);
     setPrefix("§7[ " + getName() + " ] ");
 
     Debugger.addListener(Bukkit.getConsoleSender());

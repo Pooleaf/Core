@@ -58,7 +58,7 @@ public class Debugger {
     public static void log(Object message) {
         String prefix = "§a[Debug]§7";
 
-        CorePlugin plugin = Core.getCorePluginManager().getCurrentPlugin();
+        CorePlugin plugin = Core.getPluginManager().getCurrentPlugin();
         if (plugin == null) {
             plugin = Core.getPlugin();
         }

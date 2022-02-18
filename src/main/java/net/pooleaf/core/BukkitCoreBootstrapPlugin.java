@@ -15,7 +15,8 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
     registerEventListeners();
     registerCommands();
 
-    Core.getCoreSqlManager().connect();
+    Core.getSqlManager().connect();
+    Core.getRedisManager().connect();
   }
 
 }

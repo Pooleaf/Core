@@ -24,6 +24,7 @@ dependencies {
 
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.0.3")
+    implementation("io.lettuce:lettuce-core:6.1.6.RELEASE")
 
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")

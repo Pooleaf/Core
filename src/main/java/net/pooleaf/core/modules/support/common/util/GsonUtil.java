@@ -18,9 +18,17 @@ public class GsonUtil {
             .registerTypeAdapter(Map.class, new MapDeserializer())
             .serializeNulls();
 
+    @Getter
+    private static Gson gson = createGson();
+
 
     public static Gson createGson() {
         return gsonBuilder.create();
+    }
+
+    public static <T> T fromJson(Gson gson, String json, Class<T> objectClass, Object object) {
+        // TODO json 불러와서 object에 값 넣기
+        return (T) object;
     }
 
 

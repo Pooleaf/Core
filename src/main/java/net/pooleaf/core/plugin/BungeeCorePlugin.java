@@ -33,7 +33,7 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
   @Override
   public void onEnable() {
-    Core.getCorePluginManager().register(this);
+    Core.getPluginManager().register(this);
     setPrefix("§7[ " + getName() + " ] ");
 
     super.onEnable();

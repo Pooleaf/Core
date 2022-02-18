@@ -15,7 +15,8 @@ public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
     registerEventListeners();
     registerCommands();
 
-    Core.getCoreSqlManager().connect();
+    Core.getSqlManager().connect();
+    Core.getRedisManager().connect();
   }
 
 }
