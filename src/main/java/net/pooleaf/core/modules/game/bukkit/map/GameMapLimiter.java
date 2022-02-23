@@ -3,7 +3,7 @@ package net.pooleaf.core.modules.game.bukkit.map;
 import lombok.Data;
 
 @Data
-public abstract class MapLimiter {
+public abstract class GameMapLimiter {
 
     private GameMap map;
 

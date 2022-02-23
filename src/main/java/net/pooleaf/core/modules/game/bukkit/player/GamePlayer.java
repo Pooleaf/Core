@@ -4,6 +4,7 @@ import lombok.Data;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.game.bukkit.Game;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -18,12 +19,16 @@ public class GamePlayer {
     private boolean allowTeleportForObserver; // 관전자에게 텔레포트 허용
 
 
-    public String getDisplayName() {
-        return CommonSenderModule.getDisplayName(uuid);
+    public Player getPlayer() {
+        return Bukkit.getPlayer(uuid);
     }
 
     public boolean isOnline() {
         return Bukkit.getPlayer(uuid) != null;
+    }
+
+    public String getDisplayName() {
+        return CommonSenderModule.getDisplayName(uuid);
     }
 
     public boolean hasJoinedGame() {

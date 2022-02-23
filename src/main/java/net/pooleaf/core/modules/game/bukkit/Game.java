@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import net.pooleaf.core.modules.game.bukkit.exception.GameException;
 import net.pooleaf.core.modules.game.bukkit.map.GameMap;
-import net.pooleaf.core.modules.game.bukkit.map.ResetableMap;
 import net.pooleaf.core.modules.game.bukkit.player.GamePlayer;
+import net.pooleaf.core.modules.game.bukkit.vote.map.MapVote;
+import net.pooleaf.core.modules.game.bukkit.vote.start.StartVote;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,6 +31,9 @@ public abstract class Game<T extends GamePlayer> {
     private boolean started;
     private LocalDateTime gameStartTime;
     private LocalDateTime gameEndTime;
+
+    private StartVote startVote = new StartVote(this);
+    private MapVote mapVote = new MapVote(this);
 
 
     public abstract void onStart(CommandSender sender) throws GameException;
@@ -97,9 +101,8 @@ public abstract class Game<T extends GamePlayer> {
                 .forEach(gamePlayer -> joinedPlayers.remove(gamePlayer));
 
         // 맵 초기화
-        if (map instanceof ResetableMap) {
-            ((ResetableMap) map).reset();
-        }
+        map.reset();
+
         // 맵 제한기 정지
         if (map.getLimiter() != null) {
             map.getLimiter().stop();
@@ -155,6 +158,12 @@ public abstract class Game<T extends GamePlayer> {
         return joinedPlayers.stream()
                 .filter(GamePlayer::isOnline)
                 .collect(Collectors.toList());
+    }
+
+    public void broadcast(Object message) {
+        for (T onlinePlayer : getOnlinePlayers()) {
+            Messager.message(onlinePlayer.getPlayer(), message);
+        }
     }
 
 }
