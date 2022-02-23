@@ -14,7 +14,6 @@ public class RedisConfig extends SimpleAnnoConfig {
     @ConfigName("Core 플러그인 RedisManager 사용")
     private Boolean useCorePluginRedisManager = true;
 
-    // MySQL & MariaDB
     @ConfigName("주소")
     private String address = "localhost";
 
