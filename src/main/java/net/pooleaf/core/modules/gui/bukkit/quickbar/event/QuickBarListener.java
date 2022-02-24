@@ -1,7 +1,7 @@
 package net.pooleaf.core.modules.gui.bukkit.quickbar.event;
 
+import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBar;
-import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBarManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,15 +13,15 @@ public class QuickBarListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if (QuickBarManager.getPlayerQuickBars().containsKey(event.getPlayer().getUniqueId())) {
+        if (GuiModule.getQuickBarManager().exists(event.getPlayer().getUniqueId())) {
             event.getPlayer().closeInventory();
-            QuickBarManager.getPlayerQuickBars().remove(event.getPlayer().getUniqueId());
+            GuiModule.getQuickBarManager().remove(event.getPlayer().getUniqueId());
         }
     }
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        QuickBar quickBar = QuickBarManager.getPlayerQuickBars().get(event.getPlayer().getUniqueId());
+        QuickBar quickBar = GuiModule.getQuickBarManager().get(event.getPlayer().getUniqueId());
         if (quickBar != null) {
             quickBar.setTo(event.getPlayer());
             event.getItemDrop().remove();
@@ -30,14 +30,14 @@ public class QuickBarListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (QuickBarManager.getPlayerQuickBars().containsKey(e.getWhoClicked().getUniqueId())) {
+        if (GuiModule.getQuickBarManager().exists(e.getWhoClicked().getUniqueId())) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        QuickBar quickBar = QuickBarManager.getPlayerQuickBars().get(event.getPlayer().getUniqueId());
+        QuickBar quickBar = GuiModule.getQuickBarManager().get(event.getPlayer().getUniqueId());
         if (quickBar == null) return;
 
         SlotClickEvent slotClickEvent = new SlotClickEvent(event);

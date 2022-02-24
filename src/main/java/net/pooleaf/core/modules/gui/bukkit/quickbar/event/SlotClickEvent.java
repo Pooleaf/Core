@@ -2,8 +2,8 @@ package net.pooleaf.core.modules.gui.bukkit.quickbar.event;
 
 import lombok.Data;
 import net.pooleaf.core.modules.eventsupport.bukkit.event.CancellableEvent;
+import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBar;
-import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBarManager;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.Slot;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.SlotClickAction;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class SlotClickEvent extends CancellableEvent {
     public SlotClickEvent(PlayerInteractEvent playerInteractEvent) {
         this.player = playerInteractEvent.getPlayer();
 
-        this.quickBar = QuickBarManager.getPlayerQuickBars().get(this.player.getUniqueId());
+        this.quickBar = GuiModule.getQuickBarManager().get(this.player.getUniqueId());
         this.position = this.player.getInventory().getHeldItemSlot();
         this.clicked = quickBar.getSlot(getX());
 
