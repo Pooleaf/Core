@@ -1,10 +1,12 @@
 package net.pooleaf.core.modules.game.bukkit.vote.start;
 
-import net.pooleaf.core.modules.game.bukkit.Game;
+import lombok.Getter;
+import net.pooleaf.core.modules.game.bukkit.game.Game;
 import net.pooleaf.core.modules.game.bukkit.player.GamePlayer;
 import net.pooleaf.core.modules.game.bukkit.vote.Vote;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 
+@Getter
 public class StartVote extends Vote<Boolean> {
 
     private StartVoteGui gui = new StartVoteGui(this);
@@ -37,7 +39,7 @@ public class StartVote extends Vote<Boolean> {
     }
 
     @Override
-    public void onUnvoted(GamePlayer gamePlayer) {
+    protected void onUnvoted(GamePlayer gamePlayer) {
         game.broadcast("§f게임 시작 투표§e가 진행 중입니다. ( §a찬성: §f" + agreeCount() + "§a명 §e| §c반대: §f" + disagreeCount() + "명§e )");
         // TODO 대기 퀵바 업데이트
         // TODO GUI 업데이트

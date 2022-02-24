@@ -1,8 +1,7 @@
 package net.pooleaf.core.modules.game.bukkit.vote;
 
-import com.google.common.base.Objects;
 import lombok.Data;
-import net.pooleaf.core.modules.game.bukkit.Game;
+import net.pooleaf.core.modules.game.bukkit.game.Game;
 import net.pooleaf.core.modules.game.bukkit.player.GamePlayer;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 
@@ -38,7 +37,7 @@ public abstract class Vote<T> {
 
 
     public final void vote(GamePlayer gamePlayer, T vote) {
-        if (!Objects.equal(gamePlayer.getJoinedGame(), game)) {
+        if (!game.isJoined(gamePlayer)) {
             Messager.message(gamePlayer.getPlayer(), "참여 중이 아닌 게임에는 투표할 수 없습니다.");
             return;
         }
@@ -50,7 +49,7 @@ public abstract class Vote<T> {
     }
 
     public final void unvote(GamePlayer gamePlayer) {
-        if (!Objects.equal(gamePlayer.getJoinedGame(), game)) {
+        if (!game.isJoined(gamePlayer)) {
             Messager.message(gamePlayer.getPlayer(), "참여 중이 아닌 게임에는 투표할 수 없습니다.");
             return;
         }
