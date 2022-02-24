@@ -1,7 +1,9 @@
 package net.pooleaf.core.modules.gui.bukkit.quickbar;
 
+import com.google.common.base.Objects;
 import lombok.Data;
 import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.event.SlotClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -55,15 +57,16 @@ public class QuickBar {
     public void onClick(SlotClickEvent event) {}
 
     public void setTo(Player player) {
-        QuickBarManager.setTo(player, this);
+        GuiModule.getQuickBarManager().setTo(player, this);
     }
 
     public void removeTo(Player player) {
-        QuickBar quickBar = QuickBarManager.getPlayerQuickBars().remove(player.getUniqueId());
-        if (quickBar == null || getClass().isAssignableFrom(quickBar.getClass())) return;
+        QuickBar quickBar = GuiModule.getQuickBarManager().get(player.getUniqueId());
+        if (!Objects.equal(this, quickBar)) { // 다른 퀵바를 쓰고 있는 플레이어면 제거 안함
+            return;
+        }
 
-        player.getInventory().clear();
-        player.updateInventory();
+        GuiModule.getQuickBarManager().removeTo(player);
     }
 
 }

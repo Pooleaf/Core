@@ -1,20 +1,14 @@
 package net.pooleaf.core.modules.gui.bukkit.quickbar;
 
-import lombok.Getter;
+import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-public class QuickBarManager {
+public class QuickBarManager extends AbstractManager<UUID, QuickBar> {
 
-    @Getter
-    private static Map<UUID, QuickBar> playerQuickBars = new HashMap<>();
-
-
-    public static void setTo(Player player, QuickBar quickBar) {
-        playerQuickBars.put(player.getUniqueId(), quickBar);
+    public void setTo(Player player, QuickBar quickBar) {
+        set(player.getUniqueId(), quickBar);
 
         player.getInventory().clear();
         quickBar.getSlots().forEach((position, slot) -> player.getInventory().setItem(position, slot.getItem()));
@@ -22,8 +16,10 @@ public class QuickBarManager {
         player.updateInventory();
     }
 
-    public static boolean removeTo(Player player) {
-        if (playerQuickBars.remove(player) == null) return false;
+    public boolean removeTo(Player player) {
+        if (!exists(player.getUniqueId())) {
+            return false;
+        }
 
         player.getInventory().clear();
         player.updateInventory();
