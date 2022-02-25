@@ -12,8 +12,10 @@ import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bungee.util.BungeeReflectionUtil;
+import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.InputStream;
@@ -36,13 +38,13 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
     Core.getPluginManager().register(this);
     setPrefix("§7[ " + getName() + " ] ");
 
-    super.onEnable();
+    onStart();
     enabled = true;
   }
 
   @Override
   public void onDisable() {
-    super.onDisable();
+    onEnd();
     enabled = false;
   }
 
