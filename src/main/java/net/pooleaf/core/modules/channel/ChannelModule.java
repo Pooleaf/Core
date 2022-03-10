@@ -6,6 +6,7 @@ import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroupManager;
 import net.pooleaf.core.modules.channel.common.channel.ChannelManager;
+import net.pooleaf.core.modules.channel.common.redis.RedisManager;
 import net.pooleaf.core.plugin.CorePlugin;
 
 import java.util.Collection;
@@ -21,6 +22,9 @@ public class ChannelModule extends CoreModule {
   @Getter
   private static ChannelGroupManager channelGroupManager = new ChannelGroupManager();
 
+  @Getter
+  private static RedisManager redisManager;
+
 
   @Override
   public String getName() {
@@ -34,7 +38,7 @@ public class ChannelModule extends CoreModule {
 
   @Override
   public void onEnable(CorePlugin plugin) {
-
+    redisManager = new RedisManager();
   }
 
 

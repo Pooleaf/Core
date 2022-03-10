@@ -2,12 +2,12 @@ package net.pooleaf.core.modules.redislib.common;
 
 public abstract class RedisDao {
 
-    protected AbstractRedisManager sqlManager;
+    protected AbstractRedisManager redisManager;
 
 
-    public RedisDao(AbstractRedisManager sqlManager) {
-        this.sqlManager = sqlManager;
-        sqlManager.getDaos().add(this);
+    public RedisDao(AbstractRedisManager redisManager) {
+        this.redisManager = redisManager;
+        redisManager.getDaos().add(this);
     }
 
     public void onConnected() {}
