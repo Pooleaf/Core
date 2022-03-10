@@ -20,8 +20,8 @@ public abstract class AbstractManager<K, V> {
     }
 
     @SneakyThrows
-    public AbstractManager(Class<? extends Map> mapClass) {
-        datas = mapClass.newInstance();
+    public AbstractManager(Map map) {
+        datas = map;
     }
 
 
@@ -35,6 +35,13 @@ public abstract class AbstractManager<K, V> {
 
     public V getOrDefault(K key, V defaultValue) {
         return datas.getOrDefault(key, defaultValue);
+    }
+
+    public V getOrMake(K key, V defaultValue) {
+        V value = getOrDefault(key, defaultValue);
+        datas.put(key, value);
+
+        return value;
     }
 
     public V load(K key) {

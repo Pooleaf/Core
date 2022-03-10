@@ -10,11 +10,11 @@ import java.util.List;
 @Data
 public class RedisMessageEvent extends CommonEvent {
 
-    private final String channel;
+    private final String channel; // Redis PubSub 채널
 
-    private final String dataJson;
-    private final String messageChannel;
-    private final List<Object> datas;
+    private final String dataJson; // 가공 전 데이터 Json
+    private final String messageChannel; // 플러그인을 구별하기 위한 메시지 채널
+    private final List<Object> datas; // 데이터
 
 
     public RedisMessageEvent(String channel, String dataJson) {

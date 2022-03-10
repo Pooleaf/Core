@@ -2,8 +2,10 @@ package net.pooleaf.core.modules.support.common.util;
 
 import com.google.gson.*;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,9 +28,25 @@ public class GsonUtil {
         return gsonBuilder.create();
     }
 
-    public static <T> T fromJson(Gson gson, String json, Class<T> objectClass, Object object) {
-        // TODO json 불러와서 object에 값 넣기
-        return (T) object;
+    public static Object loadFromJson(String json, Object object) {
+        return loadFromJson(getGson(), json, object);
+    }
+
+    /**
+     * Json을 불러와 해당 객체의 변수에 넣어줍니다.
+     */
+    @SneakyThrows
+    public static Object loadFromJson(Gson gson, String json, Object object) {
+        Object temp = gson.fromJson(json, object.getClass());
+
+        for (Field field : ReflectionUtil.getAllField(object.getClass())) {
+            field.setAccessible(true);
+
+            Object value = field.get(temp);
+            field.set(object, value);
+        }
+
+        return object;
     }
 
 
