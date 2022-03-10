@@ -24,7 +24,7 @@ dependencies {
 
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.0.3")
-    implementation("io.lettuce:lettuce-core:6.1.6.RELEASE") {
+    implementation("io.lettuce:lettuce-core:6.0.0.RELEASE") {
         exclude("io.netty")
     }
 
@@ -66,11 +66,6 @@ tasks {
         from(shadowJar)
         into("E:\\jhyu\\paper-1.12.2\\plugins")
     }
-
-//    shadowJar {
-//        exclude("net/pooleaf/core/test")
-//        exclude("net/pooleaf/core/test/**")
-//    }
 }
 
 tasks.getByName<Test>("test") {
