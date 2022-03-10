@@ -18,7 +18,7 @@ public class RedisConfig extends SimpleAnnoConfig {
     private String address = "localhost";
 
     @ConfigName("포트")
-    private int port = 3306;
+    private int port = 6379;
 
     @ConfigName("비밀번호")
     @ConfigAes256("redisconfig passwd")
