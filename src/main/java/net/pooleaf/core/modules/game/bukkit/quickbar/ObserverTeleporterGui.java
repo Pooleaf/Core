@@ -14,7 +14,7 @@ public class ObserverTeleporterGui extends LargePageableGui {
 
     private Game<GamePlayer> game;
 
-    public TeleporterGui(Game game) {
+    public ObserverTeleporterGui(Game game) {
         super("관전할 플레이어를 선택하세요.");
 
         this.game = game;
@@ -26,7 +26,7 @@ public class ObserverTeleporterGui extends LargePageableGui {
     public void onUpdate() {
         clear();
 
-        game.getLivePlayers().stream()
+/*        game.getLivePlayers().stream()
                 .filter(player -> player.isShowToObserver())
                 .forEach(player -> {
                     addItem(new Icon() {
@@ -55,7 +55,7 @@ public class ObserverTeleporterGui extends LargePageableGui {
                             Messager.message(event.getPlayer(), gamePlayer.getDisplayName() + " §e님께 텔레포트했습니다.");
                         }
                     });
-                });
+                });*/
     }
 
 }
