@@ -15,7 +15,7 @@ public class Logger extends Prefixer {
   }
 
   public static void warning(Object log) {
-    log(getCurrentPluginPrefix(" §c") + log);
+    loggerAdapter.log(getCurrentPluginPrefix(" §c") + log);
   }
 
 }
