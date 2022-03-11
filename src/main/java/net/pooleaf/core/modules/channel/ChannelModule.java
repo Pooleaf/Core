@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.channel;
 
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroupManager;
@@ -16,6 +17,8 @@ import java.util.UUID;
 
 public class ChannelModule extends CoreModule {
 
+  public static final String MESSAGE_CHANNEL = "channel";
+
   @Getter
   private static ChannelManager channelManager = new ChannelManager();
 
@@ -24,6 +27,9 @@ public class ChannelModule extends CoreModule {
 
   @Getter
   private static RedisManager redisManager;
+
+  @Getter
+  private static ChannelAdapter channelAdapter;
 
 
   @Override
@@ -39,6 +45,7 @@ public class ChannelModule extends CoreModule {
   @Override
   public void onEnable(CorePlugin plugin) {
     redisManager = new RedisManager();
+    redisManager.connect();
   }
 
 
@@ -46,8 +53,32 @@ public class ChannelModule extends CoreModule {
     return channelManager.getDatas().values();
   }
 
+  public static Channel getChannel(String channelName) {
+    return channelManager.get(channelName);
+  }
+
+  public static Channel getChannelHasPlayer(String playerName) {
+    return channelManager.getHasPlayer(playerName);
+  }
+
+  public static Channel getChannelHasPlayer(UUID uuid) {
+    return channelManager.getHasPlayer(uuid);
+  }
+
   public static Collection<ChannelGroup> getChannelGroups() {
     return channelGroupManager.getDatas().values();
+  }
+
+  public static ChannelGroup getChannelGroup(String channelGroupName) {
+    return channelGroupManager.get(channelGroupName);
+  }
+
+  public static ChannelGroup getChannelGroupHasPlayer(String playerName) {
+    return channelGroupManager.getHasPlayer(playerName);
+  }
+
+  public static ChannelGroup getChannelGroupHasPlayer(UUID uuid) {
+    return channelGroupManager.getHasPlayer(uuid);
   }
 
 

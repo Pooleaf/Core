@@ -17,6 +17,7 @@ import net.pooleaf.core.modules.support.common.platform.Platform;
 
 import java.util.HashSet;
 import java.util.Set;
+import net.pooleaf.core.modules.support.common.util.GsonUtil;
 
 @Getter
 public class AbstractRedisManager {
@@ -121,6 +122,22 @@ public class AbstractRedisManager {
         client.shutdown();
 
         Logger.log(getClass().getSimpleName() + ": Redis 연결을 종료했습니다.");
+    }
+
+    private void send(String serverName, Object... datas) {
+        asyncCommands.publish(serverName, GsonUtil.getGson().toJson(datas));
+    }
+
+    public void send(String serverName, String messageChannel, Object... datas) {
+        send(serverName, messageChannel, datas);
+    }
+
+    public void sendToBungeeCord(String messageChannel, Object... datas) {
+        send(BUNGEECORD_CHANNEL, messageChannel, datas);
+    }
+
+    public void broadcast(String messageChannel, Object... datas) {
+        send(BROADCAST_CHANNEL, datas);
     }
 
 }

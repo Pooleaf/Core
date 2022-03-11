@@ -28,7 +28,7 @@ public class RedisChannelDao extends RedisDao {
     }
 
     @SneakyThrows
-    public void loadChannel(String channelName) {
+    public Channel loadChannel(String channelName) {
         Channel channel = ChannelModule.getChannelManager().get(channelName);
         if (channel == null) {
             channel = new Channel(channelName);
@@ -36,11 +36,13 @@ public class RedisChannelDao extends RedisDao {
 
         String jsonString = redisManager.getAsyncCommands().get(CHANNEL_INFO_KEY + channel.getName()).get();
         if (jsonString == null) {
-            return;
+            return null;
         }
 
         ChannelModule.getChannelManager().set(channel.getName(), channel);
         channel.loadFromJson(jsonString);
+
+        return channel;
     }
 
     @SneakyThrows

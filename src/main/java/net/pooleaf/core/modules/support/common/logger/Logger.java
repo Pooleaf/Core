@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.support.common.logger;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import net.pooleaf.core.modules.support.common.messager.Prefixer;
 
@@ -12,6 +13,10 @@ public class Logger extends Prefixer {
 
   public static void log(Object log) {
     loggerAdapter.log(getCurrentPluginPrefix(" §f") + log);
+  }
+
+  public static void nlog(Object log) {
+    loggerAdapter.log(log);
   }
 
   public static void warning(Object log) {

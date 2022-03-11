@@ -97,23 +97,39 @@ public class ChannelGroup {
         return getPlayerNames().size();
     }
 
+    /**
+     * 채널 그룹 정보를 Json으로 반환합니다.
+     */
     public String toJson() {
         return GsonUtil.getGson().toJson(this);
     }
 
+    /**
+     * Json에서 채널 그룹 정보를 불러옵니다.
+     */
     public ChannelGroup loadFromJson(String jsonString) {
         return (ChannelGroup) GsonUtil.loadFromJson(jsonString, this);
     }
 
+    /**
+     * Redis에서 채널 정보를 불러옵니다.
+     */
     public void load() {
-        // TODO
+        ChannelModule.getRedisManager().channelGroup().loadGroup(name);
     }
 
+    /**
+     * Redis에 채널 정보를 저장합니다.
+     */
     public void save() {
-        // TODO
+        ChannelModule.getRedisManager().channelGroup().saveGroup(this);
     }
 
-    public Channel getFastJoinChannel(String playerName) {
+    /**
+     * 해당 그룹에서 온라인이고 가장 사람이 적은 채널을 반환합니다.
+     * @return 그룹에서 온라인이고 가장 사람이 적은 채널
+     */
+    public Channel getFastJoinChannel() {
         Channel fastJoinChannel = null;
 
         for (Channel onlineChannel : getChannelsCanJoin()) {
@@ -131,13 +147,44 @@ public class ChannelGroup {
         return fastJoinChannel;
     }
 
+    /**
+     * 플레이어를 해당 그룹의 온라인이고 가장 사람이 적은 채널에 입장시킵니다.
+     * @param playerName 플레이어 이름
+     * @return 입장 성공 여부
+     */
+
     public Channel fastJoin(String playerName) {
-        // TODO
-        return null;
+        Channel channel = getFastJoinChannel();
+        if (channel != null) {
+            channel.join(playerName);
+        }
+
+        return channel;
     }
 
-    public void remoteCommand(String sender, String command) {
-        // TODO
+    /**
+     * 플레이어를 해당 그룹의 온라인이고 가장 사람이 적은 채널에 입장시킵니다.
+     * @param uuid 플레이어 UUID
+     * @return 입장 성공 여부
+     */
+    public Channel fastJoin(UUID uuid) {
+        Channel channel = getFastJoinChannel();
+        if (channel != null) {
+            channel.join(uuid);
+        }
+
+        return channel;
+    }
+
+    /**
+     * 해당 그룹의 모든 채널에 원격 명령어를 보냅니다.
+     * @param senderName 보내는사람 이름
+     * @param commandLine 명령어
+     */
+    public void remoteCommand(String senderName, String commandLine) {
+        for (Channel onlineChannel : getOnlineChannels()) {
+            onlineChannel.remoteCommand(senderName, commandLine);
+        }
     }
 
 }

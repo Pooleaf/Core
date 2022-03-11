@@ -12,4 +12,8 @@ public class RedisManager extends AbstractRedisManager {
         return channelDao;
     }
 
+    public RedisChannelGroupDao channelGroup() {
+        return channelGroupDao;
+    }
+
 }

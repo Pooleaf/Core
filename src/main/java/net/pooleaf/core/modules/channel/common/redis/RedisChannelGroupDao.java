@@ -25,7 +25,7 @@ public class RedisChannelGroupDao extends RedisDao {
     }
 
     @SneakyThrows
-    public void loadGroup(String groupName) {
+    public ChannelGroup loadGroup(String groupName) {
         ChannelGroup group = ChannelModule.getChannelGroupManager().get(groupName);
         if (group == null) {
             group = new ChannelGroup(groupName);
@@ -33,11 +33,13 @@ public class RedisChannelGroupDao extends RedisDao {
 
         String jsonString = redisManager.getAsyncCommands().get(CHANNEL_GROUP_INFO_KEY + group.getName()).get();
         if (jsonString == null) {
-            return;
+            return null;
         }
 
         ChannelModule.getChannelGroupManager().set(groupName, group);
         group.loadFromJson(jsonString);
+
+        return group;
     }
 
     @SneakyThrows
