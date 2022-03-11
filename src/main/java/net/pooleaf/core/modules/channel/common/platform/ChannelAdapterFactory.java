@@ -6,7 +6,7 @@ import net.pooleaf.core.modules.support.common.platform.Platform;
 
 public class ChannelAdapterFactory {
 
-  public static ChannelAdapter createChannelAdapter() {
+  public ChannelAdapter createChannelAdapter() {
     switch (Platform.getCurrentPlatform()) {
       case BUKKIT:
         return new BukkitChannelAdapter();

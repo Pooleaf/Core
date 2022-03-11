@@ -19,6 +19,7 @@ public class Channel {
 
     private boolean online;
     private boolean allowFastJoin;
+    private int channelStatus;
 
     private int playerCount;
     private int maxPlayerCount;
@@ -152,6 +153,11 @@ public class Channel {
         ChannelModule.getChannelAdapter().remoteCommand(name, senderName, commandLine);
     }
 
+    /**
+     * 해당 채널에 데이터를 보냅니다.
+     * @param task 할 일
+     * @param datas 데이터
+     */
     public void sendData(String task, Object... datas) {
         ChannelModule.getChannelAdapter().sendData(name, task, datas);
     }

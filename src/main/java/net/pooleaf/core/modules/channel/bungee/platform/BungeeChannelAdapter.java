@@ -10,6 +10,15 @@ import net.pooleaf.core.modules.channel.common.channel.Channel;
 
 public class BungeeChannelAdapter implements ChannelAdapter {
 
+  @Override
+  public void onEnable() {
+  }
+
+  @Override
+  public Channel getCurrentChannel() {
+    throw new UnsupportedOperationException();
+  }
+
   private boolean join(String channelName, ProxiedPlayer player) {
     if (player == null) {
       return false;
