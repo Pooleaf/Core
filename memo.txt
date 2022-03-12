@@ -52,6 +52,8 @@ Game 종류는 한개로 가정
 명령어
 
 
+BaseComponent sendMessage 만들어야함
+
 
 
 
