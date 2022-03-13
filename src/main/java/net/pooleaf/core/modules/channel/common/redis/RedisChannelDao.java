@@ -4,6 +4,7 @@ import io.lettuce.core.KeyValue;
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
+import net.pooleaf.core.modules.redislib.common.AbstractRedisManager;
 import net.pooleaf.core.modules.redislib.common.RedisDao;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public class RedisChannelDao extends RedisDao {
     public static final String CHANNEL_INFO_KEY = "channel:info:";
 
 
-    public RedisChannelDao() {
-        super(ChannelModule.getRedisManager());
+    public RedisChannelDao(AbstractRedisManager redisManager) {
+        super(redisManager);
     }
 
 
@@ -56,6 +57,11 @@ public class RedisChannelDao extends RedisDao {
         for (KeyValue<String, String> keyValue : redisManager.getAsyncCommands().mget(channelNamesArr).get()) {
             String name = keyValue.getKey().substring(CHANNEL_INFO_KEY.length());
             String jsonString = keyValue.getValue();
+
+            // 현재 채널 제외하고 불러오기
+            if (name.equalsIgnoreCase(ChannelModule.getCurrentChannelName())) {
+                continue;
+            }
 
             Channel channel = ChannelModule.getChannelManager().get(name);
             if (channel == null) {

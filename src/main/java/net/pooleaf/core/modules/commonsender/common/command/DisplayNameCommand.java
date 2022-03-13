@@ -30,7 +30,7 @@ public class DisplayNameCommand {
         } else { // 닉네임 설정
             targetPlayer.setDisplayName(displayName);
         }
-        CommonSenderModule.getPlayerInfoDao().insertPlayerInfo(targetPlayer);
+        CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(targetPlayer);
 
         sender.message(targetPlayer.getName() + " 님의 닉네임을 " + displayName + " (으)로 설정했습니다.");
     }

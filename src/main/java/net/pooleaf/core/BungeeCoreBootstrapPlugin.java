@@ -6,17 +6,20 @@ public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
 
   @Override
   public void onStart() {
-    Core.init(this);
-
     setPrefix("§e[ Core ]");
     registerLoggerPrefix();
     registerMessagerPrefix();
 
-    registerEventListeners();
-    registerCommands();
+    Core.init(this);
 
-    Core.getSqlManager().connect();
-    Core.getRedisManager().connect();
+    registerEventListeners();
+    registerCommonEventListeners();
+    registerCommands();
+  }
+
+  @Override
+  public void onEnd() {
+    Core.getModuleManager().endModules();
   }
 
 }

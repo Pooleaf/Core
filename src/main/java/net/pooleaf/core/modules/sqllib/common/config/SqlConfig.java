@@ -9,6 +9,7 @@ import net.pooleaf.core.modules.annoconfig.common.anno.ConfigName;
 import net.pooleaf.core.modules.annoconfig.common.anno.ConfigSerialize;
 
 import java.io.File;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @Data
 public class SqlConfig extends SimpleAnnoConfig {
@@ -45,8 +46,8 @@ public class SqlConfig extends SimpleAnnoConfig {
     private String properties = "?autoReconnect=true&useUnicode=true&characterEncoding=utf8";
 
 
-    public SqlConfig() {
-        super(new File(Core.getPlugin().getDataFolder(), "sql-config.yml"));
+    public SqlConfig(CorePlugin plugin) {
+        super(new File(plugin.getDataFolder(), "sql-config.yml"));
     }
 
     public HikariConfig getHikariConfig() {

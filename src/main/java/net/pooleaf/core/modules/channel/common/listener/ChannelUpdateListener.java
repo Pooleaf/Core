@@ -18,6 +18,7 @@ public class ChannelUpdateListener implements CommonEventListener {
   public void onChannelUpdate(RedisKeySpaceEvent event) {
     // Channel 업데이트
     if (event.getKey().startsWith(ChannelModule.getRedisManager().channel().CHANNEL_INFO_KEY)) {
+
       String channelName = event.getKey().substring(ChannelModule.getRedisManager().channel().CHANNEL_INFO_KEY.length());
       Channel channel = ChannelModule.getRedisManager().channel().loadChannel(channelName);
 

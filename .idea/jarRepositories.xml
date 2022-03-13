@@ -41,5 +41,25 @@
       <option name="name" value="maven4" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="https://repo.s8u.kr/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="https://repo.s8u.kr/repository/maven-minecraft/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="http://192.168.1.11/repository/maven-minecraft/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="http://repo.s8u.kr/repository/maven-minecraft/" />
+    </remote-repository>
   </component>
 </project>

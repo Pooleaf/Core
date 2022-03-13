@@ -3,6 +3,7 @@ package net.pooleaf.core.modules.support.common.messager;
 import com.google.common.base.Preconditions;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 
 public class Messager extends Prefixer {
@@ -15,9 +16,9 @@ public class Messager extends Prefixer {
         Preconditions.checkNotNull(messagerAdapter, "messeageAdapter가 초기화되지 않았습니다.");
         Preconditions.checkNotNull(sender, "sender가 null 입니다.");
 
-        // CommonPlayer를 Platform에 맞는 Player로 변경
-        if (sender instanceof CommonPlayer) {
-            sender = ((CommonPlayer) sender).getPlatformSender();
+        // CommonCommandSender를 Platform에 맞는 CommandSender로 변경
+        if (sender instanceof CommonCommandSender) {
+            sender = ((CommonCommandSender) sender).getPlatformSender();
         }
 
         messagerAdapter.message(sender, message);

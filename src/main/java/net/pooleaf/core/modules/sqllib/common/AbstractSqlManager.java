@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.sqllib.common.config.SqlConfig;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
@@ -15,15 +16,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.Set;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @Getter
 public class AbstractSqlManager {
 
-    private SqlConfig config = new SqlConfig();
+    private SqlConfig config;
 
     private Set<SqlDao> daos = new HashSet<>();
 
     private DataSource dataSource;
+
+
+    public AbstractSqlManager(CorePlugin plugin) {
+        config = new SqlConfig(plugin);
+    }
 
 
     public void loadConfig() {
@@ -46,6 +53,9 @@ public class AbstractSqlManager {
 
             // DB에 연결
             if (config.getUseCorePluginSqlManager() != null && config.getUseCorePluginSqlManager()) {
+                dataSource = Core.getSqlManager().getDataSource();
+                config.setSqlType(Core.getSqlManager().getConfig().getSqlType());
+
                 Logger.log(getClass().getSimpleName() + ": Core 플러그인의 SqlManager를 사용합니다.");
             } else {
                 dataSource = new HikariDataSource(config.getHikariConfig());

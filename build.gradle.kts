@@ -12,12 +12,14 @@ repositories {
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     maven(url = "https://repo.dmulloy2.net/repository/public/")
     maven(url = "https://jitpack.io")
+    maven(url = "https://repo.s8u.kr/repository/maven-minecraft/")
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
 
-    compileOnly("org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT")
+//    compileOnly("org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc:paper:1.12.2-1620")
     compileOnly("net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT")
 
     compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
@@ -60,6 +62,16 @@ tasks {
     register<Copy>("copyToServer") {
         from(shadowJar)
         into("E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\plugins")
+    }
+
+    register<Copy>("copyToServerUpdate") {
+        from(shadowJar)
+        into("E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\update")
+    }
+
+    register<Copy>("copyToServerUpdateBungeeBukkit") {
+        from(shadowJar)
+        into("E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\channel_1\\update")
     }
 
     register<Copy>("copyToServerKdf") {

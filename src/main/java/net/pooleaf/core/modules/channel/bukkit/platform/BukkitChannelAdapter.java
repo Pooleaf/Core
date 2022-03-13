@@ -15,10 +15,13 @@ public class BukkitChannelAdapter implements ChannelAdapter {
 
   @Override
   public void onEnable() {
-    Channel channel = getCurrentChannel();
+    Channel channel = new Channel(ChannelModule.getCurrentChannelName());
+    ChannelModule.getChannelManager().set(channel.getName(), channel);
+
     channel.setOnline(true);
     channel.setChannelStatus(ChannelStatus.PREPARING);
     channel.setPlayerCount(Bukkit.getOnlinePlayers().size());
+    channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
     channel.setPlayerNames(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
     channel.setPlayerUuids(Bukkit.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toList()));
     channel.save();
@@ -29,11 +32,15 @@ public class BukkitChannelAdapter implements ChannelAdapter {
       channel.setAllowFastJoin(true);
       channel.save();
     });
+
+    // 불러오기
+    ChannelModule.getRedisManager().channel().loadAllChannels();
+    ChannelModule.getRedisManager().channelGroup().loadAllGroup();
   }
 
   @Override
   public Channel getCurrentChannel() {
-    return ChannelModule.getChannel(ChannelModule.getRedisManager().getConfig().getServerName());
+    return ChannelModule.getChannel(Core.getServerName());
   }
 
   @Override

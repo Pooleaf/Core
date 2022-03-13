@@ -20,7 +20,7 @@ public class CachedResult {
             Map<String, Object> resultRowDatas = new HashMap<>();
 
             for (int column = 0; column < resultSet.getMetaData().getColumnCount(); column++) {
-                resultRowDatas.put(resultSet.getMetaData().getColumnName(column), resultSet.getObject(column + 1));
+                resultRowDatas.put(resultSet.getMetaData().getColumnName(column + 1), resultSet.getObject(column + 1));
             }
 
             CachedResultRow resultRow = new CachedResultRow(resultRowDatas);

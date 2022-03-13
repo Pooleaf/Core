@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
+import net.pooleaf.core.modules.redislib.common.AbstractRedisManager;
 import net.pooleaf.core.modules.redislib.common.RedisDao;
 
 import java.util.List;
@@ -14,8 +15,9 @@ public class RedisChannelGroupDao extends RedisDao {
     public static final String CHANNEL_GROUP_INFO_KEY = "channel:group_info:";
 
 
-    public RedisChannelGroupDao() {
-        super(ChannelModule.getRedisManager());
+    public RedisChannelGroupDao(
+        AbstractRedisManager redisManager) {
+        super(redisManager);
     }
 
 

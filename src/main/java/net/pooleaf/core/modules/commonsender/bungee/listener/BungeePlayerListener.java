@@ -31,7 +31,7 @@ public class BungeePlayerListener implements Listener {
         Logger.log("플레이어 정보: " + player);
 
         // 저장
-        CommonSenderModule.getPlayerInfoDao().insertPlayerInfo(player);
+        CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(player);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

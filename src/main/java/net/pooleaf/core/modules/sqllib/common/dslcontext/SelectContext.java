@@ -1,10 +1,16 @@
 package net.pooleaf.core.modules.sqllib.common.dslcontext;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.UUID;
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
 import net.pooleaf.core.modules.sqllib.common.CachedResult;
 import net.pooleaf.core.modules.sqllib.common.CachedResultRow;
 import net.pooleaf.core.modules.sqllib.common.SqlTable;
+import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.modules.support.common.util.StringUtil;
 
 import java.lang.reflect.Field;
@@ -110,10 +116,27 @@ public class SelectContext extends DslContext<SelectContext> {
 
             for (String key : row.getDatas().keySet()) {
                 String targetFieldName = StringUtil.convertSnakeCaseToLowerCamelCase(key);
-                Field targetField = object.getClass().getDeclaredField(targetFieldName);
+                Field targetField = ReflectionUtil.getFieldAll(objectClass, targetFieldName);
                 if (targetField != null) {
+                    // Timestamp -> LocalDateTime 변환
+                    Object value = row.get(key);
+                    if (value instanceof Timestamp) {
+                        if (targetField.getType().isAssignableFrom(LocalDateTime.class)) {
+                            value = ((Timestamp) value).toLocalDateTime();
+                        } else if (targetField.getType().isAssignableFrom(LocalDate.class)) {
+                            value = ((Timestamp) value).toLocalDateTime().toLocalDate();
+                        } else if (targetField.getType().isAssignableFrom(LocalTime.class)) {
+                            value = ((Timestamp) value).toLocalDateTime().toLocalTime();
+                        }
+                    }
+
+                    // UUID 변환
+                    if (targetField.getType().isAssignableFrom(UUID.class)) {
+                        value = UUID.fromString((String) value);
+                    }
+
                     targetField.setAccessible(true);
-                    targetField.set(object, row.get(key));
+                    targetField.set(object, value);
                 }
             }
         }

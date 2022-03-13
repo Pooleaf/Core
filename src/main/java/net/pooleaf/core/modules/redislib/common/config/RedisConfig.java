@@ -4,9 +4,11 @@ import lombok.Data;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.annoconfig.common.anno.ConfigAes256;
+import net.pooleaf.core.modules.annoconfig.common.anno.ConfigExclude;
 import net.pooleaf.core.modules.annoconfig.common.anno.ConfigName;
 
 import java.io.File;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @Data
 public class RedisConfig extends SimpleAnnoConfig {
@@ -24,11 +26,9 @@ public class RedisConfig extends SimpleAnnoConfig {
     @ConfigAes256("redisconfig passwd")
     private String password = "password";
 
-    @ConfigName("서버 이름")
-    private String serverName = null;
 
-    public RedisConfig() {
-        super(new File(Core.getPlugin().getDataFolder(), "redis-config.yml"));
+    public RedisConfig(CorePlugin plugin) {
+        super(new File(plugin.getDataFolder(), "redis-config.yml"));
     }
 
 }

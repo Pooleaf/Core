@@ -2,6 +2,8 @@ package net.pooleaf.core.module;
 
 import java.lang.reflect.Modifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.SneakyThrows;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.logger.Logger;
@@ -9,6 +11,9 @@ import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 
 public class ModuleManager extends AbstractManager<String, CoreModule> {
+
+  private List<CoreModule> enabledOrder = new ArrayList<>();
+
 
   @SneakyThrows
   public void registerModule(Class<? extends CoreModule> moduleClass) {
@@ -69,11 +74,22 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
         if (canEnable) {
           module.onEnable(Core.getPlugin());
           module.setEnable(true);
+          enabledOrder.add(module);
           Logger.log(module.getName() + " Module이 초기화되었습니다.");
 
           count++;
         }
       }
+    }
+  }
+
+  public void endModules() {
+    for (int i = enabledOrder.size(); i > 0; i--) {
+      CoreModule module = enabledOrder.get(i - 1);
+      module.onDisable(Core.getPlugin());
+      module.setEnable(false);
+
+      Logger.log(module.getName() + " Module이 종료되었습니다.");
     }
   }
 

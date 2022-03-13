@@ -15,14 +15,18 @@ public class BukkitChannelInfoUpdateListener implements Listener {
     Channel channel = ChannelModule.getCurrentChannel();
     channel.setPlayerCount(Bukkit.getOnlinePlayers().size());
     channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
+    channel.getPlayerNames().add(event.getPlayer().getName());
+    channel.getPlayerUuids().add(event.getPlayer().getUniqueId());
     channel.save();
   }
 
   @EventHandler
   public void onQuit(PlayerQuitEvent event) {
     Channel channel = ChannelModule.getCurrentChannel();
-    channel.setPlayerCount(Bukkit.getOnlinePlayers().size());
+    channel.setPlayerCount(Bukkit.getOnlinePlayers().size() - 1);
     channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
+    channel.getPlayerNames().remove(event.getPlayer().getName());
+    channel.getPlayerUuids().remove(event.getPlayer().getUniqueId());
     channel.save();
   }
 

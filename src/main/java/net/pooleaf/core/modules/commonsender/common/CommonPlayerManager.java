@@ -10,7 +10,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
 
     @Override
     public CommonPlayer load(UUID key) {
-        return CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByUuid(key);
+        return CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfoByUuid(key);
     }
 
     public CommonPlayer getByName(String name) {
@@ -27,7 +27,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         CommonPlayer playerInfo = getByName(name);
 
         if (playerInfo == null) {
-            CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByName(name);
+            CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfoByName(name);
         }
 
         return playerInfo;
@@ -37,7 +37,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         CommonPlayer playerInfo = getByName(name);
 
         if (playerInfo == null) {
-            return CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByName(name);
+            return CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfoByName(name);
         }
 
         return playerInfo;
@@ -59,7 +59,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         CommonPlayer playerInfo = getByDisplayName(displayName);
 
         if (playerInfo == null) {
-            CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByDisplayName(displayName);
+            CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfoByDisplayName(displayName);
         }
 
         return playerInfo;
@@ -69,7 +69,7 @@ public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
         CommonPlayer playerInfo = getByDisplayName(displayName);
 
         if (playerInfo == null) {
-            return CommonSenderModule.getPlayerInfoDao().selectPlayerInfoByDisplayName(displayName);
+            return CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfoByDisplayName(displayName);
         }
 
         return playerInfo;

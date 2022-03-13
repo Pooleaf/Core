@@ -1,14 +1,16 @@
 package net.pooleaf.core.modules.channel;
 
 import lombok.Getter;
+import net.pooleaf.core.Core;
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.channel.common.channel.ChannelStatus;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroupManager;
 import net.pooleaf.core.modules.channel.common.channel.ChannelManager;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapterFactory;
-import net.pooleaf.core.modules.channel.common.redis.RedisManager;
+import net.pooleaf.core.modules.channel.common.redis.ChannelRedisManager;
 import net.pooleaf.core.plugin.CorePlugin;
 
 import java.util.Collection;
@@ -27,7 +29,7 @@ public class ChannelModule extends CoreModule {
   private static ChannelGroupManager channelGroupManager = new ChannelGroupManager();
 
   @Getter
-  private static RedisManager redisManager;
+  private static ChannelRedisManager redisManager;
 
   @Getter
   private static ChannelAdapter channelAdapter;
@@ -45,13 +47,28 @@ public class ChannelModule extends CoreModule {
 
   @Override
   public void onEnable(CorePlugin plugin) {
-    redisManager = new RedisManager();
+    redisManager = new ChannelRedisManager();
     redisManager.connect();
 
     channelAdapter = new ChannelAdapterFactory().createChannelAdapter();
     channelAdapter.onEnable();
   }
 
+  @Override
+  public void onDisable(CorePlugin plugin) {
+    getCurrentChannel().setPlayerCount(0);
+    getCurrentChannel().setMaxPlayerCount(0);
+    getCurrentChannel().getPlayerNames().clear();
+    getCurrentChannel().getPlayerUuids().clear();
+    getCurrentChannel().getDatas().clear();
+    getCurrentChannel().setChannelStatus(ChannelStatus.OFFLINE);
+    getCurrentChannel().setOnline(false);
+    getCurrentChannel().save();
+  }
+
+  public static String getCurrentChannelName() {
+    return Core.getServerName();
+  }
 
   public static Collection<Channel> getChannels() {
     return channelManager.getDatas().values();

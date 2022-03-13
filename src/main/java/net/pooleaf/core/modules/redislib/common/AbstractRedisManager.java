@@ -6,6 +6,8 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.pooleaf.core.Core;
@@ -13,11 +15,8 @@ import net.pooleaf.core.modules.redislib.common.config.RedisConfig;
 import net.pooleaf.core.modules.redislib.common.listener.RedisKeySpaceEventListener;
 import net.pooleaf.core.modules.redislib.common.listener.RedisMessageListener;
 import net.pooleaf.core.modules.support.common.logger.Logger;
-import net.pooleaf.core.modules.support.common.platform.Platform;
-
-import java.util.HashSet;
-import java.util.Set;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @Getter
 public class AbstractRedisManager {
@@ -27,7 +26,7 @@ public class AbstractRedisManager {
     public static final String BROADCAST_CHANNEL = SUBSCRIBE_PREFIX + "broadcast";
 
 
-    private RedisConfig config = new RedisConfig();
+    private RedisConfig config;
     private Set<RedisDao> daos = new HashSet<>();
 
 
@@ -40,14 +39,13 @@ public class AbstractRedisManager {
     private RedisPubSubAsyncCommands<String, String> pubSubAsyncCommands;
 
 
+    public AbstractRedisManager(CorePlugin plugin) {
+        config = new RedisConfig(plugin);
+    }
+
+
     public void loadConfig() {
         try {
-            if (Platform.getCurrentPlatform() == Platform.BUNGEECORD) {
-                config.setServerName(null);
-            } else {
-                config.setServerName(Core.getServerFolderName().toLowerCase());
-            }
-
             config.load();
             config.save();
             Logger.log(getClass().getSimpleName() + ": Redis 설정을 불러왔습니다.");
@@ -65,6 +63,14 @@ public class AbstractRedisManager {
             loadConfig();
 
             if (config.getUseCorePluginRedisManager() != null && config.getUseCorePluginRedisManager()) {
+                client = Core.getRedisManager().getClient();
+
+                connection = Core.getRedisManager().getConnection();
+                pubSubConnection = Core.getRedisManager().getPubSubConnection();
+
+                asyncCommands = Core.getRedisManager().getAsyncCommands();
+                pubSubAsyncCommands = Core.getRedisManager().getPubSubAsyncCommands();
+
                 Logger.log(getClass().getSimpleName() + ": Core 플러그인의 RedisManager를 사용합니다.");
             } else {
                 RedisURI uri = RedisURI.Builder
@@ -81,7 +87,7 @@ public class AbstractRedisManager {
 
                 asyncCommands.configSet("notify-keyspace-events", "KEA");
                 pubSubAsyncCommands.psubscribe("__keyspace@0__:*");
-                pubSubAsyncCommands.subscribe(SUBSCRIBE_PREFIX + config.getServerName());
+                pubSubAsyncCommands.subscribe(SUBSCRIBE_PREFIX + Core.getServerName());
                 pubSubAsyncCommands.subscribe(BROADCAST_CHANNEL);
 
                 pubSubConnection.addListener(new RedisKeySpaceEventListener());
@@ -113,7 +119,7 @@ public class AbstractRedisManager {
         }
 
         pubSubAsyncCommands.punsubscribe("__keyspace@0__:*");
-        pubSubAsyncCommands.unsubscribe(SUBSCRIBE_PREFIX + config.getServerName());
+        pubSubAsyncCommands.unsubscribe(SUBSCRIBE_PREFIX + Core.getServerName());
         pubSubAsyncCommands.unsubscribe(BROADCAST_CHANNEL);
 
         connection.close();

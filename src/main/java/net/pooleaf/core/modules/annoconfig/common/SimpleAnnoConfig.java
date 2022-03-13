@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.io.File;
+import lombok.Setter;
 import net.pooleaf.core.modules.annoconfig.common.anno.ConfigExclude;
 
 @AllArgsConstructor
 public class SimpleAnnoConfig {
 
   @ConfigExclude
+  @Setter
   @Getter
   private File file;
 

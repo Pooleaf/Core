@@ -13,10 +13,13 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
     Core.init(this);
 
     registerEventListeners();
+    registerCommonEventListeners();
     registerCommands();
+  }
 
-    Core.getSqlManager().connect();
-    Core.getRedisManager().connect();
+  @Override
+  public void onEnd() {
+    Core.getModuleManager().endModules();
   }
 
 }

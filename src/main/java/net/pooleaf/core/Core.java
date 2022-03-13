@@ -63,7 +63,7 @@ public class Core {
    * @return 서버 폴더 이름
    */
   @SneakyThrows
-  public static String getServerFolderName() {
+  public static String getServerName() {
     String path = new File("").getCanonicalPath();
     String folderName = path.substring(path.lastIndexOf(File.separator) + 1, path.length());
     return folderName;

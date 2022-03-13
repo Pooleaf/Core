@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public abstract class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform에 맞는 Player
+public class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform에 맞는 Player
 
     protected UUID uuid; // 플레이어 UUID
 
@@ -20,6 +20,16 @@ public abstract class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각
         return false;
     }
 
+    @Override
+    public T getPlatformSender() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean hasPermission(String permission) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * 플레이어가 서버에 접속 중인지 확인합니다.
      * @return 플레이어의 서버 접속 상태
@@ -28,6 +38,8 @@ public abstract class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각
         return getPlatformSender() != null;
     }
 
-    public abstract void kickPlayer(String message);
+    public void kickPlayer(String message) {
+        throw new UnsupportedOperationException();
+    }
 
 }

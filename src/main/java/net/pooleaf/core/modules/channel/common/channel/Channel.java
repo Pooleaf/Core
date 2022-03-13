@@ -1,14 +1,14 @@
 package net.pooleaf.core.modules.channel.common.channel;
 
 import com.google.gson.internal.LinkedTreeMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import lombok.Data;
 import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 public class Channel {
@@ -27,7 +27,7 @@ public class Channel {
     private List<String> playerNames = new ArrayList<>();
     private List<UUID> playerUuids = new ArrayList<>();
 
-    private LinkedTreeMap<String, Object> datas;
+    private Map<String, Object> datas = new LinkedTreeMap<>();
 
 
     public boolean hasDisplayName() {

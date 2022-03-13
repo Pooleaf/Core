@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.bukkit.event.Listener;
 
 public class CommonEventManager {
 
@@ -37,6 +38,11 @@ public class CommonEventManager {
     public void registerListeners(CorePlugin plugin) {
         for (Class targetClass : ReflectionUtil.getClasses(plugin)) {
             try {
+                // Listener 클래스인지 확인
+                if (!(CommonEventListener.class.isAssignableFrom(targetClass))) {
+                    continue;
+                }
+
                 CommonEventListener listener = (CommonEventListener) targetClass.newInstance();
 
                 // 자동 등록 제외 Listener

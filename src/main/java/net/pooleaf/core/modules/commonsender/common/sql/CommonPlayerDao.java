@@ -1,20 +1,20 @@
 package net.pooleaf.core.modules.commonsender.common.sql;
 
-import net.pooleaf.core.Core;
+import java.util.UUID;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
+import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
 import net.pooleaf.core.modules.sqllib.common.SqlDao;
 import net.pooleaf.core.modules.sqllib.common.SqlTable;
-
-import java.util.UUID;
 
 public class CommonPlayerDao extends SqlDao {
 
     private SqlTable playerInfoTable;
 
 
-    public CommonPlayerDao() {
-        super(Core.getSqlManager());
+    public CommonPlayerDao(AbstractSqlManager sqlManager) {
+        super(sqlManager);
     }
+
 
     @Override
     public void onConnected() {

@@ -1,18 +1,21 @@
 package net.pooleaf.core.modules.commonsender;
 
 import com.google.common.base.Preconditions;
+import java.util.UUID;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
-import net.pooleaf.core.modules.commonsender.bukkit.BukkitConsoleSender;
 import net.pooleaf.core.modules.commonsender.bukkit.BukkitSenderAdapter;
-import net.pooleaf.core.modules.commonsender.bungee.BungeeConsoleSender;
 import net.pooleaf.core.modules.commonsender.bungee.BungeeSenderAdapter;
-import net.pooleaf.core.modules.commonsender.common.*;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.commonsender.common.CommonConsoleSender;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayerManager;
+import net.pooleaf.core.modules.commonsender.common.CommonSenderAdapter;
+import net.pooleaf.core.modules.commonsender.common.CommonSenderFactory;
 import net.pooleaf.core.modules.commonsender.common.sql.CommonPlayerDao;
+import net.pooleaf.core.modules.commonsender.common.sql.CommonSenderSqlManager;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.plugin.CorePlugin;
-
-import java.util.UUID;
 
 /**
  * 플랫폼에 상관없이 사용할 수 있는 플레이어 객체를 제공하고,
@@ -24,7 +27,7 @@ public class CommonSenderModule extends CoreModule {
     private static CommonPlayerManager commonPlayerManager = new CommonPlayerManager();
 
     @Getter
-    private static CommonPlayerDao playerInfoDao;
+    private static CommonSenderSqlManager sqlManager;
 
     @Getter
     private static CommonConsoleSender consoleSender;
@@ -42,25 +45,26 @@ public class CommonSenderModule extends CoreModule {
 
     @Override
     public String[] getDepends() {
-        return new String[] { "Support", "Sqlib" };
+        return new String[] { "Support", "SqlLib" };
     }
 
     @Override
     public void onEnable(CorePlugin plugin) {
-        playerInfoDao = new CommonPlayerDao();
+        sqlManager = new CommonSenderSqlManager();
+        sqlManager.connect();
+
+        commonSenderAdapter = new CommonSenderFactory().createCommonSenderAdapter();
+        consoleSender = new CommonSenderFactory().createCommonConsoleSender();
 
         switch (Platform.getCurrentPlatform()) {
             case BUKKIT:
-                bukkitSenderAdapter = new BukkitSenderAdapter();
-                commonSenderAdapter = bukkitSenderAdapter;
-                consoleSender = new BukkitConsoleSender();
+                bukkitSenderAdapter = (BukkitSenderAdapter) commonSenderAdapter;
                 break;
             case BUNGEECORD:
-                bungeeSenderAdapter = new BungeeSenderAdapter();
-                commonSenderAdapter = bungeeSenderAdapter;
-                consoleSender = new BungeeConsoleSender();
+                bungeeSenderAdapter = (BungeeSenderAdapter) commonSenderAdapter;
                 break;
         }
+
     }
 
 
