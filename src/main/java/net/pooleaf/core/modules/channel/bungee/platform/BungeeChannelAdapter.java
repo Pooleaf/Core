@@ -1,17 +1,76 @@
 package net.pooleaf.core.modules.channel.bungee.platform;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.channel.ChannelModule;
-import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
+import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
+import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
+import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
+import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
+import net.pooleaf.core.modules.support.common.logger.Logger;
 
 public class BungeeChannelAdapter implements ChannelAdapter {
 
   @Override
   public void onEnable() {
+    // Redis에서 채널/채널 그룹 정보 불러오기
+    ChannelModule.getRedisManager().channel().loadAllChannels();
+    ChannelModule.getRedisManager().channelGroup().loadAllGroups();
+
+    // 채널 설정
+    Map<String, Channel> newChannelDatas = new HashMap<>();
+
+    CommonConfig channelConfig = CommonConfigModule.createConfig(new File(Core.getPlugin().getDataFolder(), "channel-config.yml")).load();
+    for (ServerInfo serverInfo : ProxyServer.getInstance().getServers().values()) {
+      channelConfig.setDefault("채널." + serverInfo.getName() + ".표기", serverInfo.getName());
+      channelConfig.setDefault("채널." + serverInfo.getName() + ".그룹", "그룹1");
+    }
+    channelConfig.save();
+
+    for (String key : channelConfig.getKeys("채널")) {
+      // 없는 채널 건너뛰기
+      if (ProxyServer.getInstance().getServerInfo(key) == null) {
+        continue;
+      }
+
+      Channel channel = ChannelModule.getChannelManager().getOrMake(key, new Channel(key));
+      channel.setDisplayName(channelConfig.getString("채널." + key + ".표기"));
+      channel.setGroupName(channelConfig.getString("채널." + key + ".그룹"));
+      channel.save();
+
+      newChannelDatas.put(channel.getName(), channel);
+    }
+
+    ChannelModule.getChannelManager().setDatas(newChannelDatas);
+
+    // 채널 그룹 설정
+    Map<String, ChannelGroup> newChannelGroupDatas = new HashMap<>();
+
+    if (!channelConfig.getFile().exists()) {
+      channelConfig.setDefault("채널그룹.그룹1.표기", "그룹1");
+      channelConfig.save();
+    }
+
+    for (String key : channelConfig.getKeys("채널그룹")) {
+      ChannelGroup channelGroup = ChannelModule.getChannelGroupManager().getOrMake(key, new ChannelGroup(key));
+      channelGroup.setDisplayName(channelConfig.getString("채널그룹." + key + ".표기"));
+      channelGroup.save();
+
+      newChannelGroupDatas.put(channelGroup.getName(), channelGroup);
+    }
+
+    ChannelModule.getChannelGroupManager().setDatas(newChannelGroupDatas);
+
+    // 사용하지 않는 채널/채널그룹 Redis에서 삭제
+    ChannelModule.getRedisManager().channel().removeUnusedChannels();
+    ChannelModule.getRedisManager().channelGroup().removeUnusedChannelGroups();
   }
 
   @Override
@@ -57,17 +116,38 @@ public class BungeeChannelAdapter implements ChannelAdapter {
   }
 
   @Override
-  public void remoteCommand(String channelName, String sender, String commandLine) {
-    Channel channel = ChannelModule.getChannel(channelName);
-    if (channel == null) {
+  public void broadcast(String channelName, String senderName, String message) {
+    // 없는 채널이면 실행 안함
+    if (ChannelModule.getChannel(channelName) == null) {
       return;
     }
 
-    channel.sendData("RemoteCommand", sender, commandLine);
+    // 로그
+    Logger.nlog("§e[원격 공지] §f" + senderName+ " §e→ §f" + channelName + ": " + message);
+
+    // 채널로 보내기
+    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL
+        , "Broadcast", senderName, message);
+  }
+
+  @Override
+  public void remoteCommand(String channelName, String senderName, String commandLine) {
+    // 없는 채널이면 실행 안함
+    if (ChannelModule.getChannel(channelName) == null) {
+      return;
+    }
+
+    // 로그
+    Logger.log("§e[원격 명령] §f" + senderName + " §e→ §f" + channelName + ": " + commandLine);
+
+    // 채널로 보내기
+    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL
+        , "RemoteCommand", senderName, commandLine);
   }
 
   @Override
   public void sendData(String channelName, String task, Object... datas) {
+    // 채널로 보내기
     ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL, task, datas);
   }
 

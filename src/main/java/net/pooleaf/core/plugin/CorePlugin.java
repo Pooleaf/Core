@@ -1,9 +1,9 @@
 package net.pooleaf.core.plugin;
 
-import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-
 import java.io.File;
 import java.io.InputStream;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 
 public interface CorePlugin {
 
@@ -12,6 +12,7 @@ public interface CorePlugin {
 
   String getName();
   String getPrefix();
+  CommonChatColor getColor();
   String getVersion();
   String getPluginPackage();
 

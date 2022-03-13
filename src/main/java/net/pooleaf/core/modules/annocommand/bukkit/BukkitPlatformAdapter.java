@@ -84,7 +84,7 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
 
     @Override
     public boolean hasPermission(Object sender, String permission) {
-        return ((CommandSender) sender).hasPermission(permission);
+        return ((sender instanceof Player) && ((Player) sender).isOp()) || ((CommandSender) sender).hasPermission(permission);
     }
 
     @Override

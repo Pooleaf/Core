@@ -21,9 +21,8 @@ import net.pooleaf.core.plugin.CorePlugin;
 @Getter
 public class AbstractRedisManager {
 
-    public static final String SUBSCRIBE_PREFIX = "core:";
-    public static final String BUNGEECORD_CHANNEL = SUBSCRIBE_PREFIX + "bungeecord";
-    public static final String BROADCAST_CHANNEL = SUBSCRIBE_PREFIX + "broadcast";
+    public static final String BUNGEECORD_CHANNEL = "bungeecord";
+    public static final String BROADCAST_CHANNEL = "broadcast";
 
 
     private RedisConfig config;
@@ -87,7 +86,7 @@ public class AbstractRedisManager {
 
                 asyncCommands.configSet("notify-keyspace-events", "KEA");
                 pubSubAsyncCommands.psubscribe("__keyspace@0__:*");
-                pubSubAsyncCommands.subscribe(SUBSCRIBE_PREFIX + Core.getServerName());
+                pubSubAsyncCommands.subscribe(Core.getServerName());
                 pubSubAsyncCommands.subscribe(BROADCAST_CHANNEL);
 
                 pubSubConnection.addListener(new RedisKeySpaceEventListener());
@@ -119,7 +118,7 @@ public class AbstractRedisManager {
         }
 
         pubSubAsyncCommands.punsubscribe("__keyspace@0__:*");
-        pubSubAsyncCommands.unsubscribe(SUBSCRIBE_PREFIX + Core.getServerName());
+        pubSubAsyncCommands.unsubscribe(Core.getServerName());
         pubSubAsyncCommands.unsubscribe(BROADCAST_CHANNEL);
 
         connection.close();
@@ -135,7 +134,7 @@ public class AbstractRedisManager {
     }
 
     public void send(String serverName, String messageChannel, Object... datas) {
-        send(serverName, messageChannel, datas);
+        send(serverName, new Object[] {messageChannel, datas});
     }
 
     public void sendToBungeeCord(String messageChannel, Object... datas) {
@@ -143,7 +142,7 @@ public class AbstractRedisManager {
     }
 
     public void broadcast(String messageChannel, Object... datas) {
-        send(BROADCAST_CHANNEL, datas);
+        send(BROADCAST_CHANNEL, messageChannel, datas);
     }
 
 }

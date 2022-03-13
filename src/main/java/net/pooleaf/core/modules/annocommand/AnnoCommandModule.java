@@ -24,7 +24,6 @@ public class AnnoCommandModule extends CoreModule {
   @Override
   public void onEnable(CorePlugin plugin) {
     commandManager.init(plugin);
-    commandManager.registerCommands(plugin);
   }
 
 

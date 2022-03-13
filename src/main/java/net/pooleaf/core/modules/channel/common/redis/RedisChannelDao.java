@@ -58,11 +58,6 @@ public class RedisChannelDao extends RedisDao {
             String name = keyValue.getKey().substring(CHANNEL_INFO_KEY.length());
             String jsonString = keyValue.getValue();
 
-            // 현재 채널 제외하고 불러오기
-            if (name.equalsIgnoreCase(ChannelModule.getCurrentChannelName())) {
-                continue;
-            }
-
             Channel channel = ChannelModule.getChannelManager().get(name);
             if (channel == null) {
                 channel = new Channel(name);

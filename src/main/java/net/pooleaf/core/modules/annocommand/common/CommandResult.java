@@ -15,8 +15,8 @@ public class CommandResult {
 
     private Object sender;
 
-    private String entered;
-    private String enteredArguments;
+    private String entered; // 입력한 명령어 전체
+    private String enteredArguments; // 입력한 명령어 Arguments
 
     private List<String> arguments = new ArrayList<>();
 

@@ -13,6 +13,8 @@ public interface ChannelAdapter {
 
   boolean join(String channelName, UUID uuid);
 
+  void broadcast(String channelName, String senderName, String message);
+
   void remoteCommand(String channelName, String senderName, String commandLine);
 
   void sendData(String channelName, String task, Object... datas);

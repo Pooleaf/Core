@@ -12,6 +12,7 @@ import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bungee.util.BungeeReflectionUtil;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
@@ -22,8 +23,13 @@ import java.io.InputStream;
 
 public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
 
+  @Setter
   @Getter
   private String prefix;
+
+  @Setter
+  @Getter
+  private CommonChatColor color = CommonChatColor.WHITE;
 
   @Getter
   private boolean enabled;
@@ -36,7 +42,7 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   @Override
   public void onEnable() {
     Core.getPluginManager().register(this);
-    setPrefix("§7[ " + getName() + " ] ");
+    setPrefix("§f[ " + getName() + " ] ");
 
     onStart();
     enabled = true;

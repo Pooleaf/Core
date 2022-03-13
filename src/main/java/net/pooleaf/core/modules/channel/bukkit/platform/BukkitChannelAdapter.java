@@ -15,8 +15,12 @@ public class BukkitChannelAdapter implements ChannelAdapter {
 
   @Override
   public void onEnable() {
-    Channel channel = new Channel(ChannelModule.getCurrentChannelName());
-    ChannelModule.getChannelManager().set(channel.getName(), channel);
+    // 불러오기
+    ChannelModule.getRedisManager().channel().loadAllChannels();
+    ChannelModule.getRedisManager().channelGroup().loadAllGroups();
+
+    // 현재 채널 정보 저장
+    Channel channel = ChannelModule.getChannelManager().getOrMake(ChannelModule.getCurrentChannelName(), new Channel(ChannelModule.getCurrentChannelName()));
 
     channel.setOnline(true);
     channel.setChannelStatus(ChannelStatus.PREPARING);
@@ -26,16 +30,11 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     channel.setPlayerUuids(Bukkit.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toList()));
     channel.save();
 
-    // 현재 채널 정보 저장
     Bukkit.getScheduler().runTask((Plugin) Core.getPlugin(), () -> {
       channel.setChannelStatus(ChannelStatus.RUNNING);
       channel.setAllowFastJoin(true);
       channel.save();
     });
-
-    // 불러오기
-    ChannelModule.getRedisManager().channel().loadAllChannels();
-    ChannelModule.getRedisManager().channelGroup().loadAllGroup();
   }
 
   @Override
@@ -60,15 +59,40 @@ public class BukkitChannelAdapter implements ChannelAdapter {
   }
 
   @Override
+  public void broadcast(String channelName, String senderName, String message) {
+    // 없는 채널이면 실행 안함
+    if (ChannelModule.getChannel(channelName) == null) {
+      return;
+    }
+
+    // 번지코드로 보내기 (로그용)
+    ChannelModule.getRedisManager().sendToBungeeCord(ChannelModule.MESSAGE_CHANNEL
+        , "Broadcast", channelName, senderName, message);
+    // 채널로 보내기
+    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL
+        , "Broadcast", senderName, message);
+  }
+
+  @Override
   public void remoteCommand(String channelName, String senderName, String commandLine) {
+    // 없는 채널이면 실행 안함
+    if (ChannelModule.getChannel(channelName) == null) {
+      return;
+    }
+
+    // 번지코드로 보내기 (로그용)
     ChannelModule.getRedisManager().sendToBungeeCord(ChannelModule.MESSAGE_CHANNEL
         , "RemoteCommand", channelName, senderName, commandLine);
+    // 채널로 보내기
+    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL
+        , "RemoteCommand", senderName, commandLine);
   }
 
   @Override
   public void sendData(String channelName, String task, Object... datas) {
-    ChannelModule.getRedisManager().sendToBungeeCord(ChannelModule.MESSAGE_CHANNEL
-        , "SendData", channelName, task, datas);
+    // 채널로 보내기
+    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL
+        , "SendData", task, datas);
   }
 
 }

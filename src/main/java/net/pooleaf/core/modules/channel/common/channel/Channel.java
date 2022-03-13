@@ -146,7 +146,17 @@ public class Channel {
     }
 
     /**
-     * 해당 채널에 원격 명령어를 보냅니다.
+     * 채널에 공지 메시지를 보냅니다.
+     * @param senderName 공지 메시지를 보내는 사람
+     * @param message 공지 메시지
+     */
+    public void broadcast(String senderName, String message) {
+        ChannelModule.getChannelAdapter().broadcast(name, senderName, message);
+    }
+
+    /**
+     * 채널에 원격 명령어를 보냅니다.
+     * @param senderName 명령어를 보내는 사람
      * @param commandLine 명령어
      */
     public void remoteCommand(String senderName, String commandLine) {
@@ -154,7 +164,7 @@ public class Channel {
     }
 
     /**
-     * 해당 채널에 데이터를 보냅니다.
+     * 채널에 데이터를 보냅니다.
      * @param task 할 일
      * @param datas 데이터
      */

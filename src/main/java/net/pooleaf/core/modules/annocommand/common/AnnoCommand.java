@@ -10,6 +10,8 @@ import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonscheduler.CommonSchedulerModule;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @Data
 public class AnnoCommand {
@@ -17,6 +19,7 @@ public class AnnoCommand {
     private final String ARGUMENT_REGEX = "<.[^>]*>|\\[.[^\\]]*\\]"; // <argument> or [argument]
     private final Pattern ARGUMENT_PATTERN = Pattern.compile(ARGUMENT_REGEX);
 
+    private final CorePlugin plugin;
 
     private String parent;
     private List<String> name;
@@ -74,11 +77,11 @@ public class AnnoCommand {
     }
 
     public String getUsage(String entered) {
-        String usage;
+        String usage = "§f";
         if (entered == null) {
-            usage = "/" + getCommandLine();
+            usage += "/" + getCommandLine();
         } else {
-            usage = "/" + entered + " " + name.get(0);
+            usage += "/" + entered + " " + name.get(0);
         }
 
         if (arguments != null) {
@@ -86,6 +89,10 @@ public class AnnoCommand {
         }
 
         if (description != null) {
+            if (plugin != null) {
+                usage += plugin.getColor();
+            }
+
             usage += " - " + description;
         }
 

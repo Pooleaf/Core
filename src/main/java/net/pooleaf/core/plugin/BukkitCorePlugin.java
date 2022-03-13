@@ -12,6 +12,7 @@ import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
@@ -20,8 +21,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
+  @Setter
   @Getter
   private String prefix;
+
+  @Setter
+  @Getter
+  private CommonChatColor color = CommonChatColor.WHITE;
 
   @Setter(AccessLevel.PROTECTED)
   @Getter
@@ -31,9 +37,7 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   @Override
   public final void onEnable() {
     Core.getPluginManager().register(this);
-    setPrefix("§7[ " + getName() + " ] ");
-
-    Debugger.addListener(Bukkit.getConsoleSender());
+    setPrefix("§f[ " + getName() + " ] ");
 
     onStart();
   }
@@ -83,10 +87,6 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   @Override
   public String getPluginPackage() {
     return getDescription().getMain().substring(0, getDescription().getMain().lastIndexOf("."));
-  }
-
-  public void setPrefix(String prefix) {
-    this.prefix = prefix;
   }
 
   public void registerLoggerPrefix() {

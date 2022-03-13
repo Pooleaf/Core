@@ -20,4 +20,6 @@ public @interface Command {
     boolean helpCommand() default false;
     boolean async() default true;
 
+    boolean usePlatformPrefix() default true;
+
 }

@@ -1,18 +1,18 @@
 package net.pooleaf.core.modules.annocommand.common;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-import net.pooleaf.core.plugin.CorePlugin;
+import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public class CommandManager {
 
@@ -58,7 +58,7 @@ public class CommandManager {
             if (method.getParameterCount() != 2) continue;
             if (!CommandResult.class.isAssignableFrom(method.getParameterTypes()[1])) continue;
 
-            AnnoCommand command = new AnnoCommand();
+            AnnoCommand command = new AnnoCommand(Core.getPluginManager().getPluginByPackage(commandClass.getCanonicalName()));
 
             // 부모 명령어 설정
             if (anno.parent().length() > 0) {
@@ -66,7 +66,15 @@ public class CommandManager {
             }
 
             // 명령어 이름
-            command.setName(Arrays.asList(anno.name()));
+            List<String> names = new ArrayList<>();
+            for (String name : anno.name()) {
+                names.add(name);
+
+                if (anno.usePlatformPrefix()) {
+                    names.add(Platform.getCurrentPlatform().getPrefix() + name);
+                }
+            }
+            command.setName(names);
 
             // args
             if (anno.arguments().length() > 0) {
@@ -252,6 +260,7 @@ public class CommandManager {
 
                 command.execute(result);
 
+                platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] (" + page + " / " + maxPage + ")");
                 for (int i = (page - 1) * helpCommandCountPerPage; i < page * helpCommandCountPerPage; i++) {
                     if (i >= subCommands.size()) break;
 

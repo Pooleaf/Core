@@ -69,6 +69,11 @@ tasks {
         into("E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\update")
     }
 
+    register<Copy>("copyToServerUpdateBungee") {
+        from(shadowJar)
+        into("E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\bungeecord\\update")
+    }
+
     register<Copy>("copyToServerUpdateBungeeBukkit") {
         from(shadowJar)
         into("E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\channel_1\\update")

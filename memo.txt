@@ -50,7 +50,11 @@ Game 종류는 한개로 가정
 [Channel]
 채널 업데이트 패킷 받으면 채널 정보 업데이트 해야함 o
 명령어
+채널/채널그룹 데이터 설정 명령어
+* 채널 오프라인 체크 만들어야함
+* 크래시 체크
 
+ChannelPlayer 객체 만들어서 메시지도 보낼 수 있게?
 
 BaseComponent sendMessage 만들어야함
 

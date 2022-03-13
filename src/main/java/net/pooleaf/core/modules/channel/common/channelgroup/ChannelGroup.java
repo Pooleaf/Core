@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.channel.common.channelgroup;
 
+import java.util.Objects;
 import lombok.Data;
 import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
@@ -127,13 +128,15 @@ public class ChannelGroup {
 
     /**
      * 해당 그룹에서 온라인이고 가장 사람이 적은 채널을 반환합니다.
+     * @param excludeChannel 제외할 채널
      * @return 그룹에서 온라인이고 가장 사람이 적은 채널
      */
-    public Channel getFastJoinChannel() {
+    public Channel getFastJoinChannel(Channel excludeChannel) {
         Channel fastJoinChannel = null;
 
         for (Channel onlineChannel : getChannelsCanJoin()) {
-            if (!onlineChannel.isAllowFastJoin()) {
+            if (Objects.equals(onlineChannel, excludeChannel) // 예외 채널 제외
+                || !onlineChannel.isAllowFastJoin()) { // 빠른접속 비허용 채널 제외
                 continue;
             }
 
@@ -148,13 +151,39 @@ public class ChannelGroup {
     }
 
     /**
+     * 해당 그룹에서 온라인이고 가장 사람이 적은 채널을 반환합니다.
+     * @return 그룹에서 온라인이고 가장 사람이 적은 채널
+     */
+    public Channel getFastJoinChannel() {
+        return getFastJoinChannel((Channel) null);
+    }
+
+    /**
+     * 해당 그룹에서 온라인이고 가장 사람이 적고 해당 플레이어가 접속 중이 아닌 채널을 반환합니다.
+     * @return 그룹에서 온라인이고 가장 사람이 적은 채널
+     */
+    public Channel getFastJoinChannel(String playerName) {
+        Channel playerChannel = ChannelModule.getChannelHasPlayer(playerName);
+        return getFastJoinChannel(playerChannel);
+    }
+
+    /**
+     * 해당 그룹에서 온라인이고 가장 사람이 적고 해당 플레이어가 접속 중이 아닌 채널을 반환합니다.
+     * @return 그룹에서 온라인이고 가장 사람이 적은 채널
+     */
+    public Channel getFastJoinChannel(UUID uuid) {
+        Channel playerChannel = ChannelModule.getChannelHasPlayer(uuid);
+        return getFastJoinChannel(playerChannel);
+    }
+
+    /**
      * 플레이어를 해당 그룹의 온라인이고 가장 사람이 적은 채널에 입장시킵니다.
      * @param playerName 플레이어 이름
      * @return 입장 성공 여부
      */
 
     public Channel fastJoin(String playerName) {
-        Channel channel = getFastJoinChannel();
+        Channel channel = getFastJoinChannel(playerName);
         if (channel != null) {
             channel.join(playerName);
         }
@@ -168,7 +197,7 @@ public class ChannelGroup {
      * @return 입장 성공 여부
      */
     public Channel fastJoin(UUID uuid) {
-        Channel channel = getFastJoinChannel();
+        Channel channel = getFastJoinChannel(uuid);
         if (channel != null) {
             channel.join(uuid);
         }
@@ -177,7 +206,18 @@ public class ChannelGroup {
     }
 
     /**
-     * 해당 그룹의 모든 채널에 원격 명령어를 보냅니다.
+     * 그룹의 모든 채널에 공지 메시지를 보냅니다.
+     * @param senderName 공지 메시지를 보내는 사람
+     * @param message 공지 메시지
+     */
+    public void broadcast(String senderName, String message) {
+        for (Channel onlineChannel : getOnlineChannels()) {
+            onlineChannel.broadcast(senderName, message);
+        }
+    }
+
+    /**
+     * 그룹의 모든 채널에 원격 명령어를 보냅니다.
      * @param senderName 보내는사람 이름
      * @param commandLine 명령어
      */

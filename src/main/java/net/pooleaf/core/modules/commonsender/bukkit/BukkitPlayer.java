@@ -23,7 +23,7 @@ public class BukkitPlayer extends CommonPlayer<Player> {
 
   @Override
   public boolean hasPermission(String node) {
-    return getPlatformSender().hasPermission(node);
+    return getPlatformSender().isOp() || getPlatformSender().hasPermission(node);
   }
 
   @Override

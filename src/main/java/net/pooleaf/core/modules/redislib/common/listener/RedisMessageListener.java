@@ -1,9 +1,9 @@
 package net.pooleaf.core.modules.redislib.common.listener;
 
 import io.lettuce.core.pubsub.RedisPubSubListener;
-import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.redislib.common.event.RedisMessageEvent;
+import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 
 public class RedisMessageListener implements RedisPubSubListener<String, String> {
@@ -11,7 +11,7 @@ public class RedisMessageListener implements RedisPubSubListener<String, String>
     @Override
     public void message(String s, String s2) {
         RedisMessageEvent event = new RedisMessageEvent(s, s2);
-        Logger.log(event);
+        Debugger.log(event);
 
         CommonEventModule.callEvent(event);
     }

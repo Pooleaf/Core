@@ -4,11 +4,11 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
-import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.annocommand.common.AnnoCommand;
 import net.pooleaf.core.modules.annocommand.common.PlatformAdapter;
-import org.bukkit.command.ConsoleCommandSender;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public class BungeePlatformAdapter implements PlatformAdapter {
 
@@ -29,7 +29,7 @@ public class BungeePlatformAdapter implements PlatformAdapter {
             command.setPlayerOnly(true);
         }
         /* Console Only */
-        else if (firstParameterType.equals(ConsoleCommandSender.class) || ConsoleCommandSender.class.isAssignableFrom(firstParameterType)) {
+        else if (firstParameterType.equals(CommandSender.class) || CommonCommandSender.class.isAssignableFrom(firstParameterType)) {
             command.setConsoleOnly(true);
         }
         /* Invalid Parameter Type */
@@ -57,7 +57,7 @@ public class BungeePlatformAdapter implements PlatformAdapter {
 
     @Override
     public boolean isConsole(Object sender) {
-        return sender instanceof ConsoleCommandSender;
+        return (sender instanceof CommandSender) && !isPlayer(sender);
     }
 
     @Override

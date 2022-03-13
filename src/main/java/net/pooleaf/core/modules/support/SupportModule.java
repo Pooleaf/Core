@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.support;
 
 import net.pooleaf.core.module.CoreModule;
 import net.pooleaf.core.modules.support.common.messager.MessagerInitializer;
+import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.support.bukkit.nms.NmsDetector;
 import net.pooleaf.core.modules.support.common.logger.LoggerInitializer;
@@ -16,11 +17,13 @@ public class SupportModule extends CoreModule {
 
   @Override
   public void onEnable(CorePlugin plugin) {
-    // Nms
-    NmsDetector.detectNmsVersion();
-
     // Platform
     PlatformDetector.detectPlatform();
+
+    // Nms
+    if (Platform.getCurrentPlatform() == Platform.BUKKIT) {
+      NmsDetector.detectNmsVersion();
+    }
 
     // Logger
     LoggerInitializer.init();
