@@ -9,11 +9,12 @@ import lombok.Setter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
+import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
+import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
-import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
@@ -31,7 +32,10 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   @Setter(AccessLevel.PROTECTED)
   @Getter
-  private SimpleAnnoConfig coreConfig;
+  private SimpleAnnoConfig annoConfig;
+
+  @Getter
+  private CommonConfig commonConfig = CommonConfigModule.createConfig(new File(getDataFolder(), "config.yml"));
 
 
   @Override
@@ -63,12 +67,17 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
   @Override
   public void loadConfig(CommonCommandSender sender) {
-    Preconditions.checkNotNull(coreConfig, "config가 설정되지 않았습니다.");
-
     long startTime = System.currentTimeMillis();
 
-    coreConfig.load();
-    coreConfig.save();
+    if (!commonConfig.getKeys("").isEmpty()) {
+      commonConfig.load();
+      commonConfig.save();
+    }
+
+    if (annoConfig != null) {
+      annoConfig.load();
+      annoConfig.save();
+    }
 
     onConfigLoaded();
 
