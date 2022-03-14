@@ -5,7 +5,7 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.channel.ChannelModule;
-import net.pooleaf.core.modules.channel.bungee.offlinechecker.ChannelOfflineCheckTask;
+import net.pooleaf.core.modules.channel.bungee.offlinecheck.ChannelOfflineCheckTask;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;

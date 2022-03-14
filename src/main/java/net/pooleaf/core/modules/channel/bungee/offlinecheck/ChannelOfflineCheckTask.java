@@ -1,4 +1,4 @@
-package net.pooleaf.core.modules.channel.bungee.offlinechecker;
+package net.pooleaf.core.modules.channel.bungee.offlinecheck;
 
 import lombok.Cleanup;
 import net.md_5.bungee.api.ProxyServer;
