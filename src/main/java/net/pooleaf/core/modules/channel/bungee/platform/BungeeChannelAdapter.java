@@ -1,20 +1,23 @@
 package net.pooleaf.core.modules.channel.bungee.platform;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.channel.ChannelModule;
+import net.pooleaf.core.modules.channel.bungee.offlinechecker.ChannelOfflineCheckTask;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
+import net.pooleaf.core.modules.commonscheduler.CommonSchedulerModule;
 import net.pooleaf.core.modules.support.common.logger.Logger;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class BungeeChannelAdapter implements ChannelAdapter {
 
@@ -24,10 +27,23 @@ public class BungeeChannelAdapter implements ChannelAdapter {
     ChannelModule.getRedisManager().channel().loadAllChannels();
     ChannelModule.getRedisManager().channelGroup().loadAllGroups();
 
+
+    CommonConfig channelConfig = CommonConfigModule.createConfig(new File(Core.getPlugin().getDataFolder(), "channel-config.yml")).load();
+
+    // 오프라인 체크 스케쥴러 설정
+    channelConfig.setDefault("오프라인 체크.사용", true);
+    channelConfig.setDefault("오프라인 체크.간격(초)", 10);
+
+    boolean useOfflineCheck = channelConfig.getBoolean("오프라인 체크.사용");
+    int offlineCheckIntervalSeconds = channelConfig.getInt("오프라인 체크.간격(초)");
+
+    if (useOfflineCheck) {
+      CommonSchedulerModule.getScheduler().runAsync(Core.getPlugin(), new ChannelOfflineCheckTask(), offlineCheckIntervalSeconds);
+    }
+
     // 채널 설정
     Map<String, Channel> newChannelDatas = new HashMap<>();
 
-    CommonConfig channelConfig = CommonConfigModule.createConfig(new File(Core.getPlugin().getDataFolder(), "channel-config.yml")).load();
     for (ServerInfo serverInfo : ProxyServer.getInstance().getServers().values()) {
       channelConfig.setDefault("채널." + serverInfo.getName() + ".표기", serverInfo.getName());
       channelConfig.setDefault("채널." + serverInfo.getName() + ".그룹", "그룹1");
