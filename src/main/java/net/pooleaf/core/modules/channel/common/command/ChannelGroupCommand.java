@@ -57,7 +57,7 @@ public class ChannelGroupCommand {
     if (!channelGroup.getChannels().isEmpty()) {
       for (Channel channel : channelGroup.getChannels()) {
         if (channel.isOnline()) {
-          sender.nmessage("§a" + channel.getName() + "(" + ChannelStatus.getName(channel.getChannelStatus()) + "): " + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
+          sender.nmessage("§a" + channel.getName() + "(" + ChannelStatus.getMessage(channel.getChannelStatus()) + "): " + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
         } else {
           sender.nmessage("§7" + channel.getName());
         }

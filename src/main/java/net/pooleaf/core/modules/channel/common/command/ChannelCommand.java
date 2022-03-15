@@ -58,7 +58,7 @@ public class ChannelCommand {
     sender.nmessage("§e이름 표기: §f" + (channel.hasDisplayName() ? channel.getDisplayName() : "없음"));
     sender.nmessage("§e그룹: §f" + (channel.hasGroup() ? channel.getGroupName() : "없음"));
     sender.nmessage("§e온라인 :§f" + (channel.isOnline() ? "§a온라인" : "§7오프라인"));
-    sender.nmessage("§e상태 :§f" + ChannelStatus.getName(channel.getChannelStatus()));
+    sender.nmessage("§e상태 :§f" + ChannelStatus.getMessage(channel.getChannelStatus()));
     sender.nmessage("§e빠른접속 허용 :§f" + channel.isAllowFastJoin());
     sender.nmessage("§e접속자 수: §f" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
     sender.nmessage("§e접속자 목록: §f" + channel.getPlayerNames());

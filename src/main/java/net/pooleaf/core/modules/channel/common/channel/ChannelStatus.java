@@ -25,11 +25,11 @@ public class ChannelStatus {
   }
 
 
-  public static void setName(int statusCode, String statusMessage) {
+  public static void getMessage(int statusCode, String statusMessage) {
     messages.put(statusCode, statusMessage);
   }
 
-  public static String getName(int statusCode) {
+  public static String getMessage(int statusCode) {
     return messages.get(statusCode);
   }
 
