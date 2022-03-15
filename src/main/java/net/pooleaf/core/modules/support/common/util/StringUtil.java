@@ -97,11 +97,11 @@ public class StringUtil {
     return builder.toString();
   }
 
-  public String translateColorCodes(String text) {
+  public static String translateColorCodes(String text) {
     return CommonChatColor.translateAlternateColorCodes('&', text);
   }
 
-  public List<String> translateColorCodes(List<String> list) {
+  public static List<String> translateColorCodes(List<String> list) {
     List<String> newList = new ArrayList<>();
 
     for (String text : list) {
