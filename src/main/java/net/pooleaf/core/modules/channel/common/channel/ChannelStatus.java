@@ -14,23 +14,27 @@ public class ChannelStatus {
 
 
   @Getter
-  private static Map<Integer, String> names = new HashMap<>();
+  private static Map<Integer, String> messages = new HashMap<>();
 
 
   {
-    names.put(OFFLINE, "오프라인");
-    names.put(CRASHED, "크래쉬");
-    names.put(PREPARING, "준비 중");
-    names.put(RUNNING, "작동 중");
+    messages.put(OFFLINE, "§7오프라인");
+    messages.put(CRASHED, "§c크래시");
+    messages.put(PREPARING, "§6준비 중");
+    messages.put(RUNNING, "§a온라인");
   }
 
 
-  public static void setName(int statusCode, String statusName) {
-    names.put(statusCode, statusName);
+  public static void setName(int statusCode, String statusMessage) {
+    messages.put(statusCode, statusMessage);
   }
 
   public static String getName(int statusCode) {
-    return names.get(statusCode);
+    return messages.get(statusCode);
+  }
+
+  public static String getOfflineMessage() {
+    return messages.get(OFFLINE);
   }
 
 }
