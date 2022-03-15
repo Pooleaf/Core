@@ -1,5 +1,7 @@
 package net.pooleaf.core.modules.support.common.util;
 
+import net.pooleaf.core.modules.support.common.CommonChatColor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +95,20 @@ public class StringUtil {
     }
 
     return builder.toString();
+  }
+
+  public String translateColorCodes(String text) {
+    return CommonChatColor.translateAlternateColorCodes('&', text);
+  }
+
+  public List<String> translateColorCodes(List<String> list) {
+    List<String> newList = new ArrayList<>();
+
+    for (String text : list) {
+      newList.add(translateColorCodes(text));
+    }
+
+    return newList;
   }
 
 }
