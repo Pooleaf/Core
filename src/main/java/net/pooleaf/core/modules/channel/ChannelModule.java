@@ -56,14 +56,7 @@ public class ChannelModule extends CoreModule {
 
   @Override
   public void onDisable(CorePlugin plugin) {
-    getCurrentChannel().setPlayerCount(0);
-    getCurrentChannel().setMaxPlayerCount(0);
-    getCurrentChannel().getPlayerNames().clear();
-    getCurrentChannel().getPlayerUuids().clear();
-    getCurrentChannel().getDatas().clear();
-    getCurrentChannel().setChannelStatus(ChannelStatus.OFFLINE);
-    getCurrentChannel().setOnline(false);
-    getCurrentChannel().save();
+    channelAdapter.onDisable();
   }
 
   public static String getCurrentChannelName() {

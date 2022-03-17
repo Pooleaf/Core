@@ -7,6 +7,8 @@ public interface ChannelAdapter {
 
   void onEnable();
 
+  void onDisable();
+
   Channel getCurrentChannel();
 
   boolean join(String channelName, String playerName);

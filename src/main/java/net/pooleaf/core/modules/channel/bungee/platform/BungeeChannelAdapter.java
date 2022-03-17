@@ -38,7 +38,7 @@ public class BungeeChannelAdapter implements ChannelAdapter {
     int offlineCheckIntervalSeconds = channelConfig.getInt("오프라인 체크.간격(초)");
 
     if (useOfflineCheck) {
-      CommonSchedulerModule.getScheduler().runAsync(Core.getPlugin(), new ChannelOfflineCheckTask(), offlineCheckIntervalSeconds);
+      CommonSchedulerModule.getScheduler().runAsync(Core.getPlugin(), new ChannelOfflineCheckTask(), offlineCheckIntervalSeconds * 20, offlineCheckIntervalSeconds * 20);
     }
 
     // 채널 설정
@@ -87,6 +87,11 @@ public class BungeeChannelAdapter implements ChannelAdapter {
     // 사용하지 않는 채널/채널그룹 Redis에서 삭제
     ChannelModule.getRedisManager().channel().removeUnusedChannels();
     ChannelModule.getRedisManager().channelGroup().removeUnusedChannelGroups();
+  }
+
+  @Override
+  public void onDisable() {
+
   }
 
   @Override

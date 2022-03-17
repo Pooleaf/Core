@@ -42,7 +42,7 @@ public class CommonPlayerTest {
         Logger.log("플레이어 정보: " + player);
 
         // 저장
-        CommonSenderModule.getPlayerInfoDao().insertPlayerInfo(player);
+//        CommonSenderModule.getPlayerInfoDao().insertPlayerInfo(player);
     }
 
 }

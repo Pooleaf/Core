@@ -30,6 +30,26 @@ public class Channel {
     private Map<String, Object> datas = new LinkedTreeMap<>();
 
 
+    public int getPlayerCount() {
+        return online ? playerCount : 0;
+    }
+
+    public int getMaxPlayerCount() {
+        return online ? maxPlayerCount : 0;
+    }
+
+    public int getChannelStatus() {
+        return online ? channelStatus : 0;
+    }
+
+    public List<String> getPlayerNames() {
+        return online ? playerNames : new ArrayList<>();
+    }
+
+    public List<UUID> getPlayerUuids() {
+        return online ? playerUuids : new ArrayList<>();
+    }
+
     public boolean hasDisplayName() {
         return displayName != null;
     }

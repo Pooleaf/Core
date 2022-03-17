@@ -128,6 +128,7 @@ public class ReflectionUtil {
             for (Method method : targetClass.getDeclaredMethods()) {
                 methods.put(classData.indexOf(method.getName()), method);
             }
+        } catch (NullPointerException e) {
         } catch (NoClassDefFoundError e) {
         }
 

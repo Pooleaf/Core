@@ -43,10 +43,25 @@ public class Prefixer {
    * @return 현재 CorePlugin의 Prefix
    */
   protected static String getCurrentPluginPrefix(String suffix) {
+    CorePlugin plugin = Core.getPluginManager().getCurrentPlugin();
+    return getPluginPrefix(plugin, suffix);
+  }
+
+  /**
+   * 패키지로 CorePlugin를 찾아 Prefix를 불러옵니다.
+   */
+  protected static String getPluginPrefix(String classPackage, String suffix) {
+    CorePlugin plugin = Core.getPluginManager().getPluginByPackage(classPackage);
+    return getPluginPrefix(plugin, suffix);
+  }
+
+  /**
+   * CorePlugin으로 Prefix를 불러옵니다.
+   */
+  protected static String getPluginPrefix(CorePlugin plugin, String suffix) {
     String prefix = null;
 
-    // 패키지로 CorePlugin 찾아서 Prefix 찾기
-    CorePlugin plugin = Core.getPluginManager().getCurrentPlugin();
+    // CorePlugin으로 Prefix 찾기
     if (plugin != null) {
       prefix = prefixes.get(plugin.getPluginPackage()) + suffix;
     }

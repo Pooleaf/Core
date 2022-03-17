@@ -46,11 +46,15 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
     commonConfig = CommonConfigModule.createConfig(new File(getDataFolder(), "config.yml"));
 
     onStart();
+
+    Logger.log(getPluginPackage(), "플러그인이 활성화되었습니다. (v" + getVersion() + ")");
   }
 
   @Override
   public void onDisable() {
     onEnd();
+
+    Logger.log(getPluginPackage(), "플러그인이 비활성화되었습니다. (v" + getVersion() + ")");
   }
 
   @Override
@@ -77,8 +81,8 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
     }
 
     if (annoConfig != null) {
-      annoConfig.load();
       annoConfig.save();
+      annoConfig.load();
     }
 
     onConfigLoaded();

@@ -15,12 +15,20 @@ public class Logger extends Prefixer {
     loggerAdapter.log(getCurrentPluginPrefix(" §f") + log);
   }
 
+  public static void log(String classPackage, Object log) {
+    loggerAdapter.log(getPluginPrefix(classPackage, " §f") + log);
+  }
+
   public static void nlog(Object log) {
     loggerAdapter.log(log);
   }
 
   public static void warning(Object log) {
     loggerAdapter.log(getCurrentPluginPrefix(" §c") + log);
+  }
+
+  public static void warning(String classPackage, Object log) {
+    loggerAdapter.log(getPluginPrefix(classPackage, " §c") + log);
   }
 
 }

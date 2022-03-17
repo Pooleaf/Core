@@ -38,6 +38,18 @@ public class BukkitChannelAdapter implements ChannelAdapter {
   }
 
   @Override
+  public void onDisable() {
+    getCurrentChannel().setPlayerCount(0);
+    getCurrentChannel().setMaxPlayerCount(0);
+    getCurrentChannel().getPlayerNames().clear();
+    getCurrentChannel().getPlayerUuids().clear();
+    getCurrentChannel().getDatas().clear();
+    getCurrentChannel().setChannelStatus(ChannelStatus.OFFLINE);
+    getCurrentChannel().setOnline(false);
+    getCurrentChannel().save();
+  }
+
+  @Override
   public Channel getCurrentChannel() {
     return ChannelModule.getChannel(Core.getServerName());
   }

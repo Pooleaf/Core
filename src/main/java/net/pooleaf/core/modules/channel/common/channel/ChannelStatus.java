@@ -17,7 +17,7 @@ public class ChannelStatus {
   private static Map<Integer, String> messages = new HashMap<>();
 
 
-  {
+  static {
     messages.put(OFFLINE, "§7오프라인");
     messages.put(CRASHED, "§c크래시");
     messages.put(PREPARING, "§6준비 중");
