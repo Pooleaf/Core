@@ -81,6 +81,11 @@ public class DeleteContext extends DslContext<DeleteContext> {
             addBatch();
         }
 
+        // Batch 비어있으면 중단
+        if (batches.isEmpty()) {
+            return null;
+        }
+
         String sql = buildSql();
         Debugger.log("[SQLib] Delete SQL: " + sql);
 

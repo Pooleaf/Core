@@ -200,6 +200,11 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
             addBatch();
         }
 
+        // Batch 비어있으면 중단
+        if (batches.isEmpty()) {
+            return null;
+        }
+
         String sql = buildSql();
         Debugger.log("[SQLib] Insert SQL: " + sql);
 
@@ -254,6 +259,11 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
 
         if (values != null && values.size() > 0) {
             addBatch();
+        }
+
+        // Batch 비어있으면 중단
+        if (batches.isEmpty()) {
+            return null;
         }
 
         String sql = buildSql();
