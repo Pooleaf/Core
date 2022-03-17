@@ -44,6 +44,8 @@ public class DeleteContext extends DslContext<DeleteContext> {
     }
 
     public DeleteContext parameters(Object... parameters) {
+        addBatch();
+
         this.values = Arrays.asList(parameters);
         return this;
     }
