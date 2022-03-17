@@ -18,12 +18,18 @@ public class SimpleAnnoConfig {
 
   public SimpleAnnoConfig load() {
     AnnoConfig.load(file, this);
+    onLoaded();
     return this;
   }
 
   public SimpleAnnoConfig save() {
     AnnoConfig.save(file, this);
+    onSaved();
     return this;
   }
+
+  public void onLoaded() {}
+
+  public void onSaved() {}
 
 }
