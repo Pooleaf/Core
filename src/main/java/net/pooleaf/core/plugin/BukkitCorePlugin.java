@@ -35,13 +35,15 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   private SimpleAnnoConfig annoConfig;
 
   @Getter
-  private CommonConfig commonConfig = CommonConfigModule.createConfig(new File(getDataFolder(), "config.yml"));
+  private CommonConfig commonConfig;
 
 
   @Override
   public final void onEnable() {
     Core.getPluginManager().register(this);
     setPrefix("§f[ " + getName() + " ] ");
+
+    commonConfig = CommonConfigModule.createConfig(new File(getDataFolder(), "config.yml"));
 
     onStart();
   }

@@ -38,13 +38,15 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   private SimpleAnnoConfig annoConfig;
 
   @Getter
-  private CommonConfig commonConfig = CommonConfigModule.createConfig(new File(getDataFolder(), "config.yml"));
+  private CommonConfig commonConfig;
 
 
   @Override
   public void onEnable() {
     Core.getPluginManager().register(this);
     setPrefix("§f[ " + getName() + " ] ");
+
+    commonConfig = CommonConfigModule.createConfig(new File(getDataFolder(), "config.yml"));
 
     onStart();
     enabled = true;
