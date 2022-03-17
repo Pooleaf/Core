@@ -40,6 +40,20 @@ public class CommonPlayerDao extends SqlDao {
                 .execute(CommonPlayer.class);
     }
 
+    public CommonPlayer selectPlayerInfoByDisplayName(String displayName) {
+        return playerInfoTable.select()
+                .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?")
+                .parameters(displayName)
+                .execute(CommonPlayer.class);
+    }
+
+    public CommonPlayer selectPlayerInfo(CommonPlayer commonPlayer) {
+        return playerInfoTable.select()
+                .where("uuid = ?")
+                .parameters(commonPlayer.getUuid())
+                .execute(commonPlayer);
+    }
+
     public void insertPlayerInfo(CommonPlayer playerInfo) {
         playerInfoTable.insertInto()
                 .valuesByObject(playerInfo)

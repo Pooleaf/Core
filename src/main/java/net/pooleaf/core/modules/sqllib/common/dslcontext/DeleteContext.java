@@ -24,12 +24,12 @@ public class DeleteContext extends DslContext<DeleteContext> {
     }
 
 
-    public DslContext where(String conditions) {
+    public DeleteContext where(String conditions) {
         sqls.put("WHERE", conditions);
         return this;
     }
 
-    public DslContext parameters(Object... parameters) {
+    public DeleteContext parameters(Object... parameters) {
         this.values = parameters;
         return this;
     }
