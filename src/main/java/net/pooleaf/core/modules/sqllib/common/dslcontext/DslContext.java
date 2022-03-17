@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.sqllib.common.dslcontext;
 
+import lombok.Getter;
 import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
 import net.pooleaf.core.modules.sqllib.common.SqlTable;
 
@@ -12,6 +13,8 @@ public abstract class DslContext<T extends DslContext> {
     protected final SqlTable sqlTable;
 
     protected Map<String, String> sqls = new HashMap<>();
+
+    @Getter
     protected Object[] values;
 
 

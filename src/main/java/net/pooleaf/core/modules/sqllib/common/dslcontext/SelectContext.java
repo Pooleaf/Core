@@ -107,7 +107,7 @@ public class SelectContext extends DslContext<SelectContext> {
      * @return SQL문 실행 결과 객체
      */
     @SneakyThrows
-    public List<Object> executeList(Class objectClass) {
+    public <T> List<T> executeList(Class<T> objectClass) {
         List<Object> resultObjects = new ArrayList<>();
 
         CachedResult result = execute();
@@ -118,22 +118,7 @@ public class SelectContext extends DslContext<SelectContext> {
                 String targetFieldName = StringUtil.convertSnakeCaseToLowerCamelCase(key);
                 Field targetField = ReflectionUtil.getFieldAll(objectClass, targetFieldName);
                 if (targetField != null) {
-                    // Timestamp -> LocalDateTime 변환
-                    Object value = row.get(key);
-                    if (value instanceof Timestamp) {
-                        if (targetField.getType().isAssignableFrom(LocalDateTime.class)) {
-                            value = ((Timestamp) value).toLocalDateTime();
-                        } else if (targetField.getType().isAssignableFrom(LocalDate.class)) {
-                            value = ((Timestamp) value).toLocalDateTime().toLocalDate();
-                        } else if (targetField.getType().isAssignableFrom(LocalTime.class)) {
-                            value = ((Timestamp) value).toLocalDateTime().toLocalTime();
-                        }
-                    }
-
-                    // UUID 변환
-                    if (targetField.getType().isAssignableFrom(UUID.class)) {
-                        value = UUID.fromString((String) value);
-                    }
+                    Object value = replaceValue(targetField, row.get(key));
 
                     targetField.setAccessible(true);
                     targetField.set(object, value);
@@ -141,17 +126,65 @@ public class SelectContext extends DslContext<SelectContext> {
             }
         }
 
-        return resultObjects;
+        return (List<T>) resultObjects;
     }
 
-    public Object execute(Class objectClass) {
-        List<Object> objects = executeList(objectClass);
+    /**
+     * 불러온 값으로 해당 클래스의 객체를 생성하여 반환합니다.
+     */
+    public <T> T execute(Class<T> objectClass) {
+        List<T> objects = executeList(objectClass);
 
         if (objects.isEmpty()) {
             return null;
         }
 
-        return objects.get(0);
+        return (T) objects.get(0);
+    }
+
+    /**
+     * 불러온 값들을 객체의 변수들에 넣어줍니다.
+     */
+    @SneakyThrows
+    public <T> T execute(T object) {
+        CachedResult result = execute();
+        for (CachedResultRow row : result.getRows()) {
+            for (String key : row.getDatas().keySet()) {
+                String targetFieldName = StringUtil.convertSnakeCaseToLowerCamelCase(key);
+                Field targetField = ReflectionUtil.getFieldAll(object.getClass(), targetFieldName);
+                if (targetField != null) {
+                    Object value = replaceValue(targetField, row.get(key));
+
+                    targetField.setAccessible(true);
+                    targetField.set(object, value);
+                }
+            }
+        }
+
+        return object;
+    }
+
+    /**
+     * 값을 해당 필드에 맞는 타입으로 변환해줍니다.
+     */
+    private Object replaceValue(Field targetField, Object value) {
+        // Timestamp -> LocalDateTime 변환
+        if (value instanceof Timestamp) {
+            if (targetField.getType().isAssignableFrom(LocalDateTime.class)) {
+                value = ((Timestamp) value).toLocalDateTime();
+            } else if (targetField.getType().isAssignableFrom(LocalDate.class)) {
+                value = ((Timestamp) value).toLocalDateTime().toLocalDate();
+            } else if (targetField.getType().isAssignableFrom(LocalTime.class)) {
+                value = ((Timestamp) value).toLocalDateTime().toLocalTime();
+            }
+        }
+
+        // UUID 변환
+        if (targetField.getType().isAssignableFrom(UUID.class)) {
+            value = UUID.fromString((String) value);
+        }
+
+        return value;
     }
 
 }

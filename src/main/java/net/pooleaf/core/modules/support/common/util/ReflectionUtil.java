@@ -177,4 +177,20 @@ public class ReflectionUtil {
         }
     }
 
+    /**
+     * from 객체의 변수 값들을 to 객체로 복사합니다.
+     * @return to
+     */
+    @SneakyThrows
+    public static <T> T copyTo(T from, T to) {
+        for (Field field : ReflectionUtil.getAllField(to.getClass())) {
+            field.setAccessible(true);
+
+            Object value = field.get(from);
+            field.set(to, value);
+        }
+
+        return to;
+    }
+
 }

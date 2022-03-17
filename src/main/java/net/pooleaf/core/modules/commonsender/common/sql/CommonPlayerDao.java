@@ -15,7 +15,6 @@ public class CommonPlayerDao extends SqlDao {
         super(sqlManager);
     }
 
-
     @Override
     public void onConnected() {
         playerInfoTable = new SqlTable(sqlManager, "core_player_infos"
@@ -28,23 +27,16 @@ public class CommonPlayerDao extends SqlDao {
 
 
     public CommonPlayer selectPlayerInfoByUuid(UUID uuid) {
-        return (CommonPlayer) playerInfoTable.select()
+        return playerInfoTable.select()
                 .where("uuid = ?")
                 .parameters(uuid)
                 .execute(CommonPlayer.class);
     }
 
     public CommonPlayer selectPlayerInfoByName(String name) {
-        return (CommonPlayer) playerInfoTable.select()
+        return playerInfoTable.select()
                 .where("name = ?")
                 .parameters(name)
-                .execute(CommonPlayer.class);
-    }
-
-    public CommonPlayer selectPlayerInfoByDisplayName(String displayName) {
-        return (CommonPlayer) playerInfoTable.select()
-                .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?")
-                .parameters(displayName)
                 .execute(CommonPlayer.class);
     }
 
