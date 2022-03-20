@@ -2,8 +2,10 @@ package net.pooleaf.core.modules.channel.common.channel;
 
 import com.google.gson.internal.LinkedTreeMap;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
 import net.pooleaf.core.modules.channel.ChannelModule;
@@ -24,8 +26,8 @@ public class Channel {
     private int playerCount;
     private int maxPlayerCount;
 
-    private List<String> playerNames = new ArrayList<>();
-    private List<UUID> playerUuids = new ArrayList<>();
+    private Set<String> playerNames = new HashSet<>();
+    private Set<UUID> playerUuids = new HashSet<>();
 
     private Map<String, Object> datas = new LinkedTreeMap<>();
 
@@ -42,12 +44,12 @@ public class Channel {
         return online ? channelStatus : 0;
     }
 
-    public List<String> getPlayerNames() {
-        return online ? playerNames : new ArrayList<>();
+    public Set<String> getPlayerNames() {
+        return online ? playerNames : new HashSet<>();
     }
 
-    public List<UUID> getPlayerUuids() {
-        return online ? playerUuids : new ArrayList<>();
+    public Set<UUID> getPlayerUuids() {
+        return online ? playerUuids : new HashSet<>();
     }
 
     public boolean hasDisplayName() {

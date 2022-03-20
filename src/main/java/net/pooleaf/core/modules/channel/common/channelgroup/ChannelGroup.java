@@ -85,17 +85,21 @@ public class ChannelGroup {
     public Set<String> getPlayerNames() {
         Set<String> names = new HashSet<>();
 
-        for (Channel channel : getChannels()) {
-            if (channel.isOnline()) {
-                names.addAll(channel.getPlayerNames());
-            }
+        for (Channel channel : getOnlineChannels()) {
+            names.addAll(channel.getPlayerNames());
         }
 
         return names;
     }
 
     public int getPlayerCount() {
-        return getPlayerNames().size();
+        int playerCount = 0;
+
+        for (Channel channel : getOnlineChannels()) {
+            playerCount += channel.getPlayerCount();
+        }
+
+        return playerCount;
     }
 
     /**

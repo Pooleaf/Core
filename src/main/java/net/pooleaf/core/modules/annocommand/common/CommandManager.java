@@ -260,7 +260,7 @@ public class CommandManager {
 
                 command.execute(result);
 
-                platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] (" + page + " / " + maxPage + ")");
+                platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " )");
                 for (int i = (page - 1) * helpCommandCountPerPage; i < page * helpCommandCountPerPage; i++) {
                     if (i >= subCommands.size()) break;
 

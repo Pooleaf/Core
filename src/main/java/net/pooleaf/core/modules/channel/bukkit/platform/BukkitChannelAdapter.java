@@ -26,8 +26,8 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     channel.setChannelStatus(ChannelStatus.PREPARING);
     channel.setPlayerCount(Bukkit.getOnlinePlayers().size());
     channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
-    channel.setPlayerNames(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
-    channel.setPlayerUuids(Bukkit.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toList()));
+    channel.setPlayerNames(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toSet()));
+    channel.setPlayerUuids(Bukkit.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toSet()));
     channel.save();
 
     Bukkit.getScheduler().runTask((Plugin) Core.getPlugin(), () -> {
