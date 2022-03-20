@@ -16,16 +16,24 @@ public class ChannelStatus {
   @Getter
   private static Map<Integer, String> messages = new HashMap<>();
 
+  @Getter
+  private static Map<Integer, String> itemCodes = new HashMap<>();
+
 
   static {
     messages.put(OFFLINE, "§7오프라인");
-    messages.put(CRASHED, "§c크래시");
     messages.put(PREPARING, "§6준비 중");
+    messages.put(CRASHED, "§c크래시");
     messages.put(RUNNING, "§a온라인");
+
+    itemCodes.put(OFFLINE, "351:8");
+    itemCodes.put(PREPARING, "351:8");
+    itemCodes.put(CRASHED, "351:5");
+    itemCodes.put(RUNNING, "351:10");
   }
 
 
-  public static void getMessage(int statusCode, String statusMessage) {
+  public static void setMessage(int statusCode, String statusMessage) {
     messages.put(statusCode, statusMessage);
   }
 
@@ -35,6 +43,18 @@ public class ChannelStatus {
 
   public static String getOfflineMessage() {
     return messages.get(OFFLINE);
+  }
+
+  public static void setItemCode(int statusCode, String itemCode) {
+    itemCodes.put(statusCode, itemCode);
+  }
+
+  public static String getItemCode(int statusCode) {
+    return itemCodes.get(statusCode);
+  }
+
+  public static String getOfflineItemCode() {
+    return itemCodes.get(OFFLINE);
   }
 
 }
