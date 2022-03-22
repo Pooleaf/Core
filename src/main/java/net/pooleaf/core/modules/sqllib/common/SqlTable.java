@@ -97,6 +97,16 @@ public class SqlTable {
     }
 
     /**
+     * 테이블의 데이터 수를 반환합니다.
+     * @return
+     */
+    public int count() {
+        return select("COUNT(*)")
+                .execute()
+                .getRow(0).getInt("COUNT(*)");
+    }
+
+    /**
      * SelectContext를 작성합니다.
      * @param columns , 로 이어진 컬럼명
      */
