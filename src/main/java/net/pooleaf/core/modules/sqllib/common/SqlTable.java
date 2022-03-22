@@ -117,7 +117,6 @@ public class SqlTable {
 
     /**
      * 모든 Column을 조회하는 SelectContext를 작성합니다.
-     * @param columns , 로 이어진 컬럼명
      */
     public SelectContext select() {
         SelectContext context = new SelectContext(sqlManager, this);
