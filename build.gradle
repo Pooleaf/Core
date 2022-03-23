@@ -1,0 +1,90 @@
+buildscript{
+    repositories{
+        jcenter()
+    }
+
+    dependencies{
+        classpath'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url 'https://repo.s8u.kr/repository/maven-minecraft/' }
+    maven { url 'https://repo.s8u.kr/repository/maven-pooleaf/' }
+}
+
+dependencies {
+    compileOnly 'io.papermc:paper:1.12.2-1620'
+    compileOnly 'net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT'
+    compileOnly 'net.pooleaf:core:0.0.10'
+
+    compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
+
+    compileOnly 'com.zaxxer:HikariCP:4.0.3'
+    compileOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
+    compileOnly ('io.lettuce:lettuce-core:6.0.0.RELEASE') {
+        exclude group: 'io.netty'
+    }
+
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    testImplementation 'com.google.code.gson:gson:2.9.0'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+}
+
+processResources {
+    filesMatching('**/*.yml') {
+        expand(project.properties)
+    }
+}
+
+shadowJar {
+    archiveBaseName.set(pluginName)
+    archiveClassifier.set('')
+}
+
+task copyToServerWindows(type: Copy) {
+    from(shadowJar)
+    into('E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\plugins')
+}
+
+task copyToServerUpdate(type: Copy) {
+    from(shadowJar)
+    into('E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\update')
+}
+
+task copyToServerUpdateBungee(type: Copy) {
+    from(shadowJar)
+    into('E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\bungeecord\\update')
+}
+
+task copyToServerUpdateBungeeBukkit(type: Copy) {
+    from(shadowJar)
+    into('E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\channel_1\\update')
+}
+
+task copyToServerKdf(type: Copy) {
+    from(shadowJar)
+    into('E:\\jhyu\\paper-1.12.2\\plugins')
+}
