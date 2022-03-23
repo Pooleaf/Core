@@ -69,3 +69,5 @@ Redis keyspace 전부 구독해서 나중가면 낭비가 있을듯
 
 Redis 구독한 채널 이름 앞에 prefix 안붙임
 => 나중에 구별 힘들 수 있으므로 core: 붙여야함
+
+***** ChannelMessage 없애고 RedisMessage로 통일하기 => 헷갈림 *****
