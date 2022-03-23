@@ -9,7 +9,7 @@ import java.util.UUID;
 public class CommonPlayerManager extends AbstractManager<UUID, CommonPlayer> {
 
     @Override
-    public CommonPlayer load(UUID key) {
+    public CommonPlayer loadNoCache(UUID key) {
         return CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfoByUuid(key);
     }
 
