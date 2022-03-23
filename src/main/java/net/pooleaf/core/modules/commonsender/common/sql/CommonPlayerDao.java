@@ -1,11 +1,14 @@
 package net.pooleaf.core.modules.commonsender.common.sql;
 
-import java.util.UUID;
+import lombok.Getter;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
 import net.pooleaf.core.modules.sqllib.common.SqlDao;
 import net.pooleaf.core.modules.sqllib.common.SqlTable;
 
+import java.util.UUID;
+
+@Getter
 public class CommonPlayerDao extends SqlDao {
 
     private SqlTable playerInfoTable;
