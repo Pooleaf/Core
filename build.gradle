@@ -49,6 +49,10 @@ dependencies {
 
     testImplementation 'com.google.code.gson:gson:2.9.0'
 
+    testCompileOnly ('io.lettuce:lettuce-core:6.0.0.RELEASE') {
+        exclude group: 'io.netty'
+    }
+
     testCompileOnly 'org.projectlombok:lombok:1.18.20'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 }

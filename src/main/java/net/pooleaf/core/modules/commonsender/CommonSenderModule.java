@@ -1,6 +1,8 @@
 package net.pooleaf.core.modules.commonsender;
 
 import com.google.common.base.Preconditions;
+
+import java.util.Optional;
 import java.util.UUID;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
@@ -86,7 +88,9 @@ public class CommonSenderModule extends CoreModule {
      * @return 닉네임
      */
     public static String getName(UUID uuid) {
-        return commonPlayerManager.getOrLoadNoCache(uuid).getName();
+        return Optional.ofNullable(commonPlayerManager.getOrLoadNoCache(uuid))
+                .map(CommonPlayer::getName)
+                .orElse(null);
     }
 
     /**
@@ -96,7 +100,33 @@ public class CommonSenderModule extends CoreModule {
      * @return 가상닉네임
      */
     public static String getDisplayName(UUID uuid) {
-        return commonPlayerManager.getOrLoadNoCache(uuid).getDisplayName();
+        return Optional.ofNullable(commonPlayerManager.getOrLoadNoCache(uuid))
+                .map(CommonPlayer::getDisplayName)
+                .orElse(null);
+    }
+
+    /**
+     * 플레이어의 닉네임으로 UUID를 불러옵니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * @param name UUID를 불러올 플레이어의 닉네임
+     * @return UUID
+     */
+    public static UUID getUuidByName(String name) {
+        return Optional.ofNullable(commonPlayerManager.getOrLoadByName(name))
+                .map(CommonPlayer::getUuid)
+                .orElse(null);
+    }
+
+    /**
+     * 플레이어의 가상닉네임으로 UUID를 불러옵니다.
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * @param displayName UUID를 불러올 플레이어의 가상닉네임
+     * @return UUID
+     */
+    public static UUID getUuidByDisplayName(String displayName) {
+        return Optional.ofNullable(commonPlayerManager.getOrLoadByDisplayName(displayName))
+                .map(CommonPlayer::getUuid)
+                .orElse(null);
     }
 
     /**
