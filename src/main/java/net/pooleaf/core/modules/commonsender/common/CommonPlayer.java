@@ -1,6 +1,8 @@
 package net.pooleaf.core.modules.commonsender.common;
 
 import lombok.Data;
+import net.pooleaf.core.modules.option.OptionModule;
+import net.pooleaf.core.modules.option.common.Option;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -40,6 +42,11 @@ public class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform
 
     public void kickPlayer(String message) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Option option() {
+        return OptionModule.getPlayerOption(uuid);
     }
 
 }

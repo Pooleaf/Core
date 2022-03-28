@@ -21,4 +21,9 @@ public class SqlLibModule extends CoreModule {
         Core.getSqlManager().connect();
     }
 
+    @Override
+    public void onDisable(CorePlugin plugin) {
+        Core.getSqlManager().close();
+    }
+
 }

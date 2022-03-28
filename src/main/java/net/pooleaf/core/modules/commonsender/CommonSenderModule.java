@@ -1,23 +1,17 @@
 package net.pooleaf.core.modules.commonsender;
 
 import com.google.common.base.Preconditions;
-
-import java.util.Optional;
-import java.util.UUID;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
 import net.pooleaf.core.modules.commonsender.bukkit.BukkitSenderAdapter;
 import net.pooleaf.core.modules.commonsender.bungee.BungeeSenderAdapter;
-import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-import net.pooleaf.core.modules.commonsender.common.CommonConsoleSender;
-import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
-import net.pooleaf.core.modules.commonsender.common.CommonPlayerManager;
-import net.pooleaf.core.modules.commonsender.common.CommonSenderAdapter;
-import net.pooleaf.core.modules.commonsender.common.CommonSenderFactory;
-import net.pooleaf.core.modules.commonsender.common.sql.CommonPlayerDao;
+import net.pooleaf.core.modules.commonsender.common.*;
 import net.pooleaf.core.modules.commonsender.common.sql.CommonSenderSqlManager;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.plugin.CorePlugin;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 플랫폼에 상관없이 사용할 수 있는 플레이어 객체를 제공하고,
@@ -205,6 +199,33 @@ public class CommonSenderModule extends CoreModule {
      */
     public static CommonPlayer getPlayerByDisplayName(String displayName) {
         return commonPlayerManager.getOrLoadNoCacheByDisplayName(displayName);
+    }
+
+    /**
+     * 해당 UUID를 가진 플레이어가 존재하는지 확인합니다.
+     * @param uuid 찾을 플레이어의 UUID
+     * @return 플레이어 존재 여부
+     */
+    public static boolean existsPlayer(UUID uuid) {
+        return commonPlayerManager.getOrLoad(uuid) != null;
+    }
+
+    /**
+     * 해당 닉네임을 가진 플레이어가 존재하는지 확인합니다.
+     * @param name 찾을 플레이어의 닉네임
+     * @return 플레이어 존재 여부
+     */
+    public static boolean existsPlayerByName(String name) {
+        return commonPlayerManager.getOrLoadByName(name) != null;
+    }
+
+    /**
+     * 해당 가상닉네임을 가진 플레이어가 존재하는지 확인합니다.
+     * @param displayName 찾은 플레이어의 가상닉네임
+     * @return 플레이어 존재 여부
+     */
+    public static boolean existsPlayerByDisplayName(String displayName) {
+        return commonPlayerManager.getOrLoadByDisplayName(displayName) != null;
     }
 
 }

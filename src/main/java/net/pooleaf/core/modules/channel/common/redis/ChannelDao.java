@@ -9,12 +9,12 @@ import net.pooleaf.core.modules.redislib.common.RedisDao;
 
 import java.util.List;
 
-public class RedisChannelDao extends RedisDao {
+public class ChannelDao extends RedisDao {
 
     public static final String CHANNEL_INFO_KEY = "channel:info:";
 
 
-    public RedisChannelDao(AbstractRedisManager redisManager) {
+    public ChannelDao(AbstractRedisManager redisManager) {
         super(redisManager);
     }
 

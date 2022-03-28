@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.commonsender.common;
 
 import lombok.Data;
+import net.pooleaf.core.modules.option.common.Option;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 
 @Data
@@ -69,5 +70,7 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
     public void nwarning(String message) {
         Messager.nwarning(getPlatformSender(), message);
     }
+
+    public abstract Option option();
 
 }

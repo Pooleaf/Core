@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 public class AbstractPlayer<T> {
 
-    private final UUID uuid;
+    protected final UUID uuid;
 
 
     public CommonPlayer<T> getCommonPlayer() {

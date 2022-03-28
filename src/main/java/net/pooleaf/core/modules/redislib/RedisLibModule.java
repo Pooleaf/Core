@@ -21,4 +21,9 @@ public class RedisLibModule extends CoreModule {
         Core.getRedisManager().connect();
     }
 
+    @Override
+    public void onDisable(CorePlugin plugin) {
+        Core.getRedisManager().close();
+    }
+
 }

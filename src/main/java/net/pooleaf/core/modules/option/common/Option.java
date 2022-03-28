@@ -1,0 +1,97 @@
+package net.pooleaf.core.modules.option.common;
+
+import lombok.Data;
+import net.pooleaf.core.modules.commonevent.CommonEventModule;
+import net.pooleaf.core.modules.option.OptionModule;
+import net.pooleaf.core.modules.option.common.event.PlayerOptionChangedEvent;
+import net.pooleaf.core.modules.option.common.event.ServerOptionChangedEvent;
+
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+
+
+@Data
+public class Option {
+
+    private final String key;
+    private Map<String, String> datas = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+
+    public Option set(String key, Object value) {
+        if (value == null) {
+            datas.remove(key);
+        } else {
+            datas.put(key, value.toString());
+        }
+
+        return this;
+    }
+
+    public Option delete(String key) {
+        datas.remove(key);
+
+        return this;
+    }
+
+    public boolean exists(String key) {
+        return datas.containsKey(key);
+    }
+
+    public int size() {
+        return datas.size();
+    }
+
+    public String getString(String key) {
+        return datas.get(key);
+    }
+
+    public Boolean getBoolean(String key) {
+        return Boolean.parseBoolean(getString(key));
+    }
+
+    public Integer getInt(String key) {
+        return Integer.parseInt(getString(key));
+    }
+
+    public Long getLong(String key) {
+        return Long.parseLong(getString(key));
+    }
+
+    public Double getDouble(String key) {
+        return Double.parseDouble(getString(key));
+    }
+
+
+    public boolean isPlayerOption() {
+        return key.contains(OptionModule.getRedisManager().PLAYER_OPTION_PREFIX);
+    }
+
+    public boolean isServerOption() {
+        return key.contains(OptionModule.getRedisManager().SERVER_OPTION_NAME);
+    }
+
+
+    public Option load() {
+        datas = OptionModule.getRedisManager().option().getAll(key);
+        return this;
+    }
+
+    public Option save() {
+        OptionModule.getRedisManager().option().set(key, datas);
+
+        if (isPlayerOption()) {
+            String uuidString = key.substring(OptionModule.getRedisManager().PLAYER_OPTION_PREFIX.length());
+            UUID uuid = UUID.fromString(uuidString);
+
+            PlayerOptionChangedEvent event = new PlayerOptionChangedEvent(uuid);
+            CommonEventModule.callEvent(event);
+        } else if (isServerOption()) {
+            ServerOptionChangedEvent event = new ServerOptionChangedEvent();
+            CommonEventModule.callEvent(event);
+        }
+
+        return this;
+    }
+
+}

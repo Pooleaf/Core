@@ -1,5 +1,8 @@
 package net.pooleaf.core.modules.commonsender.common;
 
+import net.pooleaf.core.modules.option.OptionModule;
+import net.pooleaf.core.modules.option.common.Option;
+
 public abstract class CommonConsoleSender<T> extends CommonCommandSender<T> {
 
     public CommonConsoleSender() {
@@ -16,4 +19,10 @@ public abstract class CommonConsoleSender<T> extends CommonCommandSender<T> {
     public boolean hasPermission(String permission) {
         return true;
     }
+
+    @Override
+    public Option option() {
+        return OptionModule.getServerOption();
+    }
+
 }

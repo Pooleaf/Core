@@ -6,8 +6,8 @@ import net.pooleaf.core.modules.redislib.common.AbstractRedisManager;
 
 public class ChannelRedisManager extends AbstractRedisManager {
 
-    private RedisChannelDao channelDao = new RedisChannelDao(this);
-    private RedisChannelGroupDao channelGroupDao = new RedisChannelGroupDao(this);
+    private ChannelDao channelDao = new ChannelDao(this);
+    private ChannelGroupDao channelGroupDao = new ChannelGroupDao(this);
 
 
     public ChannelRedisManager() {
@@ -17,11 +17,11 @@ public class ChannelRedisManager extends AbstractRedisManager {
     }
 
 
-    public RedisChannelDao channel() {
+    public ChannelDao channel() {
         return channelDao;
     }
 
-    public RedisChannelGroupDao channelGroup() {
+    public ChannelGroupDao channelGroup() {
         return channelGroupDao;
     }
 
