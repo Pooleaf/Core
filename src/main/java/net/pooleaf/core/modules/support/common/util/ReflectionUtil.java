@@ -188,6 +188,11 @@ public class ReflectionUtil {
             field.setAccessible(true);
 
             Object value = field.get(from);
+            if (Cloneable.class.isAssignableFrom(value.getClass())) {
+                Method cloneMethod = getMethod(value.getClass(), "clone");
+                value = cloneMethod.invoke(value);
+            }
+
             field.set(to, value);
         }
 
