@@ -2,6 +2,8 @@ package net.pooleaf.core.modules.game.bukkit.phase;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import net.pooleaf.core.modules.game.bukkit.game.Game;
+import net.pooleaf.core.plugin.CorePlugin;
 
 @Data
 @RequiredArgsConstructor
@@ -12,6 +14,14 @@ public class Phase {
     private int phaseCount; // Phase 초
     private PhaseTask task;
 
+
+    public CorePlugin getPlugin() {
+        return pipeline.getPlugin();
+    }
+
+    public Game getGame() {
+        return pipeline.getGame();
+    }
 
     /**
      * 이 Phase를 건너뛸 것인지 여부를 반환합니다.
@@ -33,6 +43,7 @@ public class Phase {
 
     public void start() {
         task = new PhaseTask(this, phaseCount);
+        task.runAsync(0, 20L);
     }
 
     public void cancel() {

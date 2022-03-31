@@ -1,7 +1,9 @@
 package net.pooleaf.core.modules.game.bukkit.phase;
 
 import lombok.Data;
+import net.pooleaf.core.modules.game.bukkit.game.Game;
 import net.pooleaf.core.plugin.CorePlugin;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +11,20 @@ import java.util.List;
 @Data
 public class PhasePipeline {
 
-    private CorePlugin plugin;
+    private final CorePlugin plugin;
+
+    private final Game game;
 
     private List<Phase> phases = new ArrayList<>();
     private int pointer = -1;
 
 
-    public PhasePipeline(CorePlugin plugin) {
-        this.plugin = plugin;
+    public boolean existsPhase(Class<? extends Phase> findPhaseClass) {
+        return phases.stream()
+                .map(phase -> phase.getClass())
+                .filter(phaseClass -> phaseClass.equals(findPhaseClass))
+                .count() > 0;
     }
-
 
     public void addPhase(Phase phase) {
         phases.add(phase);
@@ -26,6 +32,7 @@ public class PhasePipeline {
 
     public Phase nextPhase() {
         pointer++;
+
         if (phases.size() < pointer + 1) {
             return null;
         }

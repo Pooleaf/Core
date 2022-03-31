@@ -71,3 +71,72 @@ Redis 구독한 채널 이름 앞에 prefix 안붙임
 => 나중에 구별 힘들 수 있으므로 core: 붙여야함
 
 ***** ChannelMessage 없애고 RedisMessage로 통일하기 => 헷갈림 *****
+
+
+========================
+
+[Game Module 재작성]
+
+* 1게임 1서버를 원칙으로 한다 *
+* Channel Module을 무조건 사용하는 것으로 가정한다 *
+
+* 입퇴장, 게임 카운팅, 투표, 관전 UI는 통일한다. *
+
+1. 접속 시 스폰으로 이동한다.
+1-2. 게임 중 접속 시 관전으로 전환된다.
+
+2. 게임 카운트로 시작한다.
+3. 게임 시작 시 맵으로 텔레포트한다.
+4. 게임 단계별로 게임을 진행한다.
+5. 탈락하면 관전으로 전환된다.
+6. 게임 우승 시 우승 메시지가 나타난다.
+
+7. 스폰으로 이동한다.
+
+---------
+
+1. 게임
+1-1. 스폰
+1-2. 맵
+1-3. 페이즈
+
+1-5. 투표
+ㄴ 시작투표: 과반수 넘으면 무조건 시작
+ㄴ 맵투표: 과반수 넘으면 무조건 설정된 맵으로
+
+1-4. 관전
+
+---------
+
+Game<T extends GamePlayer>
+GamePlayer
+GamePlayerManager<T extends GamePlayer>
+
+GameMap
+GameMapManager<T extends GameMap>
+
+위 항목을 게임 플러그인에서 상속받아 사용한다.
+
+Game, GamePlayerManager, GameMapManager는 해당 게임의 API 객체에 저장시키고,
+GameCore에 setter 메소드로 얕은복사 시킨다.
+
+---------
+
+조회 관련
+Game 객체에 GameTypeId를 부여한다.
+
+Redis에는 gamecore:<GameTypeId>:<GameUUID> hashes 사용
+ㄴ 전적 사이트 실시간 조회에서는 Redis 데이터를 사용
+
+SQL 로그에는 game_uuid, game_type_id 컬럼 사용
+ㄴ SQL 로그에는 시작 결과, 종료 결과를 저장
+ㄴ 전적 사이트에서는 종료 결과만을 사용
+
+---------
+
+전적
+GameUUID, GameType, 시간 별 [킬, 데스, 어시스트, 우승]을 SQL에 저장한다.
+ㄴ 전적 사이트에서 합계를 불러오거나, 게임별로 조회한다.
+ㄴ 테이블 - game_uuid, game_type, player_uuid, stats_type, stats_amount, time
+
+========================

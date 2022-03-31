@@ -30,6 +30,7 @@ public class PhaseTask extends CommonSchedulerTask {
 
         if (currentCount < 1) { // 종료
             phase.onEnd();
+            cancel();
         }
     }
 

@@ -16,6 +16,10 @@ public class AbstractPlayer<T> {
         return CommonSenderModule.getPlayer(uuid);
     }
 
+    public T getPlayer() {
+        return getCommonPlayer().getPlatformSender();
+    }
+
     public String getName() {
         return getCommonPlayer().getName();
     }

@@ -3,16 +3,15 @@ package net.pooleaf.core.modules.game.bukkit.player;
 import lombok.Data;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.game.bukkit.game.Game;
+import net.pooleaf.core.modules.support.common.player.AbstractPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 @Data
-public class GamePlayer {
+public class GamePlayer extends AbstractPlayer<Player> {
 
-    private final UUID uuid;
-    private final String name;
     private final Game joinedGame; // 참여한 게임
 
     private boolean observer; // 관전
@@ -20,18 +19,6 @@ public class GamePlayer {
 
     private boolean dropout; // 탈락
 
-
-    public Player getPlayer() {
-        return Bukkit.getPlayer(uuid);
-    }
-
-    public boolean isOnline() {
-        return Bukkit.getPlayer(uuid) != null;
-    }
-
-    public String getDisplayName() {
-        return CommonSenderModule.getDisplayName(uuid);
-    }
 
     public boolean hasJoinedGame() {
         return joinedGame != null;

@@ -48,7 +48,7 @@ public class StartVote extends Vote<Boolean> {
     @Override
     protected void onEnd() {
         if (!game.isStarted()) {
-            game.start(null);
+            game.start();
         }
     }
 
