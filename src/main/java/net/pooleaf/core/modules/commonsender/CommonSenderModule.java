@@ -60,12 +60,11 @@ public class CommonSenderModule extends CoreModule {
                 bungeeSenderAdapter = (BungeeSenderAdapter) commonSenderAdapter;
                 break;
         }
-
     }
 
 
     public static BukkitSenderAdapter bukkit() {
-        Preconditions.checkNotNull(bungeeSenderAdapter, "Bukkit에서만 사용할 수 있습니다.");
+        Preconditions.checkNotNull(bukkitSenderAdapter, "Bukkit에서만 사용할 수 있습니다.");
         return bukkitSenderAdapter;
     }
 
