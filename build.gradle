@@ -14,8 +14,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
@@ -30,7 +30,6 @@ repositories {
 dependencies {
     compileOnly 'io.papermc:paper:1.12.2-1620'
     compileOnly 'net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT'
-    compileOnly 'net.pooleaf:core:0.0.10'
 
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
 

@@ -3,7 +3,6 @@ package net.pooleaf.core.modules.commonevent.common;
 import lombok.Data;
 import lombok.SneakyThrows;
 import net.pooleaf.core.plugin.CorePlugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
@@ -24,7 +23,7 @@ public class CommonEventMethod implements Comparable<CommonEventMethod> {
     }
 
     @Override
-    public int compareTo(@NotNull CommonEventMethod o) {
+    public int compareTo(CommonEventMethod o) {
         return Byte.compare(this.priority, o.priority);
     }
 
