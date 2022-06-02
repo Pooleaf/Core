@@ -40,7 +40,7 @@ public class Title {
         if (subTitle != null) {
             Object subTitleValue = packetEnumClass.getField("SUBTITLE").get(null);
             Object subTitleChatComponent = componentClass.getDeclaredClasses()[0].getMethod("a", String.class)
-                .invoke(null, "{\"text\":\"" + subTitleValue + "\"}");
+                .invoke(null, "{\"text\":\"" + subTitle + "\"}");
             Object titlePacket = packetClass.getConstructor(packetEnumClass, componentClass).newInstance(subTitleValue, subTitleChatComponent);
             BukkitReflectionUtil.sendPacket(player, titlePacket);
         }
@@ -48,7 +48,7 @@ public class Title {
         // Send title packet
         Object titleValue = packetEnumClass.getField("TITLE").get(null);
         Object chatComponent = componentClass.getDeclaredClasses()[0].getMethod("a", String.class)
-            .invoke(null, "{\"text\":\"" + this.title + "\"}");
+            .invoke(null, "{\"text\":\"" + title + "\"}");
         Object titlePacket = packetClass.getConstructor(packetEnumClass, componentClass).newInstance(titleValue, chatComponent);
         BukkitReflectionUtil.sendPacket(player, titlePacket);
     }
