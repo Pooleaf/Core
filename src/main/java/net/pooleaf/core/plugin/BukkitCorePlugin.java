@@ -81,8 +81,8 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
     }
 
     if (annoConfig != null) {
-      annoConfig.save();
       annoConfig.load();
+      annoConfig.save();
     }
 
     onConfigLoaded();

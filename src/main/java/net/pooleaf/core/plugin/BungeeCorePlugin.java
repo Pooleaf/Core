@@ -86,8 +86,8 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
     }
 
     if (annoConfig != null) {
-      annoConfig.save();
       annoConfig.load();
+      annoConfig.save();
     }
 
     onConfigLoaded();
