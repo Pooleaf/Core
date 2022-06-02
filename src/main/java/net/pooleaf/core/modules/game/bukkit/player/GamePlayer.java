@@ -20,6 +20,13 @@ public class GamePlayer extends AbstractPlayer<Player> {
     private boolean dropout; // 탈락
 
 
+    public GamePlayer(UUID uuid, Game joinedGame) {
+        super(uuid);
+
+        this.joinedGame = joinedGame;
+    }
+
+
     public boolean hasJoinedGame() {
         return joinedGame != null;
     }

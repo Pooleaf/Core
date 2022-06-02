@@ -29,7 +29,7 @@ public class BukkitReflectionUtil {
 
   @SneakyThrows()
   public static Object getHandle(Object obj) {
-    return ReflectionUtil.getMethod(obj.getClass(), "getHandle").invoke(obj, null);
+    return ReflectionUtil.getMethod(obj.getClass(), "getHandle").invoke(obj);
   }
 
   @SneakyThrows()
@@ -68,7 +68,7 @@ public class BukkitReflectionUtil {
 
   @SneakyThrows()
   public static Object getBukkitEntity(Object nmsEntity) {
-    return ReflectionUtil.getMethodAll(nmsEntity.getClass(), "getBukkitEntity").invoke(nmsEntity, null);
+    return ReflectionUtil.getMethodAll(nmsEntity.getClass(), "getBukkitEntity").invoke(nmsEntity);
   }
 
   public static int registerListeners(CorePlugin plugin) {
