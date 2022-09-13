@@ -42,7 +42,7 @@ public class ChannelModule extends CoreModule {
 
   @Override
   public String[] getDepends() {
-    return new String[] { "Support", "AnnoConfig" };
+    return new String[] { "Support", "AnnoConfig", "RedisLib" };
   }
 
   @Override

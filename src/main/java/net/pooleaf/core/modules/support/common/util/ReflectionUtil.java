@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -197,6 +198,19 @@ public class ReflectionUtil {
         }
 
         return to;
+    }
+
+    /**
+     * 해당 필드의 final 상태를 해제합니다.
+     * @param field final을 해제할 Field
+     */
+    @SneakyThrows
+    public static Field removeFinal(Field field) {
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.set(field, field.getModifiers() & ~Modifier.FINAL);
+
+        return field;
     }
 
 }

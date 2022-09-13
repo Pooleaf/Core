@@ -72,10 +72,16 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
 
         // Depends & SoftDepends 체크를 통과할 경우
         if (canEnable) {
+          if (Logger.isInitialized()) {
+            Logger.log(module.getName() + " Module을 초기화하는 중입니다..");
+          }
+
           module.onEnable(Core.getPlugin());
           module.setEnable(true);
           enabledOrder.add(module);
+
           Logger.log(module.getName() + " Module이 초기화되었습니다.");
+          Logger.log("");
 
           count++;
         }

@@ -11,6 +11,10 @@ public class Logger extends Prefixer {
   private static LoggerAdapter loggerAdapter;
 
 
+  public static boolean isInitialized() {
+    return loggerAdapter != null;
+  }
+
   public static void log(Object log) {
     loggerAdapter.log(getCurrentPluginPrefix(" §f") + log);
   }

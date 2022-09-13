@@ -3,8 +3,12 @@ package net.pooleaf.core.modules.commonconfig;
 import net.pooleaf.core.module.CoreModule;
 
 import java.io.File;
+
+import net.pooleaf.core.modules.commonconfig.bukkit.BukkitConfigUtil;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfigFactory;
+import net.pooleaf.core.modules.support.common.platform.Platform;
+import net.pooleaf.core.plugin.CorePlugin;
 
 public class CommonConfigModule extends CoreModule {
 
@@ -16,6 +20,13 @@ public class CommonConfigModule extends CoreModule {
   @Override
   public String[] getDepends() {
     return new String[] { "Support" };
+  }
+
+  @Override
+  public void onEnable(CorePlugin plugin) {
+    if (Platform.getCurrentPlatform() == Platform.BUKKIT) {
+      BukkitConfigUtil.enableUtf8Config();
+    }
   }
 
 
