@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.support.common.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -137,15 +138,15 @@ public class ReflectionUtil {
     }
 
     /**
-     * 해당 Plugin의 모든 Class를 반환합니다.
-     * @param plugin Plugin
+     * 해당 파일의 모든 Class를 반환합니다.
+     * @param file File
      * @return 모든 Class
      */
     @SneakyThrows
-    public static List<Class> getClasses(CorePlugin plugin) {
+    public static List<Class> getClasses(File file) {
         List<Class> classes = new ArrayList<>();
 
-        ZipInputStream jarStream = new ZipInputStream(new FileInputStream(plugin.getFile()));
+        ZipInputStream jarStream = new ZipInputStream(new FileInputStream(file));
         ZipEntry item = null;
 
         while ((item = jarStream.getNextEntry()) != null) {
@@ -162,6 +163,16 @@ public class ReflectionUtil {
         }
 
         return classes;
+    }
+
+    /**
+     * 해당 CorePlugin의 모든 Class를 반환합니다.
+     * @param plugin Plugin
+     * @return 모든 Class
+     */
+    @SneakyThrows
+    public static List<Class> getClasses(CorePlugin plugin) {
+        return getClasses(plugin.getFile());
     }
 
     /**
