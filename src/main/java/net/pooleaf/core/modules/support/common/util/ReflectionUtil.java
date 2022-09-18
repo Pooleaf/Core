@@ -191,6 +191,17 @@ public class ReflectionUtil {
     }
 
     /**
+     * 플러그인의 File을 반환합니다.
+     * @return 플러그인의 File
+     */
+    @SneakyThrows
+    public static File getFile(Object plugin) {
+        Field fileField = plugin.getClass().getDeclaredField("file");
+        fileField.setAccessible(true);
+        return (File) fileField.get(plugin);
+    }
+
+    /**
      * from 객체의 변수 값들을 to 객체로 복사합니다.
      * @return to
      */
