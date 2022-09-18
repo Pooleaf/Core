@@ -116,7 +116,7 @@ public class AbstractRedisManager {
         if (config == null) {
             return;
         }
-        if (config.getUseCorePluginRedisManager()) {
+        if (config.getUseCorePluginRedisManager() != null && config.getUseCorePluginRedisManager()) {
             return;
         }
 

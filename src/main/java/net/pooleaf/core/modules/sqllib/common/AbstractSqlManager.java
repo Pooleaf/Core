@@ -83,7 +83,7 @@ public class AbstractSqlManager {
         if (config == null) {
             return;
         }
-        if (config.getUseCorePluginSqlManager()) {
+        if (config.getUseCorePluginSqlManager() != null && config.getUseCorePluginSqlManager()) {
             return;
         }
         if (dataSource == null || ((HikariDataSource) dataSource).isClosed()) {

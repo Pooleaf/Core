@@ -9,22 +9,19 @@ import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 public class BukkitCommonPlayerEventListener implements Listener {
 
     @EventHandler
-    public void onLogin(AsyncPlayerPreLoginEvent e) {
-        CommonPlayer player = CommonSenderModule.getPlayer(e.getUniqueId());
+    public void onLogin(PlayerLoginEvent e) {
+        CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerLoginEvent event = new CommonPlayerLoginEvent(player);
         CommonEventModule.callEvent(event);
 
         if (event.isDisallow()) {
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, event.getDisallowMessage());
+            e.disallow(PlayerLoginEvent.Result.KICK_OTHER, event.getDisallowMessage());
         }
     }
 
