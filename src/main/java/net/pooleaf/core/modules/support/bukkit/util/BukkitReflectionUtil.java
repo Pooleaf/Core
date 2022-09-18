@@ -2,15 +2,21 @@ package net.pooleaf.core.modules.support.bukkit.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.Map;
+
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.support.bukkit.nms.NmsVersion;
 import net.pooleaf.core.modules.support.common.AutoRegisterExclude;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.plugin.CorePlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
@@ -96,6 +102,46 @@ public class BukkitReflectionUtil {
     }
 
     return count;
+  }
+
+  /**
+   * 해당 Listener을 등록 해제시킵니다.
+   */
+  public static void unregisterListener(Listener listener) {
+    HandlerList.unregisterAll(listener);
+  }
+
+  /**
+   * 해당 플러그인의 Listener들을 모두 등록 해제시킵니다.
+   */
+  public static void unregisterListeners(Plugin plugin) {
+    HandlerList.unregisterAll(plugin);
+  }
+
+  /**
+   * 해당 플러그인의 명령어들을 모두 등록 해제시킵니다.
+   */
+  @SneakyThrows
+  public static void unregisterCommands(Plugin plugin) {
+    SimpleCommandMap commandMap = (SimpleCommandMap) getCommandMap();
+
+    Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
+    knownCommandsField.setAccessible(true);
+    Map<String, Command> commands = (Map<String, Command>) knownCommandsField.get(commandMap);
+
+    Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry<String, Command> entry = it.next();
+
+      if (entry.getValue() instanceof PluginCommand) {
+        PluginCommand pluginCommand = (PluginCommand) entry.getValue();
+
+        if (pluginCommand.getPlugin().equals(plugin)) {
+          pluginCommand.unregister(commandMap);
+          it.remove();
+        }
+      }
+    }
   }
 
 }
