@@ -42,7 +42,7 @@ public class PlayerOptionCommand {
                 .set(optionName, optionValue)
                 .save();
 
-        sender.message("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e(을)를 §f" + optionValue + "§e(으)로 설정했습니다.");
+        sender.message("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e를 §f" + optionValue + "§e로 설정했습니다.");
     }
 
     @Command(
@@ -65,7 +65,7 @@ public class PlayerOptionCommand {
                 .delete(optionName)
                 .save();
 
-        sender.message("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e(을)를 삭제했습니다.");
+        sender.message("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e를 삭제했습니다.");
     }
 
     @Command(

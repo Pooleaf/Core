@@ -113,6 +113,9 @@ public class AbstractRedisManager {
 
     @SneakyThrows
     public void close() {
+        if (config == null) {
+            return;
+        }
         if (config.getUseCorePluginRedisManager()) {
             return;
         }

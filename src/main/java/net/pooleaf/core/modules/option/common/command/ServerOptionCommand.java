@@ -34,7 +34,7 @@ public class ServerOptionCommand {
                 .set(optionName, optionValue)
                 .save();
 
-        sender.message("§e서버 옵션 §f" + optionName + "§e(을)를 §f" + optionValue + "§e(으)로 설정했습니다.");
+        sender.message("§e서버 옵션 §f" + optionName + "§e(을)를 §f" + optionValue + "§e로 설정했습니다.");
     }
 
     @Command(
@@ -51,7 +51,7 @@ public class ServerOptionCommand {
                 .delete(optionName)
                 .save();
 
-        sender.message("§e서버 옵션 §f" + optionName + "§e(을)를 삭제했습니다.");
+        sender.message("§e서버 옵션 §f" + optionName + "§e를 삭제했습니다.");
     }
 
     @Command(

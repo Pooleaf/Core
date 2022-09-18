@@ -80,6 +80,9 @@ public class AbstractSqlManager {
 
     @SneakyThrows
     public void close() {
+        if (config == null) {
+            return;
+        }
         if (config.getUseCorePluginSqlManager()) {
             return;
         }

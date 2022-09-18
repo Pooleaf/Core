@@ -69,25 +69,5 @@ shadowJar {
 
 task copyToServerWindows(type: Copy) {
     from(shadowJar)
-    into('E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\plugins')
-}
-
-task copyToServerUpdate(type: Copy) {
-    from(shadowJar)
-    into('E:\\Desktop\\게임\\서버\\1.12.2 버킷 테스트 서버\\update')
-}
-
-task copyToServerUpdateBungee(type: Copy) {
-    from(shadowJar)
-    into('E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\bungeecord\\update')
-}
-
-task copyToServerUpdateBungeeBukkit(type: Copy) {
-    from(shadowJar)
-    into('E:\\Desktop\\게임\\서버\\[S6] 1.12.2 번지코드 테스트 서버\\channel_1\\update')
-}
-
-task copyToServerKdf(type: Copy) {
-    from(shadowJar)
-    into('E:\\jhyu\\paper-1.12.2\\plugins')
+    into('D:\\서버\\1.8.9 테스트 서버\\update')
 }

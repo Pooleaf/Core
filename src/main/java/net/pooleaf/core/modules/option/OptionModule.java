@@ -24,7 +24,7 @@ public class OptionModule extends CoreModule {
 
     @Override
     public String getName() {
-        return "RedisLib";
+        return "Option";
     }
 
     @Override
