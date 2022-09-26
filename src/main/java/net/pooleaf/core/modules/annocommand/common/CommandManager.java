@@ -248,12 +248,13 @@ public class CommandManager {
                 if (page == null) {
                     page = 1;
                 }
-                int maxPage = (int) Math.ceil((float) subCommands.size() / helpCommandCountPerPage);
 
+                int maxPage = (int) Math.ceil((float) subCommands.size() / helpCommandCountPerPage);
                 if (maxPage < 1) {
                     platformAdapter.sendMessage(sender, "§c하위 명령어가 없습니다.");
                     return true;
                 }
+
                 if (page < 1 || page > maxPage) {
                     platformAdapter.sendMessage(sender, "§c페이지는 1~" + maxPage + "만 입력할 수 있습니다.");
                     return true;
