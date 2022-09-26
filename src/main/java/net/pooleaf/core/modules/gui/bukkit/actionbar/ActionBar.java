@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.gui.bukkit.actionbar;
 
+import com.google.common.base.Preconditions;
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.support.bukkit.nms.NmsVersion;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
@@ -15,6 +16,8 @@ public class ActionBar {
      */
     @SneakyThrows
     public static void sendActionBar(Player player, String message) {
+        Preconditions.checkNotNull(message);
+
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         Class<?> chatComponentClass = BukkitReflectionUtil.getNmsClass("IChatBaseComponent");
@@ -42,7 +45,7 @@ public class ActionBar {
      * @param player 대상 플레이어
      */
     public static void removeActionBar(Player player) {
-        sendActionBar(player, null);
+        sendActionBar(player, "");
     }
 
 }
