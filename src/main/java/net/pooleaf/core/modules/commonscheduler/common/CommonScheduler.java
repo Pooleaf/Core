@@ -10,6 +10,8 @@ public interface CommonScheduler {
 
     int runAsync(CorePlugin plugin, Runnable runnable, long delayTick, long periodTick);
 
+    int runAsyncRepeat(CorePlugin plugin, Runnable runnable, long delayTick, long periodTick, int repeatCount);
+
     void cancel(int taskId);
 
     boolean isRunning(int taskId);

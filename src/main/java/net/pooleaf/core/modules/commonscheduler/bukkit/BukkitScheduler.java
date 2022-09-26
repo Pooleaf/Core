@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.commonscheduler.bukkit;
 
 import net.pooleaf.core.modules.commonscheduler.common.CommonScheduler;
+import net.pooleaf.core.modules.commonscheduler.common.RepeatRunnable;
 import net.pooleaf.core.plugin.CorePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -28,6 +29,13 @@ public class BukkitScheduler implements CommonScheduler {
                 .getTaskId();
     }
 
+    @Override
+    public int runAsyncRepeat(CorePlugin plugin, Runnable runnable, long delayTick, long periodTick, int repeatCount) {
+        return Bukkit.getScheduler()
+                .runTaskTimerAsynchronously((Plugin) plugin, new RepeatRunnable(runnable, repeatCount), delayTick, periodTick)
+                .getTaskId();
+    }
+
     public int runSync(CorePlugin plugin, Runnable runnable) {
         return Bukkit.getScheduler()
                 .runTask((Plugin) plugin, runnable)
@@ -43,6 +51,12 @@ public class BukkitScheduler implements CommonScheduler {
     public int runSync(CorePlugin plugin, Runnable runnable, long delayTick, long periodTick) {
         return Bukkit.getScheduler()
                 .runTaskTimer((Plugin) plugin, runnable, delayTick, periodTick)
+                .getTaskId();
+    }
+
+    public int runSyncRepeat(CorePlugin plugin, Runnable runnable, long delayTick, long periodTick, int repeatCount) {
+        return Bukkit.getScheduler()
+                .runTaskTimer((Plugin) plugin, new RepeatRunnable(runnable, repeatCount), delayTick, periodTick)
                 .getTaskId();
     }
 
