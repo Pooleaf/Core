@@ -196,7 +196,7 @@ public class ReflectionUtil {
      */
     @SneakyThrows
     public static File getFile(Object plugin) {
-        Field fileField = plugin.getClass().getDeclaredField("file");
+        Field fileField = getFieldAll(plugin.getClass(), "file");
         fileField.setAccessible(true);
         return (File) fileField.get(plugin);
     }
