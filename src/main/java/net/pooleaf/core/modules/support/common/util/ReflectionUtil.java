@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import com.google.common.base.Preconditions;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -70,12 +72,27 @@ public class ReflectionUtil {
     /**
      * 해당 Class 및 부모 Class에서 해당 이름을 가진 Field를 반환합니다.
      * Object의 Field는 제외합니다.
+     *
+     * @deprecated {@link #getFieldFromAll(Class, String)}를 사용하세요.
+     * @param targetClass Class
+     * @param name 찾을 Field 이름
+     * @return 찾은 Field
+     */
+    @Deprecated
+    @SneakyThrows(Exception.class)
+    public static Field getFieldAll(Class<?> targetClass, String name) {
+        return getFieldFromAll(targetClass, name);
+    }
+
+    /**
+     * 해당 Class 및 부모 Class에서 해당 이름을 가진 Field를 반환합니다.
+     * Object의 Field는 제외합니다.
      * @param targetClass Class
      * @param name 찾을 Field 이름
      * @return 찾은 Field
      */
     @SneakyThrows(Exception.class)
-    public static Field getFieldAll(Class<?> targetClass, String name) {
+    public static Field getFieldFromAll(Class<?> targetClass, String name) {
         Class findClass = targetClass;
         while (findClass != null && findClass != Object.class) {
             for (Field field : findClass.getDeclaredFields()) {
@@ -106,6 +123,42 @@ public class ReflectionUtil {
         }
 
         return fields;
+    }
+
+    /**
+     * 해당 오브젝트의 필드 값을 변경합니다.
+     * private 필드에도 사용할 수 있습니다.
+     * @param targetObject 필드 값을 설정할 오브젝트
+     * @param fieldName 필드 이름
+     * @param value 변경할 값
+     */
+    @SneakyThrows
+    public static void setFieldValue(Object targetObject, String fieldName, Object value) {
+        Preconditions.checkNotNull(targetObject);
+
+        Field field = getFieldFromAll(targetObject.getClass(), fieldName);
+        Preconditions.checkNotNull(field);
+
+        field.setAccessible(true);
+        field.set(targetObject, value);
+    }
+
+    /**
+     * 해당 클래스의 static 필드 값을 변경합니다.
+     * private 필드에도 사용할 수 있습니다.
+     * @param targetClass 필드 값을 설정할 클래스
+     * @param fieldName 필드 이름
+     * @param value 변경할 값
+     */
+    @SneakyThrows
+    public static void setStaticFieldValue(Class<?> targetClass, String fieldName, Object value) {
+        Preconditions.checkNotNull(targetClass);
+
+        Field field = getFieldFromAll(targetClass, fieldName);
+        Preconditions.checkNotNull(field);
+
+        field.setAccessible(true);
+        field.set(null, value);
     }
 
     /**
