@@ -26,28 +26,34 @@ public class ActionBar {
      */
     @SneakyThrows
     public static void show(Player player, String message) {
-        Preconditions.checkNotNull(message);
+       synchronized (showTasks) {
+           // 기존 Task가 있을 경우 종료
+           cancelShowTask(player);
 
-        message = ChatColor.translateAlternateColorCodes('&', message);
+           Preconditions.checkNotNull(player);
+           Preconditions.checkNotNull(message);
 
-        Class<?> chatComponentClass = BukkitReflectionUtil.getNmsClass("IChatBaseComponent");
-        Class<?> chatPacketClass = BukkitReflectionUtil.getNmsClass("PacketPlayOutChat");
+           message = ChatColor.translateAlternateColorCodes('&', message);
 
-        Object chatComponentText = BukkitReflectionUtil.getNmsClass("ChatComponentText").getConstructor(String.class).newInstance(message);
-        Object chatPacket;
-        if (NmsVersion.getCurrentVersion().isBefore(NmsVersion.v1_11_R1)) {
-            chatPacket = chatPacketClass
-                    .getConstructor(chatComponentClass, Byte.TYPE)
-                    .newInstance(chatComponentText, (byte) 2);
-        } else {
-            Class<?> chatMessageTypeClass = BukkitReflectionUtil.getNmsClass("ChatMessageType");
+           Class<?> chatComponentClass = BukkitReflectionUtil.getNmsClass("IChatBaseComponent");
+           Class<?> chatPacketClass = BukkitReflectionUtil.getNmsClass("PacketPlayOutChat");
 
-            chatPacket = chatPacketClass
-                    .getConstructor(chatComponentClass, chatMessageTypeClass)
-                    .newInstance(chatComponentText, chatMessageTypeClass.getField("GAME_INFO").get(null));
-        }
+           Object chatComponentText = BukkitReflectionUtil.getNmsClass("ChatComponentText").getConstructor(String.class).newInstance(message);
+           Object chatPacket;
+           if (NmsVersion.getCurrentVersion().isBefore(NmsVersion.v1_11_R1)) {
+               chatPacket = chatPacketClass
+                       .getConstructor(chatComponentClass, Byte.TYPE)
+                       .newInstance(chatComponentText, (byte) 2);
+           } else {
+               Class<?> chatMessageTypeClass = BukkitReflectionUtil.getNmsClass("ChatMessageType");
 
-        BukkitReflectionUtil.sendPacket(player, chatPacket);
+               chatPacket = chatPacketClass
+                       .getConstructor(chatComponentClass, chatMessageTypeClass)
+                       .newInstance(chatComponentText, chatMessageTypeClass.getField("GAME_INFO").get(null));
+           }
+
+           BukkitReflectionUtil.sendPacket(player, chatPacket);
+       }
     }
 
     /**
@@ -58,14 +64,16 @@ public class ActionBar {
      * @param seconds 보여줄 시간(초)
      */
     public static void show(Player player, String message, int seconds) {
-        // 기존 Task가 있을 경우 종료
-        cancelShowTask(player);
+      synchronized (showTasks) {
+          // 기존 Task가 있을 경우 종료
+          cancelShowTask(player);
 
-        // ActionBar 보여주기
-        ActionBar.show(player, message);
+          // ActionBar 보여주기
+          ActionBar.show(player, message);
 
-        // 1초마다 ActionBar를 보여주는 Task 등록
-        showTasks.put(player.getUniqueId(), new ShowTask(player, message, seconds).runTaskTimerAsynchronously(BukkitCoreBootstrapPlugin.getInstance(), 20L, 20L));
+          // 1초마다 ActionBar를 보여주는 Task 등록
+          showTasks.put(player.getUniqueId(), new ShowTask(player, message, seconds).runTaskTimerAsynchronously(BukkitCoreBootstrapPlugin.getInstance(), 20L, 20L));
+      }
     }
 
     /**
@@ -75,14 +83,13 @@ public class ActionBar {
      * @param message 메시지
      */
     public static void showForever(Player player, String message) {
-        // 기존 Task가 있을 경우 종료
-        cancelShowTask(player);
+       synchronized (showTasks) {
+           // 기존 Task가 있을 경우 종료
+           cancelShowTask(player);
 
-        // ActionBar 보여주기
-        ActionBar.show(player, message);
-
-        // 1초마다 ActionBar를 보여주는 Task 등록
-        showTasks.put(player.getUniqueId(), new ShowTask(player, message, -1).runTaskTimerAsynchronously(BukkitCoreBootstrapPlugin.getInstance(), 20L, 20L));
+           // 1초마다 ActionBar를 보여주는 Task 등록
+           showTasks.put(player.getUniqueId(), new ShowTask(player, message, -1).runTaskTimerAsynchronously(BukkitCoreBootstrapPlugin.getInstance(), 0, 20L));
+       }
     }
 
     /**
@@ -90,9 +97,11 @@ public class ActionBar {
      * @param player 대상 플레이어
      */
     public static void remove(Player player) {
-        cancelShowTask(player);
+       synchronized (showTasks) {
+           cancelShowTask(player);
 
-        show(player, "");
+           show(player, "");
+       }
     }
 
     /**
