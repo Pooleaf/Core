@@ -215,7 +215,11 @@ public class InventoryGui {
     }
 
     public void closeAll() {
-        getWatchers().forEach(player -> player.closeInventory());
+        Iterator<Player> iterator = getWatchers().iterator();
+        while (iterator.hasNext()) {
+            iterator.next().closeInventory();
+            iterator.remove();
+        }
     }
 
 }

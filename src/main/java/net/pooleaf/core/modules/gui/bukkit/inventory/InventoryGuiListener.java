@@ -1,7 +1,11 @@
-package net.pooleaf.core.modules.gui.bukkit.inventory.event;
+package net.pooleaf.core.modules.gui.bukkit.inventory;
 
 import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
+import net.pooleaf.core.modules.gui.bukkit.inventory.event.InevntoryGuiClickEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.event.InventoryGuiCloseEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.event.InventoryGuiDragEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.event.InventoryGuiOpenEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
