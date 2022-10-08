@@ -17,6 +17,6 @@ public interface PlatformAdapter {
 
     void sendMessage(Object sender, String message);
 
-    void sendMessage(Object player, BaseComponent... component);
+    void sendMessage(Object sender, BaseComponent... component);
 
 }

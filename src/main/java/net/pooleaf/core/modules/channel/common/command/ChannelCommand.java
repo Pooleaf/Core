@@ -121,7 +121,7 @@ public class ChannelCommand {
   public static void channelJoin(CommonCommandSender sender, CommandResult result) {
     // 콘솔이면 반드시 이동시킬 타겟을 입력해야함
     if (sender.isConsole() && result.getArgumentsLength() < 2) {
-      sender.message(result.getCommand().getUsage(result.getEnteredArguments()));
+      result.sendUsage(sender);
       return;
     }
 

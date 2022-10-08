@@ -7,6 +7,10 @@ public class SimpleComponentBuilder {
     private TextComponent component;
 
 
+    public SimpleComponentBuilder() {
+        component = new TextComponent();
+    }
+
     public SimpleComponentBuilder(String text) {
         component = new TextComponent(text);
     }

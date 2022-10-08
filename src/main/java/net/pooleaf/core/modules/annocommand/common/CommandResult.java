@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.annocommand.common;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +128,14 @@ public class CommandResult {
         }
 
         return value;
+    }
+
+    /**
+     * sender에게 명령어 사용법을 보여줍니다.
+     * @param sender 명령어 사용법을 보여줄 sender
+     */
+    public void sendUsage(Object sender) {
+        AnnoCommandModule.getCommandManager().getPlatformAdapter().sendMessage(command.getUsage(entered));
     }
 
     public int getArgumentsLength() {

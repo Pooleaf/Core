@@ -6,11 +6,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Data;
 import lombok.SneakyThrows;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonscheduler.CommonSchedulerModule;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
+import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.plugin.CorePlugin;
 
 @Data
@@ -78,29 +81,35 @@ public class AnnoCommand {
         return length;
     }
 
-    public String getUsage(String entered) {
-        String usage = "§f";
+    public BaseComponent getUsage(String entered) {
+        SimpleComponentBuilder builder = new SimpleComponentBuilder();
+
+        // 명령어
+        String command = "";
         if (entered == null) {
-            usage += "/" + getCommandLine();
+            command = "/" + getCommandLine();
         } else {
-            usage += "/" + entered + " " + name.get(0);
+            command = "/" + entered + " " + name.get(0);
         }
+        builder.text(command)
+                .hoverShowText("클릭시 명령어가 채팅창에 입력됩니다.")
+                .clickEvent(ClickEvent.Action.SUGGEST_COMMAND, command);
 
         if (arguments != null) {
-            usage += " " + arguments;
+            builder.addExtra(" " + arguments);
         }
 
         if (description != null) {
             if (color != null) {
-                usage += color;
+                builder.addExtra(color.toString());
             } else if (plugin != null) {
-                usage += plugin.getColor();
+                builder.addExtra(plugin.getColor().toString());
             }
 
-            usage += " - " + description;
+            builder.addExtra(" - " + description);
         }
 
-        return usage;
+        return builder.build();
     }
 
     @SneakyThrows

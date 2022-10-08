@@ -66,7 +66,7 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
             }
 
             /* Usage */
-            pluginCommand.setUsage(command.getUsage(null));
+            pluginCommand.setUsage(command.getUsage(null).toPlainText());
 
             /* Permission */
             pluginCommand.setPermission(command.getPermission());

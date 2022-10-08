@@ -98,7 +98,7 @@ public class ChannelGroupCommand {
   public static void channelGroupJoin(CommonCommandSender sender, CommandResult result) {
     // 콘솔이면 반드시 이동시킬 타겟을 입력해야함
     if (sender.isConsole() && result.getArgumentsLength() < 2) {
-      sender.message(result.getCommand().getUsage(result.getEntered()));
+      result.sendUsage(sender);
       return;
     }
 
