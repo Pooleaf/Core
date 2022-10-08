@@ -3,8 +3,9 @@ package net.pooleaf.core.modules.support.common.messager;
 import com.google.common.base.Preconditions;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
+import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 
 public class Messager extends Prefixer {
 
@@ -24,32 +25,93 @@ public class Messager extends Prefixer {
         messagerAdapter.message(sender, message);
     }
 
-    public static void nmessage(Object sender, Object message, Object... params) {
+    public static void nmessageFormat(Object sender, Object message, Object... params) {
         nmessage(sender, String.format((String) message, params));
     }
 
+
     public static void message(Object sender, Object message) {
-        nmessage(sender, getCurrentPluginPrefix(" §f") + message);
+        // BaseComponent
+        if (message instanceof BaseComponent) {
+            nmessage(sender, new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"))
+                    .addExtra((BaseComponent) message)
+                    .build());
+        }
+        // BaseComponent[]
+        else if (message instanceof BaseComponent[]) {
+            SimpleComponentBuilder builder = new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"));
+            for (BaseComponent component : ((BaseComponent[]) message)) {
+                builder.addExtra(component);
+            }
+            nmessage(sender, builder.build());
+        }
+        // String
+        else {
+            nmessage(sender, getCurrentPluginPrefix(" §f") + message);
+        }
     }
 
-    public static void message(Object sender, Object message, Object... params) {
+    public static void messageFormat(Object sender, Object message, Object... params) {
         message(sender, String.format((String) message, params));
     }
 
 
     public static void nwarning(Object sender, Object message) {
-        nmessage(sender, "§c" + message);
+        // BaseComponent
+        if (message instanceof BaseComponent) {
+            nmessage(sender, new SimpleComponentBuilder("§c")
+                    .addExtra((BaseComponent) message)
+                    .build());
+        }
+        // BaseComponent[]
+        else if (message instanceof BaseComponent[]) {
+            SimpleComponentBuilder builder = new SimpleComponentBuilder("§c");
+            for (BaseComponent component : ((BaseComponent[]) message)) {
+                builder.addExtra(component);
+            }
+            nmessage(sender, builder.build());
+        }
+        // String
+        else {
+            nmessage(sender, "§c" + message);
+        }
     }
 
-    public static void nwarning(Object sender, Object message, Object... params) {
+    public static void nwarning(Object sender, BaseComponent... components) {
+        nwarning(sender, components);
+    }
+
+    public static void nwarningFormat(Object sender, Object message, Object... params) {
         nwarning(sender, String.format((String) message, params));
     }
 
+
     public static void warning(Object sender, Object message) {
-        nmessage(sender, getCurrentPluginPrefix(" §c") + message);
+        // BaseComponent
+        if (message instanceof BaseComponent) {
+            nmessage(sender, new SimpleComponentBuilder(getCurrentPluginPrefix(" §c"))
+                    .addExtra((BaseComponent) message)
+                    .build());
+        }
+        // BaseComponent[]
+        else if (message instanceof BaseComponent[]) {
+            SimpleComponentBuilder builder = new SimpleComponentBuilder(getCurrentPluginPrefix(" §c"));
+            for (BaseComponent component : ((BaseComponent[]) message)) {
+                builder.addExtra(component);
+            }
+            nmessage(sender, builder.build());
+        }
+        // String
+        else {
+            nmessage(sender, getCurrentPluginPrefix(" §c") + message);
+        }
     }
 
-    public static void warning(Object sender, Object message, Object... params) {
+    public static void warning(Object sender, BaseComponent... components) {
+        warning(sender, components);
+    }
+
+    public static void warningFormat(Object sender, Object message, Object... params) {
         warning(sender, String.format((String) message, params));
     }
 
@@ -58,15 +120,40 @@ public class Messager extends Prefixer {
         messagerAdapter.broadcast(message);
     }
 
-    public static void nbroadcast(Object message, Object... params) {
-        messagerAdapter.broadcast(String.format((String) message, params));
+    public static void nbroadcast(BaseComponent... components) {
+        nbroadcast(components);
+    }
+
+    public static void nbroadcastFormat(Object message, Object... params) {
+         nbroadcast(String.format((String) message, params));
     }
 
     public static void broadcast(Object message) {
-        nbroadcast(getCurrentPluginPrefix(" §f") + message);
+        // BaseComponent
+        if (message instanceof BaseComponent) {
+            nbroadcast(new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"))
+                    .addExtra((BaseComponent) message)
+                    .build());
+        }
+        // BaseComponent[]
+        else if (message instanceof BaseComponent[]) {
+            SimpleComponentBuilder builder = new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"));
+            for (BaseComponent component : ((BaseComponent[]) message)) {
+                builder.addExtra(component);
+            }
+            nbroadcast(builder.build());
+        }
+        // String
+        else {
+            nbroadcast(getCurrentPluginPrefix(" §f") + message);
+        }
     }
 
-    public static void broadcast(Object message, Object... params) {
+    public static void broadcast(BaseComponent... components) {
+        broadcast(components);
+    }
+
+    public static void broadcastFormat(Object message, Object... params) {
         broadcast(String.format((String) message, params));
     }
 

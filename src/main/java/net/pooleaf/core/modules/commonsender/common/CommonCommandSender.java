@@ -1,6 +1,7 @@
 package net.pooleaf.core.modules.commonsender.common;
 
 import lombok.Data;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.pooleaf.core.modules.option.common.Option;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 
@@ -48,11 +49,28 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
     }
 
     /**
+     * Sender에게 BaseComponent를 보냅니다.
+     * Messager에 등록된 Prefix를 사용합니다.
+     * @param components BaseComponent
+     */
+    public void message(BaseComponent... components) {
+        Messager.message(getPlatformSender(), components);
+    }
+
+    /**
      * Sender에게 Prefix가 없는 메시지를 보냅니다.
      * @param message 메시지
      */
     public void nmessage(String message) {
         Messager.nmessage(getPlatformSender(), message);
+    }
+
+    /**
+     * Sender에게 Prefix가 없는 BaseComponent를 보냅니다.
+     * @param components BaseComponent
+     */
+    public void nmessage(BaseComponent... components) {
+        Messager.nmessage(getPlatformSender(), components);
     }
 
     /**
@@ -64,11 +82,27 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
     }
 
     /**
+     * Sender에게 경고 BaseComponent를 보냅니다.
+     * @param components 경고 BaseComponent
+     */
+    public void warning(BaseComponent... components) {
+        Messager.warning(getPlatformSender(), components);
+    }
+
+    /**
      * Sender에게 Prefix가 없는 경고 메시지를 보냅니다.
      * @param message 경고 메시지
      */
     public void nwarning(String message) {
         Messager.nwarning(getPlatformSender(), message);
+    }
+
+    /**
+     * Sender에게 Prefix가 없는 경고 BaseComponent를 보냅니다.
+     * @param components 경고 BaseComponent
+     */
+    public void nwarning(BaseComponent... components) {
+        Messager.nwarning(getPlatformSender(), components);
     }
 
     public abstract Option option();
