@@ -100,13 +100,14 @@ public class AnnoCommand {
         }
 
         if (description != null) {
+            String descriptionColor = "";
             if (color != null) {
-                builder.addExtra(color.toString());
+                descriptionColor = color.toString();
             } else if (plugin != null) {
-                builder.addExtra(plugin.getColor().toString());
+                descriptionColor = plugin.getColor().toString();
             }
 
-            builder.addExtra(" - " + description);
+            builder.addExtra(descriptionColor + " - " + description);
         }
 
         return builder.build();
