@@ -15,11 +15,13 @@ public class PlayerDamageListener implements Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent e) {
+        System.out.println("ㅇㅇ");
         // 플레이어인지 확인
         if (!(e.getEntity() instanceof Player)) return;
 
         PlayerDamageEvent event = new PlayerDamageEvent(e);
         Bukkit.getPluginManager().callEvent(event);
+        e.setCancelled(event.isCancelled());
     }
 
     @EventHandler
@@ -29,6 +31,7 @@ public class PlayerDamageListener implements Listener {
 
         PlayerDamageByEntityEvent event = new PlayerDamageByEntityEvent(e);
         Bukkit.getPluginManager().callEvent(event);
+        e.setCancelled(event.isCancelled());
     }
 
     @EventHandler
@@ -44,6 +47,7 @@ public class PlayerDamageListener implements Listener {
 
         PlayerDamageByPlayerEvent event = new PlayerDamageByPlayerEvent(e);
         Bukkit.getPluginManager().callEvent(event);
+        e.setCancelled(event.isCancelled());
     }
 
 }
