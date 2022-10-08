@@ -295,6 +295,8 @@ public class CommandManager {
                                     .build());
                         }
                         builder.addExtra(" ");
+
+                        // 다음 페이지
                         if (page == maxPage) {
                             builder.addExtra(new SimpleComponentBuilder("§7▶")
                                     .hoverShowText("다음 페이지가 없습니다.")
