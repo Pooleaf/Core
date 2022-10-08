@@ -10,6 +10,7 @@ import net.pooleaf.core.modules.annoconfig.common.anno.ConfigSerialize;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfigFactory;
 import net.pooleaf.core.modules.support.common.util.EncryptionUtil;
+import net.pooleaf.core.modules.support.common.util.NumberUtil;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 
 import java.io.File;
@@ -61,6 +62,10 @@ public class AnnoConfig {
                     value = field.getAnnotation(ConfigSerialize.class).value().newInstance().deserialize(value.toString());
                 } else if (defaultSerializer.containsKey(field.getType())) {
                     value = defaultSerializer.get(field.getType()).newInstance().deserialize(value.toString());
+                }
+
+                if (field.getType().equals(float.class) || field.getType().equals(Float.class)) {
+                    value = Float.parseFloat(value.toString());
                 }
 
                 field.set(configObject, value);
