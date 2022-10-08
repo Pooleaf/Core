@@ -31,6 +31,8 @@ public class AnnoCommand {
 
     private String permission;
 
+    private CommonChatColor color;
+
     private boolean playerOnly;
     private boolean consoleOnly;
 
@@ -89,7 +91,9 @@ public class AnnoCommand {
         }
 
         if (description != null) {
-            if (plugin != null) {
+            if (color != null) {
+                usage += color;
+            } else if (plugin != null) {
                 usage += plugin.getColor();
             }
 

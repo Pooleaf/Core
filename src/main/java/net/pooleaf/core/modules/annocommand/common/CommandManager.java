@@ -8,8 +8,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
+import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.plugin.CorePlugin;
@@ -51,56 +55,61 @@ public class CommandManager {
     @SneakyThrows
     public void registerCommands(Class commandClass) {
         for (Method method : ReflectionUtil.getMethodsInOrder(commandClass)) {
-            Command anno = method.getAnnotation(Command.class);
-            if (anno == null) continue;
+            Command[] annos = method.getAnnotationsByType(Command.class);
+            for (Command anno : annos) {
+                // 파라미터 2자리인지 체크, 2번째 자리 CommandResult인지 체크
+                if (method.getParameterCount() != 2) continue;
+                if (!CommandResult.class.isAssignableFrom(method.getParameterTypes()[1])) continue;
 
-            // 파라미터 2자리인지 체크, 2번째 자리 CommandResult인지 체크
-            if (method.getParameterCount() != 2) continue;
-            if (!CommandResult.class.isAssignableFrom(method.getParameterTypes()[1])) continue;
+                AnnoCommand command = new AnnoCommand(Core.getPluginManager().getPluginByPackage(commandClass.getCanonicalName()));
 
-            AnnoCommand command = new AnnoCommand(Core.getPluginManager().getPluginByPackage(commandClass.getCanonicalName()));
-
-            // 부모 명령어 설정
-            if (anno.parent().length() > 0) {
-                command.setParent(anno.parent());
-            }
-
-            // 명령어 이름
-            List<String> names = new ArrayList<>();
-            for (String name : anno.name()) {
-                names.add(name);
-
-                if (anno.usePlatformPrefix()) {
-                    names.add(Platform.getCurrentPlatform().getPrefix() + name);
+                // 부모 명령어 설정
+                if (anno.parent().length() > 0) {
+                    command.setParent(anno.parent());
                 }
+
+                // 명령어 이름
+                List<String> names = new ArrayList<>();
+                for (String name : anno.name()) {
+                    names.add(name);
+
+                    if (anno.usePlatformPrefix()) {
+                        names.add(Platform.getCurrentPlatform().getPrefix() + name);
+                    }
+                }
+                command.setName(names);
+
+                // args
+                if (anno.arguments().length() > 0) {
+                    command.setArguments(anno.arguments());
+                }
+
+                // 명령어 설명
+                if (anno.description().length() > 0) {
+                    command.setDescription(anno.description());
+                }
+
+                // 권한
+                if (anno.permission().length() > 0) {
+                    command.setPermission(anno.permission());
+                }
+
+                // 설명 색
+                if (anno.color() != CommonChatColor.RESET) {
+                    command.setColor(anno.color());
+                }
+
+                // 도움말 명령어인지
+                command.setHelpCommand(anno.helpCommand());
+
+                // 비동기 명령어인지
+                command.setAsync(anno.async());
+
+                // 명령어 메소드
+                command.setExecuteMethod(method);
+
+                registerCommand(command);
             }
-            command.setName(names);
-
-            // args
-            if (anno.arguments().length() > 0) {
-                command.setArguments(anno.arguments());
-            }
-
-            // 명령어 설명
-            if (anno.description().length() > 0) {
-                command.setDescription(anno.description());
-            }
-
-            // 권한
-            if (anno.permission().length() > 0) {
-                command.setPermission(anno.permission());
-            }
-
-            // 도움말 명령어인지
-            command.setHelpCommand(anno.helpCommand());
-
-            // 비동기 명령어인지
-            command.setAsync(anno.async());
-
-            // 명령어 메소드
-            command.setExecuteMethod(method);
-
-            registerCommand(command);
         }
     }
 
@@ -265,7 +274,41 @@ public class CommandManager {
 
                 command.execute(result);
 
-                platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " )");
+                platformAdapter.sendMessage(sender, "");
+                if (maxPage <= 1) {
+                    platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ]");
+                } else {
+                    if (platformAdapter.isConsole(sender)) {
+                        platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " ) ");
+                    } else {
+                        SimpleComponentBuilder builder = new SimpleComponentBuilder(command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " ) ");
+
+                        // 이전 페이지
+                        if (page == 1) {
+                            builder.addExtra(new SimpleComponentBuilder("§7◀")
+                                    .hoverShowText("이전 페이지가 없습니다.")
+                                    .build());
+                        } else {
+                            builder.addExtra(new SimpleComponentBuilder(command.getPlugin().getColor() + "◀")
+                                    .hoverShowText("클릭 시 이전 페이지로 이동합니다.")
+                                    .clickRunCommand("/" + result.getEntered() + " " + (page - 1))
+                                    .build());
+                        }
+                        builder.addExtra(" ");
+                        if (page == maxPage) {
+                            builder.addExtra(new SimpleComponentBuilder("§7▶")
+                                    .hoverShowText("다음 페이지가 없습니다.")
+                                    .build());
+                        } else {
+                            builder.addExtra(new SimpleComponentBuilder(command.getPlugin().getColor() + "▶")
+                                    .hoverShowText("클릭 시 다음 페이지로 이동합니다.")
+                                    .clickRunCommand("/" + result.getEntered() + " " + (page + 1))
+                                    .build());
+                        }
+
+                        platformAdapter.sendMessage(sender, builder.build());
+                    }
+                }
                 for (int i = (page - 1) * helpCommandCountPerPage; i < page * helpCommandCountPerPage; i++) {
                     if (i >= subCommands.size()) break;
 

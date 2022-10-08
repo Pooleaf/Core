@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.annocommand.bungee;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.pooleaf.core.modules.annocommand.common.AnnoCommand;
@@ -63,6 +64,11 @@ public class BungeePlatformAdapter implements PlatformAdapter {
     @Override
     public void sendMessage(Object sender, String message) {
         ((CommandSender) sender).sendMessage(message);
+    }
+
+    @Override
+    public void sendMessage(Object sender, BaseComponent... component) {
+        ((CommandSender) sender).sendMessage(component);
     }
 
 }

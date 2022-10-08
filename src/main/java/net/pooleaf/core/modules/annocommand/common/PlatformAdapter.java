@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.annocommand.common;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.pooleaf.core.plugin.CorePlugin;
 
 public interface PlatformAdapter {
@@ -15,5 +16,7 @@ public interface PlatformAdapter {
     boolean isConsole(Object sender);
 
     void sendMessage(Object sender, String message);
+
+    void sendMessage(Object player, BaseComponent... component);
 
 }

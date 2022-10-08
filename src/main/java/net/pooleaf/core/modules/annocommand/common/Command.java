@@ -1,10 +1,10 @@
 package net.pooleaf.core.modules.annocommand.common;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 
+import java.lang.annotation.*;
+
+@Repeatable(Commands.class)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
@@ -16,6 +16,8 @@ public @interface Command {
     String description() default "";
 
     String permission() default "";
+
+    CommonChatColor color() default CommonChatColor.RESET;
 
     boolean helpCommand() default false;
     boolean async() default true;

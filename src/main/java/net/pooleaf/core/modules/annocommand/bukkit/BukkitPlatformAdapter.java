@@ -3,6 +3,7 @@ package net.pooleaf.core.modules.annocommand.bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.plugin.CorePlugin;
@@ -100,6 +101,15 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
     @Override
     public void sendMessage(Object sender, String message) {
         ((CommandSender) sender).sendMessage(message);
+    }
+
+    @Override
+    public void sendMessage(Object sender, BaseComponent... component) {
+        if (sender instanceof Player) {
+            ((Player) sender).sendMessage(component);
+        } else {
+            ((CommandSender) sender).sendMessage(BaseComponent.toPlainText(component));
+        }
     }
 
 }
