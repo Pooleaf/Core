@@ -1,8 +1,11 @@
 package net.pooleaf.core.modules.support.bukkit.util;
 
 import lombok.experimental.UtilityClass;
+import net.pooleaf.core.Core;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 @UtilityClass
 public class TeleportUtil {
@@ -14,6 +17,11 @@ public class TeleportUtil {
      * @param location 텔레포트할 위치
      */
     public static void teleport(Player player, Location location) {
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTask((Plugin) Core.getPlugin(), () -> teleport(player, location));
+            return;
+        }
+
         // 탑승물
         if (player.isInsideVehicle()) {
             player.leaveVehicle();
