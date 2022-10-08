@@ -51,6 +51,10 @@ public class Debugger {
     }
 
 
+    private static String getThreadId() {
+        return "[" + Thread.currentThread().getId() + "]";
+    }
+
     /**
      * Debug 메시지를 듣고있는 CommandSender들에게 메시지를 보냅니다.
      * @param message 보낼 메시지
@@ -64,7 +68,7 @@ public class Debugger {
         }
         prefix += CommonChatColor.stripColor(plugin.getPrefix()).replace(" ", "") + "§7";
 
-        message = prefix + message;
+        message = getThreadId() + prefix + message;
 
         for (Object listener : listeners) {
             Messager.nmessage(listener, message);

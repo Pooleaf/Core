@@ -15,24 +15,28 @@ public class Logger extends Prefixer {
     return loggerAdapter != null;
   }
 
+  private static String getThreadId() {
+    return "[" + Thread.currentThread().getId() + "]";
+  }
+
   public static void log(Object log) {
-    loggerAdapter.log(getCurrentPluginPrefix(" §f") + log);
+    loggerAdapter.log(getThreadId() + getCurrentPluginPrefix(" §f") + log);
   }
 
   public static void log(String classPackage, Object log) {
-    loggerAdapter.log(getPluginPrefix(classPackage, " §f") + log);
+    loggerAdapter.log(getThreadId() + getPluginPrefix(classPackage, " §f") + log);
   }
 
   public static void nlog(Object log) {
-    loggerAdapter.log(log);
+    loggerAdapter.log(getThreadId() + log);
   }
 
   public static void warning(Object log) {
-    loggerAdapter.log(getCurrentPluginPrefix(" §c") + log);
+    loggerAdapter.log(getThreadId() + getCurrentPluginPrefix(" §c") + log);
   }
 
   public static void warning(String classPackage, Object log) {
-    loggerAdapter.log(getPluginPrefix(classPackage, " §c") + log);
+    loggerAdapter.log(getThreadId() + getPluginPrefix(classPackage, " §c") + log);
   }
 
 }
