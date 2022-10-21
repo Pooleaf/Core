@@ -34,12 +34,13 @@ dependencies {
     compileOnly 'net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT'
 
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
-
     implementation 'com.github.cryptomorin:XSeries:9.1.0'
 
     implementation 'com.zaxxer:HikariCP:4.0.3'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
     implementation 'io.lettuce:lettuce-core:6.0.0.RELEASE'
+
+    implementation 'org.javassist:javassist:3.29.2-GA'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
@@ -66,7 +67,8 @@ shadowJar {
     archiveBaseName.set(pluginName)
     archiveClassifier.set('')
 
-    relocate 'io.netty', 'io.lettuce.netty'
+    relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
+    relocate 'javassist', 'net.pooleaf.core.lib.javassist'
 }
 
 task copyToServerWindows(type: Copy) {

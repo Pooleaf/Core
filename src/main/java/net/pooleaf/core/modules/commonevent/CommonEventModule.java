@@ -5,7 +5,6 @@ import net.pooleaf.core.module.CoreModule;
 import net.pooleaf.core.modules.commonevent.common.CommonEvent;
 import net.pooleaf.core.modules.commonevent.common.CommonEventListener;
 import net.pooleaf.core.modules.commonevent.common.CommonEventManager;
-import net.pooleaf.core.modules.eventsupport.common.EventRegistererFactory;
 import net.pooleaf.core.plugin.CorePlugin;
 
 public class CommonEventModule extends CoreModule {

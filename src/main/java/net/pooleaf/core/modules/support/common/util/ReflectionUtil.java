@@ -1,5 +1,14 @@
 package net.pooleaf.core.modules.support.common.util;
 
+import com.google.common.base.Preconditions;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+import net.pooleaf.core.plugin.CorePlugin;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,19 +16,9 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import com.google.common.base.Preconditions;
-import lombok.Cleanup;
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
-import net.pooleaf.core.plugin.CorePlugin;
 
 @UtilityClass
 public class ReflectionUtil {
@@ -163,11 +162,12 @@ public class ReflectionUtil {
 
     /**
      * 해당 Class의 모든 Method를 소스 코드에 기재된 순서대로 불러옵니다.
-     * @param targetClass Class
+     * 속도는 빠르나 잘못된 순서로 불러오거나 불러오지 못할 수 있습니다.
+     * @param targetClass 메소드를 불러올 Class
      * @return 소스 코드 순서대로 정렬된 Method 목록
      */
     @SneakyThrows(Exception.class)
-    public static Collection<Method> getMethodsInOrder(Class targetClass) {
+    public static Collection<Method> getMethodsInOrderLightly(Class targetClass) {
         Map<Integer, Method> methods = new TreeMap<>();
 
         try {
@@ -188,6 +188,66 @@ public class ReflectionUtil {
         }
 
         return methods.values();
+    }
+
+
+    private static ClassPool classPool;
+
+    /**
+     * Javassist를 사용하여 해당 Class의 모든 Method를 소스 코드에 기재된 순서대로 불러옵니다.
+     * 속도는 느리나 정확한 순서대로 불러올 수 있습니다.
+     * @param targetClass 메소드를 불러올 Class
+     * @return 소스 코드 순서대로 정렬된 Method 목록
+     */
+    @SneakyThrows
+    public static List<Method> getMethodsInOrder(File targetFile, Class targetClass) {
+        List<Method> methods = new ArrayList<>();
+
+        if (classPool == null) {
+            classPool = ClassPool.getDefault();
+            classPool.appendClassPath(targetFile.getAbsolutePath()); // TODO 고쳐야함
+        }
+        for (CtMethod method : classPool.get(targetClass.getCanonicalName()).getDeclaredMethods()) {
+            String methodName = method.getName();
+
+            List<Class> parameterTypes = new ArrayList<>();
+            for (CtClass parameterType : method.getParameterTypes()) {
+                String parameterClassName = parameterType.getName();
+                Class parameterClass = parseType(parameterClassName);
+                parameterTypes.add(parameterClass);
+            }
+
+            Method targetMethod = targetClass.getMethod(methodName, parameterTypes.toArray(new Class[0]));
+            methods.add(targetMethod);
+        }
+
+        return methods;
+    }
+
+    @SneakyThrows
+    public static Class<?> parseType(String className) {
+        switch (className) {
+            case "boolean":
+                return boolean.class;
+            case "byte":
+                return byte.class;
+            case "short":
+                return short.class;
+            case "int":
+                return int.class;
+            case "long":
+                return long.class;
+            case "float":
+                return float.class;
+            case "double":
+                return double.class;
+            case "char":
+                return char.class;
+            case "void":
+                return void.class;
+            default:
+                return Class.forName(className);
+        }
     }
 
     /**
