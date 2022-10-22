@@ -60,6 +60,10 @@ public class AnnoCommand {
         return parent != null;
     }
 
+    public boolean hasPermission() {
+        return permission != null;
+    }
+
     public String getCommandLine() {
         if (!hasParent()) {
             return name.get(0);

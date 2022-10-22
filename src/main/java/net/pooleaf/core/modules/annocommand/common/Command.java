@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 
-    String parent() default "";
+    String[] parent() default ""; // ""일 경우 부모가 없는 명령어로 취급함
     String[] name();
 
     String arguments() default "";

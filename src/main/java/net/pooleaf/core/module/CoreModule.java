@@ -9,7 +9,7 @@ public abstract class CoreModule {
 
   @Setter(AccessLevel.PROTECTED)
   @Getter
-  boolean enable = false;
+  boolean enabled = false;
 
 
   public abstract String getName();

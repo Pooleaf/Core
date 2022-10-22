@@ -5,7 +5,7 @@ import lombok.Data;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryIcon;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryPanel;
-import net.pooleaf.core.modules.gui.bukkit.inventory.event.InevntoryGuiClickEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
 import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

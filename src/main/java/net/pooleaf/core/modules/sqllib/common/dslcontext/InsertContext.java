@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
 import net.pooleaf.core.modules.sqllib.common.SqlColumn;
 import net.pooleaf.core.modules.sqllib.common.SqlTable;
-import net.pooleaf.core.modules.sqllib.common.config.SqlType;
+import net.pooleaf.core.modules.sqllib.common.configs.SqlType;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.modules.support.common.util.StringUtil;

@@ -1,15 +1,9 @@
 package net.pooleaf.core.modules.annocommand.common;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
@@ -17,6 +11,11 @@ import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.plugin.CorePlugin;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandManager {
 
@@ -61,54 +60,58 @@ public class CommandManager {
                 if (method.getParameterCount() != 2) continue;
                 if (!CommandResult.class.isAssignableFrom(method.getParameterTypes()[1])) continue;
 
-                AnnoCommand command = new AnnoCommand(Core.getPluginManager().getPluginByPackage(commandClass.getCanonicalName()));
+                int parentIndex = 0;
+                do {
+                    AnnoCommand command = new AnnoCommand(Core.getPluginManager().getPluginByPackage(commandClass.getCanonicalName()));
 
-                // 부모 명령어 설정
-                if (anno.parent().length() > 0) {
-                    command.setParent(anno.parent());
-                }
-
-                // 명령어 이름
-                List<String> names = new ArrayList<>();
-                for (String name : anno.name()) {
-                    names.add(name);
-
-                    if (anno.usePlatformPrefix()) {
-                        names.add(Platform.getCurrentPlatform().getPrefix() + name);
+                    // 부모 명령어 설정
+                    if (anno.parent().length > 0 && !anno.parent()[parentIndex].isEmpty()) {
+                        command.setParent(anno.parent()[parentIndex]);
                     }
-                }
-                command.setName(names);
+                    parentIndex++;
 
-                // args
-                if (anno.arguments().length() > 0) {
-                    command.setArguments(anno.arguments());
-                }
+                    // 명령어 이름
+                    List<String> names = new ArrayList<>();
+                    for (String name : anno.name()) {
+                        names.add(name);
 
-                // 명령어 설명
-                if (anno.description().length() > 0) {
-                    command.setDescription(anno.description());
-                }
+                        if (anno.usePlatformPrefix()) {
+                            names.add(Platform.getCurrentPlatform().getPrefix() + name);
+                        }
+                    }
+                    command.setName(names);
 
-                // 권한
-                if (anno.permission().length() > 0) {
-                    command.setPermission(anno.permission());
-                }
+                    // args
+                    if (anno.arguments().length() > 0) {
+                        command.setArguments(anno.arguments());
+                    }
 
-                // 설명 색
-                if (anno.color() != CommonChatColor.RESET) {
-                    command.setColor(anno.color());
-                }
+                    // 명령어 설명
+                    if (anno.description().length() > 0) {
+                        command.setDescription(anno.description());
+                    }
 
-                // 도움말 명령어인지
-                command.setHelpCommand(anno.helpCommand());
+                    // 권한
+                    if (anno.permission().length() > 0) {
+                        command.setPermission(anno.permission());
+                    }
 
-                // 비동기 명령어인지
-                command.setAsync(anno.async());
+                    // 설명 색
+                    if (anno.color() != CommonChatColor.RESET) {
+                        command.setColor(anno.color());
+                    }
 
-                // 명령어 메소드
-                command.setExecuteMethod(method);
+                    // 도움말 명령어인지
+                    command.setHelpCommand(anno.helpCommand());
 
-                registerCommand(command);
+                    // 비동기 명령어인지
+                    command.setAsync(anno.async());
+
+                    // 명령어 메소드
+                    command.setExecuteMethod(method);
+
+                    registerCommand(command);
+                } while (parentIndex < anno.parent().length);
             }
         }
     }
@@ -120,6 +123,17 @@ public class CommandManager {
      */
     public void registerCommands(CorePlugin plugin) {
         ReflectionUtil.getClasses(plugin).forEach(targetClass -> registerCommands(targetClass));
+    }
+
+    /**
+     * CorePlugin의 명령어들을 불러옵니다.
+     * @param plugin 명령어를 불러올 CorePlugin
+     * @return 명령어 List
+     */
+    public List<AnnoCommand> getCommands(CorePlugin plugin) {
+        return commands.stream()
+                .filter(annoCommand -> annoCommand.getPlugin().equals(plugin))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -319,10 +333,11 @@ public class CommandManager {
             }
             // 명령어 실행
             else {
+                CommandResult commandResult = new CommandResult(command, sender, commandLine);
                 if (command.isAsync()) {
-                    command.executeAsync(new CommandResult(command, sender, commandLine));
+                    command.executeAsync(commandResult);
                 } else {
-                    command.execute(new CommandResult(command, sender, commandLine));
+                    command.execute(commandResult);
                 }
             }
 

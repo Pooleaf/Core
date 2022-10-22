@@ -100,12 +100,18 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
 
     @Override
     public void sendMessage(Object sender, String message) {
-        ((CommandSender) sender).sendMessage(message);
+        if (sender instanceof CommonCommandSender) {
+            ((CommonCommandSender) sender).nmessage(message);
+        } else {
+            ((CommandSender) sender).sendMessage(message);
+        }
     }
 
     @Override
     public void sendMessage(Object sender, BaseComponent... component) {
-        if (sender instanceof Player) {
+        if (sender instanceof CommonCommandSender) {
+            ((CommonCommandSender) sender).nmessage(component);
+        } else if (sender instanceof Player) {
             ((Player) sender).sendMessage(component);
         } else {
             ((CommandSender) sender).sendMessage(BaseComponent.toPlainText(component));

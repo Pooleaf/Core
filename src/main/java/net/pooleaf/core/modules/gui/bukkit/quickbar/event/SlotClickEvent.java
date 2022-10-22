@@ -1,7 +1,7 @@
 package net.pooleaf.core.modules.gui.bukkit.quickbar.event;
 
 import lombok.Data;
-import net.pooleaf.core.modules.eventsupport.bukkit.event.CancellableEvent;
+import net.pooleaf.core.modules.eventsupport.bukkit.events.CancellableEvent;
 import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBar;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.Slot;

@@ -135,7 +135,7 @@ public class CommandResult {
      * @param sender 명령어 사용법을 보여줄 sender
      */
     public void sendUsage(Object sender) {
-        AnnoCommandModule.getCommandManager().getPlatformAdapter().sendMessage(command.getUsage(entered));
+        AnnoCommandModule.getCommandManager().getPlatformAdapter().sendMessage(sender, command.getUsage(entered));
     }
 
     public int getArgumentsLength() {

@@ -5,7 +5,7 @@ import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.sqllib.common.config.SqlConfig;
+import net.pooleaf.core.modules.sqllib.common.configs.SqlConfig;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.util.StringUtil;

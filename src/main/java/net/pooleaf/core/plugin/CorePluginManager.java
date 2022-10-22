@@ -3,6 +3,8 @@ package net.pooleaf.core.plugin;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 
+import java.util.TreeMap;
+
 public class CorePluginManager extends AbstractManager<String, CorePlugin> {
 
   /**

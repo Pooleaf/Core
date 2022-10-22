@@ -39,6 +39,14 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
     }
 
     /**
+     * 페이지 변경 명령어를 반환합니다.
+     * @return 페이지 변경 명령어
+     */
+    public String getPageMoveCommand(int page) {
+        return "/" + entered + " " + page;
+    }
+
+    /**
      * 값을 메시지나 BaseComponent로 변환하여 반환합니다.
      * @param value 값
      * @return 메시자나 BaseComponent로 변환한 값
@@ -78,7 +86,7 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
                     } else {
                         builder.addExtra(new SimpleComponentBuilder(getHeaderColor() + "◀")
                                 .hoverShowText("클릭 시 이전 페이지로 이동합니다.")
-                                .clickRunCommand("/" + entered + " " + (page - 1))
+                                .clickRunCommand(getPageMoveCommand(page - 1))
                                 .build());
                     }
                     builder.addExtra(" ");
@@ -91,7 +99,7 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
                     } else {
                         builder.addExtra(new SimpleComponentBuilder(getHeaderColor() + "▶")
                                 .hoverShowText("클릭 시 다음 페이지로 이동합니다.")
-                                .clickRunCommand("/" + entered + " " + (page + 1))
+                                .clickRunCommand(getPageMoveCommand(page + 1))
                                 .build());
                     }
 

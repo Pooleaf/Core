@@ -38,7 +38,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
       count = 0;
 
       for (CoreModule module : datas.values()) {
-        if (module.isEnable()) continue;
+        if (module.isEnabled()) continue;
 
         boolean canEnable = true;
 
@@ -48,7 +48,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
 
           for (String depend : module.getDepends()) {
             CoreModule dependModule = get(depend);
-            if (dependModule != null && dependModule.isEnable()) {
+            if (dependModule != null && dependModule.isEnabled()) {
               enabled++;
             }
           }
@@ -62,7 +62,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
 
           for (String depend : module.getSoftDepends()) {
             CoreModule dependModule = get(depend);
-            if (dependModule == null || dependModule.isEnable()) {
+            if (dependModule == null || dependModule.isEnabled()) {
               enabled++;
             }
           }
@@ -77,7 +77,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
           }
 
           module.onEnable(Core.getPlugin());
-          module.setEnable(true);
+          module.setEnabled(true);
           enabledOrder.add(module);
 
           Logger.log(module.getName() + " Module이 초기화되었습니다.");
@@ -93,7 +93,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
     for (int i = enabledOrder.size(); i > 0; i--) {
       CoreModule module = enabledOrder.get(i - 1);
       module.onDisable(Core.getPlugin());
-      module.setEnable(false);
+      module.setEnabled(false);
 
       Logger.log(module.getName() + " Module이 종료되었습니다.");
     }

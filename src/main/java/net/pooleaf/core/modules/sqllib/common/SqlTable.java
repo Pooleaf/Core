@@ -1,7 +1,7 @@
 package net.pooleaf.core.modules.sqllib.common;
 
 import lombok.Data;
-import net.pooleaf.core.modules.sqllib.common.config.SqlType;
+import net.pooleaf.core.modules.sqllib.common.configs.SqlType;
 import net.pooleaf.core.modules.sqllib.common.dslcontext.DeleteContext;
 import net.pooleaf.core.modules.sqllib.common.dslcontext.InsertContext;
 import net.pooleaf.core.modules.sqllib.common.dslcontext.SelectContext;

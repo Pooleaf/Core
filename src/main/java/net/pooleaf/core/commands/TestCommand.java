@@ -1,34 +1,39 @@
 package net.pooleaf.core.commands;
 
-import com.cryptomorin.xseries.XSound;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.pooleaf.core.CorePermission;
 import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.annocommand.common.CommandResult;
 import net.pooleaf.core.modules.annocommand.common.HelpCommandResult;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
+import net.pooleaf.core.modules.support.common.pageable.PageableCommand;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class TestCommand {
 
     @Command(
-            name = {"ctest"},
-            permission = "core.admin",
-            helpCommand = true
+            parent = {"core"},
+            name = {"test"},
+            description = "테스트 명령어 목록을 확인합니다.",
+            helpCommand = true,
+            permission = CorePermission.ADMIN
     )
-    public static void ctest(CommandSender sender, HelpCommandResult result) {
+    public static void test(CommandSender sender, HelpCommandResult result) {
     }
 
     @Command(
-            parent = "ctest",
+            parent = "core test",
             name = {"sound"},
-            arguments = "<사운드> (볼륨) (Pitch)"
+            arguments = "<사운드> (볼륨) (Pitch)",
+            permission = CorePermission.ADMIN
     )
-    public static void ctestSound(Player player, CommandResult result) {
+    public static void test_sound(Player player, CommandResult result) {
         String soundName = result.getArgument(0);
         Sound sound = Sound.valueOf(soundName);
         if (sound == null) {
@@ -50,23 +55,12 @@ public class TestCommand {
     }
 
     @Command(
-            parent = "ctest",
-            name = {"soundlist"},
-            arguments = "(페이지) (볼륨) (Pitch)"
+            parent = "core test",
+            name = {"soundList"},
+            arguments = "(페이지) (볼륨) (Pitch)",
+            permission = CorePermission.ADMIN
     )
-    public static void ctestSoundlist(Player player, CommandResult result) {
-        Integer page = result.getArgumentAsInt(0);
-        if (page == null) {
-            page = 1;
-        }
-
-        int numberPerPage = 15;
-        int maxPage = (int) (Math.floor(Sound.values().length / numberPerPage) + 1);
-        if (page < 1 || maxPage < page) {
-            player.sendMessage("§c페이지는 1~" + maxPage + "의 정수만 입력할 수 있습니다.");
-            return;
-        }
-
+    public static void test_soundList(CommonPlayer player, CommandResult result) {
         Float volume = result.getArgumentAsFloat(1);
         if (volume == null) {
             volume = 1.0F;
@@ -77,24 +71,32 @@ public class TestCommand {
             pitch = 1.0F;
         }
 
-        player.sendMessage("");
-        player.sendMessage(new SimpleComponentBuilder("§e[ Sound 목록 " + page + " / " + maxPage + " ] ")
-                .addExtra(new SimpleComponentBuilder("§e§l◀").hoverShowText("클릭 시 이전 페이지로 이동합니다.").clickRunCommand("/ctest soundlist " + (page - 1) + " " + volume + " " + pitch).build())
-                .addExtra(new SimpleComponentBuilder("  ").build())
-                .addExtra(new SimpleComponentBuilder("§e§l▶").hoverShowText("클릭 시 다음 페이지로 이동합니다.").clickRunCommand("/ctest soundlist " + (page + 1) + " " + volume + " " + pitch).build())
-                .build());
-        for (int i = (page - 1) * numberPerPage; i < page * numberPerPage; i++) {
-            if (i >= Sound.values().length - 1) {
-                break;
+        Float finalVolume = volume;
+        Float finalPitch = pitch;
+        new PageableCommand<Sound>(result.getEntered(), Arrays.stream(Sound.values()).collect(Collectors.toList()), 15) {
+            @Override
+            public CommonChatColor getHeaderColor() {
+                return CommonChatColor.YELLOW;
             }
 
-            Sound sound = Sound.values()[i];
+            @Override
+            public String getHeaderMessage() {
+                return "사운드 목록";
+            }
 
-            player.sendMessage(new SimpleComponentBuilder(sound.name())
-                    .hoverShowText("클릭 시 " + sound.name() + "를 볼륨 " + volume + ", Pitch " + pitch + "로 들려줍니다.")
-                    .clickRunCommand("/ctest sound " + sound.name() + " " + volume + " " + pitch)
-                    .build());
-        }
+            @Override
+            public String getPageMoveCommand(int page) {
+                return "/" + getEntered() + " " + page + " " + finalVolume + " " + finalPitch;
+            }
+
+            @Override
+            public Object handleValue(Sound value, int index) {
+                return new SimpleComponentBuilder(value.name())
+                        .hoverShowText("클릭 시 " + value.name() + "를 볼륨 " + finalVolume + ", Pitch " + finalPitch + "로 들려줍니다.")
+                        .clickRunCommand("/core test sound " + value.name() + " " + finalVolume + " " + finalPitch)
+                        .build();
+            }
+        }.sendPage(player, result.getArgumentAsInt(0));
     }
 
 }

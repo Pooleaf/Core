@@ -3,8 +3,8 @@ package net.pooleaf.core.modules.option.common;
 import lombok.Data;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.option.OptionModule;
-import net.pooleaf.core.modules.option.common.event.PlayerOptionChangedEvent;
-import net.pooleaf.core.modules.option.common.event.ServerOptionChangedEvent;
+import net.pooleaf.core.modules.option.common.events.PlayerOptionChangedEvent;
+import net.pooleaf.core.modules.option.common.events.ServerOptionChangedEvent;
 
 import java.util.Map;
 import java.util.TreeMap;

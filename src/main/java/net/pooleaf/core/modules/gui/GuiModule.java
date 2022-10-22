@@ -23,7 +23,7 @@ public class GuiModule extends CoreModule {
 
   @Override
   public String[] getDepends() {
-    return new String[] { "Support", "Event" };
+    return new String[] { "Support", "EventSupport" };
   }
 
   @Override

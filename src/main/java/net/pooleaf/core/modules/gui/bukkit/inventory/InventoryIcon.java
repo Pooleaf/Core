@@ -2,7 +2,7 @@ package net.pooleaf.core.modules.gui.bukkit.inventory;
 
 import lombok.Data;
 import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.gui.bukkit.inventory.event.InevntoryGuiClickEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;

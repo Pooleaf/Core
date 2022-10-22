@@ -3,6 +3,8 @@ package net.pooleaf.core;
 import lombok.Getter;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.debugger.Debugger;
+import net.pooleaf.core.modules.support.common.logger.Logger;
+import net.pooleaf.core.modules.support.common.messager.Messager;
 import net.pooleaf.core.plugin.BukkitCorePlugin;
 import org.bukkit.Bukkit;
 
@@ -19,15 +21,17 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
     setPrefix("§e[ Core ]");
     setColor(CommonChatColor.YELLOW);
     registerLoggerPrefix();
-    registerMessagerPrefix();
 
     Debugger.addListener(Bukkit.getConsoleSender());
 
     Core.init(this);
 
     registerEventListeners();
+    Logger.log("EventListener가 등록되었습니다.");
     registerCommonEventListeners();
+    Logger.log("CommonEventListener가 등록되었습니다.");
     registerCommands();
+    Logger.log("명령어가 등록되었습니다.");
   }
 
   @Override
