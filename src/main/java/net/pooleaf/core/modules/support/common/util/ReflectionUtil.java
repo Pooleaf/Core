@@ -1,9 +1,6 @@
 package net.pooleaf.core.modules.support.common.util;
 
 import com.google.common.base.Preconditions;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -16,7 +13,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -163,16 +164,46 @@ public class ReflectionUtil {
     /**
      * 해당 Class의 모든 Method를 소스 코드에 기재된 순서대로 불러옵니다.
      * 속도는 빠르나 잘못된 순서로 불러오거나 불러오지 못할 수 있습니다.
+     *
+     * Companion Class가 있을 경우 Companion Class의 Method도 함께 불러옵니다. (Kotlin companion object를 위해)
+     * Companion Class의 Method는 해당 Class의 Method보다 먼저 배치됩니다.
      * @param targetClass 메소드를 불러올 Class
      * @return 소스 코드 순서대로 정렬된 Method 목록
      */
     @SneakyThrows(Exception.class)
-    public static Collection<Method> getMethodsInOrderLightly(Class targetClass) {
+    public static List<Method> getMethodsInOrderLightly(Class targetClass) {
+        List<Method> methods = new ArrayList<>();
+
+        try {
+            // Companion Class 메소드 불러오기
+            String companionClassName = targetClass.getName().replace(".", "/") + "$Companion";
+            methods.addAll(getMethodsInOrderLightly(companionClassName, targetClass.getClassLoader()));
+
+            // 해당 Class 메소드 불러오기
+            methods.addAll(getMethodsInOrderLightly(targetClass.getName(), targetClass.getClassLoader()));
+        } catch (NullPointerException e) {
+        } catch (NoClassDefFoundError e) {
+        }
+
+        return methods;
+    }
+
+    /**
+     * 해당 Class의 모든 Method를 소스 코드에 기재된 순서대로 불러옵니다.
+     * 속도는 빠르나 잘못된 순서로 불러오거나 불러오지 못할 수 있습니다.
+     * @param targetClassName 메소드를 불러올 Class 이름 (.class 미포함)
+     * @return 소스 코드 순서대로 정렬된 Method 목록
+     */
+    @SneakyThrows(Exception.class)
+    public static List<Method> getMethodsInOrderLightly(String targetClassName, ClassLoader classLoader) {
         Map<Integer, Method> methods = new TreeMap<>();
 
         try {
-            String className = targetClass.getName().replace(".", "/") + ".class";
-            @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(targetClass.getClassLoader().getResourceAsStream(className)));
+            Class targetClass = Class.forName(targetClassName);
+            targetClassName = targetClassName.replace(".", "/") + ".class";
+
+            // 클래스 읽어오기
+            @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(targetClassName)));
 
             String classData = "";
             String line;
@@ -180,48 +211,15 @@ public class ReflectionUtil {
                 classData += line;
             }
 
+            // 메소드 첫번째 위치 찾기 (첫번째 위치를 찾기 때문에 메소드 안에서 메소드를 사용했을 경우 순서가 이상할 수 있음)
             for (Method method : targetClass.getDeclaredMethods()) {
                 methods.put(classData.indexOf(method.getName()), method);
             }
-        } catch (NullPointerException e) {
-        } catch (NoClassDefFoundError e) {
+        } catch (Exception e) {
+        } catch (Error e) {
         }
 
-        return methods.values();
-    }
-
-
-    private static ClassPool classPool;
-
-    /**
-     * Javassist를 사용하여 해당 Class의 모든 Method를 소스 코드에 기재된 순서대로 불러옵니다.
-     * 속도는 느리나 정확한 순서대로 불러올 수 있습니다.
-     * @param targetClass 메소드를 불러올 Class
-     * @return 소스 코드 순서대로 정렬된 Method 목록
-     */
-    @SneakyThrows
-    public static List<Method> getMethodsInOrder(File targetFile, Class targetClass) {
-        List<Method> methods = new ArrayList<>();
-
-        if (classPool == null) {
-            classPool = ClassPool.getDefault();
-            classPool.appendClassPath(targetFile.getAbsolutePath()); // TODO 고쳐야함
-        }
-        for (CtMethod method : classPool.get(targetClass.getCanonicalName()).getDeclaredMethods()) {
-            String methodName = method.getName();
-
-            List<Class> parameterTypes = new ArrayList<>();
-            for (CtClass parameterType : method.getParameterTypes()) {
-                String parameterClassName = parameterType.getName();
-                Class parameterClass = parseType(parameterClassName);
-                parameterTypes.add(parameterClass);
-            }
-
-            Method targetMethod = targetClass.getMethod(methodName, parameterTypes.toArray(new Class[0]));
-            methods.add(targetMethod);
-        }
-
-        return methods;
+        return methods.values().stream().collect(Collectors.toList());
     }
 
     @SneakyThrows

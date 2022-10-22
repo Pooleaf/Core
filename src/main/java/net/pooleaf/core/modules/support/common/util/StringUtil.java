@@ -111,4 +111,14 @@ public class StringUtil {
     return newList;
   }
 
+  public static String repeat(String text, int repeatCount) {
+    StringBuilder builder = new StringBuilder();
+
+    for (int i = 0; i < repeatCount; i++) {
+      builder.append(text);
+    }
+
+    return builder.toString();
+  }
+
 }

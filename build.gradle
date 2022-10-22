@@ -40,8 +40,6 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
     implementation 'io.lettuce:lettuce-core:6.0.0.RELEASE'
 
-    implementation 'org.javassist:javassist:3.29.2-GA'
-
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 

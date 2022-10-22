@@ -145,7 +145,7 @@ public class NumberUtil {
 
       if (count > 0) {
         number %= RomanNumeral.values()[i].getNumber();
-        roman += RomanNumeral.values()[i].name().repeat(count);
+        roman += StringUtil.repeat(RomanNumeral.values()[i].name(), count);
       }
     }
 

@@ -54,7 +54,7 @@ public class CommandManager {
      */
     @SneakyThrows
     public void registerCommands(Class commandClass) {
-        for (Method method : ReflectionUtil.getMethodsInOrder(commandClass)) {
+        for (Method method : ReflectionUtil.getMethodsInOrderLightly(commandClass)) {
             Command[] annos = method.getAnnotationsByType(Command.class);
             for (Command anno : annos) {
                 // 파라미터 2자리인지 체크, 2번째 자리 CommandResult인지 체크
