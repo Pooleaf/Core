@@ -1,9 +1,5 @@
 package net.pooleaf.core.modules.annocommand.common;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import lombok.Data;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -15,6 +11,11 @@ import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.plugin.CorePlugin;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Data
 public class AnnoCommand {
@@ -42,6 +43,7 @@ public class AnnoCommand {
     private boolean helpCommand;
     private boolean async;
 
+    private Object executeInstance;
     private Method executeMethod;
 
 
@@ -121,9 +123,9 @@ public class AnnoCommand {
     public void execute(CommandResult result) {
         // 메소드 첫번째 파라미터가 CommonCommandSender일 경우 변환해서 호출
         if (CommonCommandSender.class.isAssignableFrom(executeMethod.getParameterTypes()[0])) {
-            executeMethod.invoke(null, CommonSenderModule.getOnlineCommandSenderByPlatformSender(result.getSender()), result);
+            executeMethod.invoke(executeInstance, CommonSenderModule.getOnlineCommandSenderByPlatformSender(result.getSender()), result);
         } else {
-            executeMethod.invoke(null, result.getSender(), result);
+            executeMethod.invoke(executeInstance, result.getSender(), result);
         }
     }
 

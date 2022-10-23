@@ -27,7 +27,7 @@ public class PluginManagerCommand {
             helpCommand = true,
             permission = CorePermission.ADMIN
     )
-    public static void pluginManager(CommonCommandSender sender, HelpCommandResult commandResult) {
+    public void pluginManager(CommonCommandSender sender, HelpCommandResult commandResult) {
     }
 
     @Command(
@@ -37,7 +37,7 @@ public class PluginManagerCommand {
             description = "Core 기반 플러그인 목록과 상태를 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void pluginManager_list(CommonCommandSender sender, CommandResult commandResult) {
+    public void pluginManager_list(CommonCommandSender sender, CommandResult commandResult) {
         new PageableCommand<CorePlugin>(commandResult.getEntered(), Core.getPluginManager().values().stream().collect(Collectors.toList()), 18) {
             @Override
             public CommonChatColor getHeaderColor() {
@@ -63,7 +63,7 @@ public class PluginManagerCommand {
             description = "Core 기반 플러그인의 설정을 다시 불러옵니다.",
             permission = CorePermission.ADMIN
     )
-    public static void pluginManager_reloadConfig(CommonCommandSender sender, CommandResult commandResult) {
+    public void pluginManager_reloadConfig(CommonCommandSender sender, CommandResult commandResult) {
         CorePlugin plugin = Core.getPluginManager().getPluginByName(commandResult.getArgument(0));
         if (plugin == null) {
             sender.nwarning("존재하지 않는 플러그인입니다.");
@@ -87,7 +87,7 @@ public class PluginManagerCommand {
             description = "Core 기반 플러그인의 명령어 목록을 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void pluginManager_commandList(CommonCommandSender sender, CommandResult commandResult) {
+    public void pluginManager_commandList(CommonCommandSender sender, CommandResult commandResult) {
         CorePlugin plugin = Core.getPluginManager().getPluginByName(commandResult.getArgument(0));
         if (plugin == null) {
             sender.nwarning("존재하지 않는 플러그인입니다.");

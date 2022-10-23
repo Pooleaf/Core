@@ -12,7 +12,7 @@ public class CoreCommand {
             helpCommand = true,
             permission = CorePermission.ADMIN
     )
-    public static void core(CommonCommandSender sender, HelpCommandResult result) {
+    public void core(CommonCommandSender sender, HelpCommandResult result) {
     }
 
 }

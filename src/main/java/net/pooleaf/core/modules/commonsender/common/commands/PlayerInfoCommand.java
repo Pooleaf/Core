@@ -18,7 +18,7 @@ public class PlayerInfoCommand {
             description = "플레이어 정보를 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void playerInfo(CommonCommandSender sender, CommandResult result) {
+    public void playerInfo(CommonCommandSender sender, CommandResult result) {
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(result.getArgument(0));
         if (targetPlayer == null) {
             sender.nwarning("존재하지 않는 플레이어입니다.");

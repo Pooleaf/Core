@@ -21,7 +21,7 @@ public class ModuleManagerCommand {
             helpCommand = true,
             permission = CorePermission.ADMIN
     )
-    public static void module(CommonCommandSender sender, HelpCommandResult commandResult) {
+    public void module(CommonCommandSender sender, HelpCommandResult commandResult) {
     }
 
     @Command(
@@ -31,7 +31,7 @@ public class ModuleManagerCommand {
             description = "모듈 목록을 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void module_list(CommonCommandSender sender, CommandResult commandResult) {
+    public void module_list(CommonCommandSender sender, CommandResult commandResult) {
         new PageableCommand<CoreModule>(commandResult.getEntered(), Core.getModuleManager().values().stream().collect(Collectors.toList()), 7) {
             @Override
             public CommonChatColor getHeaderColor() {

@@ -22,7 +22,7 @@ public class ChannelGroupCommand {
           helpCommand = true,
           permission = ChannelPermission.ADMIN
   )
-  public static void channelGroup(CommonCommandSender sender, HelpCommandResult result) {
+  public void channelGroup(CommonCommandSender sender, HelpCommandResult result) {
   }
 
   @Command(
@@ -31,7 +31,7 @@ public class ChannelGroupCommand {
           description = "채널 그룹 목록을 확인합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channelGroup_list(CommonCommandSender sender, CommandResult result) {
+  public void channelGroup_list(CommonCommandSender sender, CommandResult result) {
     sender.nmessage("§e[ 채널 그룹 목록 ]");
     for (ChannelGroup channelGroup : ChannelModule.getChannelGroups()) {
       sender.nmessage(new SimpleComponentBuilder(channelGroup.getName() + "§e(" + channelGroup.getDisplayName() + ") (" + channelGroup.getPlayerCount() + ")")
@@ -48,7 +48,7 @@ public class ChannelGroupCommand {
           description = "채널 정보를 확인합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channelGroup_info(CommonCommandSender sender, CommandResult result) {
+  public void channelGroup_info(CommonCommandSender sender, CommandResult result) {
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getEnteredArguments());
     if (channelGroup == null) {
       sender.nwarning("존재하지 않는 채널 그룹입니다.");
@@ -82,7 +82,7 @@ public class ChannelGroupCommand {
           description = "채널 그룹의 이름 표기를 설정합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channelGroup_setDisplayName(CommonCommandSender sender, CommandResult result) {
+  public void channelGroup_setDisplayName(CommonCommandSender sender, CommandResult result) {
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getEnteredArguments());
     if (channelGroup == null) {
       sender.nwarning("존재하지 않는 채널 그룹입니다.");
@@ -101,7 +101,7 @@ public class ChannelGroupCommand {
           description = "채널 그룹으로 빠른접속 시키거나 플레이어를 해당 채널로 빠른접속 시킵니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channelGroup_join(CommonCommandSender sender, CommandResult result) {
+  public void channelGroup_join(CommonCommandSender sender, CommandResult result) {
     // 콘솔이면 반드시 이동시킬 타겟을 입력해야함
     if (sender.isConsole() && result.getArgumentsLength() < 2) {
       result.sendUsage(sender);
@@ -159,7 +159,7 @@ public class ChannelGroupCommand {
           description = "채널 그룹에 공지 메시지를 보냅니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_broadcast(CommonCommandSender sender, CommandResult result) {
+  public void channel_broadcast(CommonCommandSender sender, CommandResult result) {
     String message = ChatColor.translateAlternateColorCodes('&', result.subArgument(1));
 
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
@@ -179,7 +179,7 @@ public class ChannelGroupCommand {
           description = "채널 그룹의 콘솔에 원격 명령어를 보냅니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_remoteCommand(CommonCommandSender sender, CommandResult result) {
+  public void channel_remoteCommand(CommonCommandSender sender, CommandResult result) {
     String commandLine = result.subArgument(1);
 
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));

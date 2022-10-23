@@ -17,7 +17,7 @@ public class DisplayNameCommand {
             description = "플레이어의 표기되는 닉네임을 변경합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void displayName(CommonCommandSender sender, CommandResult result) {
+    public void displayName(CommonCommandSender sender, CommandResult result) {
         String name = result.getArgument(0);
         String displayName = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
 

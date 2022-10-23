@@ -20,7 +20,7 @@ public class PlayerOptionCommand {
             helpCommand = true,
             permission = CorePermission.ADMIN
     )
-    public static void playerOption(CommonCommandSender sender, HelpCommandResult result) {
+    public void playerOption(CommonCommandSender sender, HelpCommandResult result) {
     }
 
     @Command(
@@ -30,7 +30,7 @@ public class PlayerOptionCommand {
             description= "플레이어의 옵션을 설정합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void playerOption_set(CommonCommandSender sender, CommandResult result) {
+    public void playerOption_set(CommonCommandSender sender, CommandResult result) {
         String playerName = result.getArgument(0);
         String optionName = result.getArgument(1);
         String optionValue = result.subArgument(2);
@@ -54,7 +54,7 @@ public class PlayerOptionCommand {
             description= "플레이어의 옵션을 삭제합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void playerOption_delete(CommonCommandSender sender, CommandResult result) {
+    public void playerOption_delete(CommonCommandSender sender, CommandResult result) {
         String playerName = result.getArgument(0);
         String optionName = result.getArgument(1);
 
@@ -77,7 +77,7 @@ public class PlayerOptionCommand {
             description= "플레이어의 옵션 값을 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void playerOption_check(CommonCommandSender sender, CommandResult result) {
+    public void playerOption_check(CommonCommandSender sender, CommandResult result) {
         String playerName = result.getArgument(0);
         String optionName = result.getArgument(1);
 
@@ -102,7 +102,7 @@ public class PlayerOptionCommand {
             description= "플레이어의 옵션을 설정합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void playerOption_list(CommonCommandSender sender, CommandResult result) {
+    public void playerOption_list(CommonCommandSender sender, CommandResult result) {
         String playerName = result.getArgument(0);
         if (!CommonSenderModule.existsPlayerByName(playerName)) {
             sender.nwarning("존재하지 않는 플레이어입니다.");

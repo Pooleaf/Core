@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
@@ -52,9 +51,17 @@ public class CommandManager {
      * @param commandClass 명령어를 등록할 Class
      */
     @SneakyThrows
-    public void registerCommands(Class commandClass) {
+    public void registerCommands(CorePlugin plugin, Class commandClass) {
+        Object executeInstance = null;
+
         for (Method method : ReflectionUtil.getMethodsInOrderLightly(commandClass)) {
             Command[] annos = method.getAnnotationsByType(Command.class);
+
+            // 명령어 클래스일 경우 인스턴스 생성
+            if (annos.length > 0 && executeInstance == null) {
+                executeInstance = commandClass.newInstance();
+            }
+
             for (Command anno : annos) {
                 // 파라미터 2자리인지 체크, 2번째 자리 CommandResult인지 체크
                 if (method.getParameterCount() != 2) continue;
@@ -62,7 +69,7 @@ public class CommandManager {
 
                 int parentIndex = 0;
                 do {
-                    AnnoCommand command = new AnnoCommand(Core.getPluginManager().getPluginByPackage(commandClass.getCanonicalName()));
+                    AnnoCommand command = new AnnoCommand(plugin);
 
                     // 부모 명령어 설정
                     if (anno.parent().length > 0 && !anno.parent()[parentIndex].isEmpty()) {
@@ -107,7 +114,8 @@ public class CommandManager {
                     // 비동기 명령어인지
                     command.setAsync(anno.async());
 
-                    // 명령어 메소드
+                    // 명령어 인스턴스 & 메소드
+                    command.setExecuteInstance(executeInstance);
                     command.setExecuteMethod(method);
 
                     registerCommand(command);
@@ -122,7 +130,7 @@ public class CommandManager {
      * @param plugin 명령어를 등록할 CorePlugin
      */
     public void registerCommands(CorePlugin plugin) {
-        ReflectionUtil.getClasses(plugin).forEach(targetClass -> registerCommands(targetClass));
+        ReflectionUtil.getClasses(plugin).forEach(targetClass -> registerCommands(plugin, targetClass));
     }
 
     /**

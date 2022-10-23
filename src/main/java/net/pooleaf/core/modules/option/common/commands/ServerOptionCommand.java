@@ -18,7 +18,7 @@ public class ServerOptionCommand {
             helpCommand = true,
             permission = CorePermission.ADMIN
     )
-    public static void serverOption(CommonCommandSender sender, HelpCommandResult result) {
+    public void serverOption(CommonCommandSender sender, HelpCommandResult result) {
     }
 
     @Command(
@@ -28,7 +28,7 @@ public class ServerOptionCommand {
             description= "서버 옵션을 설정합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void serverOption_set(CommonCommandSender sender, CommandResult result) {
+    public void serverOption_set(CommonCommandSender sender, CommandResult result) {
         String optionName = result.getArgument(0);
         String optionValue = result.subArgument(1);
 
@@ -46,7 +46,7 @@ public class ServerOptionCommand {
             description= "서버 옵션을 삭제합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void serverOption_delete(CommonCommandSender sender, CommandResult result) {
+    public void serverOption_delete(CommonCommandSender sender, CommandResult result) {
         String optionName = result.getArgument(0);
 
         OptionModule.getServerOption()
@@ -63,7 +63,7 @@ public class ServerOptionCommand {
             description= "서버 옵션 값을 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void serverOption_check(CommonCommandSender sender, CommandResult result) {
+    public void serverOption_check(CommonCommandSender sender, CommandResult result) {
         String optionName = result.getArgument(0);
 
         String value = OptionModule.getServerOption().getString(optionName);
@@ -81,7 +81,7 @@ public class ServerOptionCommand {
             description= "서버 옵션을 설정합니다.",
             permission = CorePermission.ADMIN
     )
-    public static void serverOption_list(CommonCommandSender sender, CommandResult result) {
+    public void serverOption_list(CommonCommandSender sender, CommandResult result) {
         sender.nmessage("§e[ 서버 옵션 목록 ]");
         for (Map.Entry<String, String> entry : OptionModule.getServerOption().getDatas().entrySet()) {
             sender.nmessage("§e" + entry.getKey() + ": §f" + entry.getValue());

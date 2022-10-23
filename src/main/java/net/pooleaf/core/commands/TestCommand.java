@@ -24,7 +24,7 @@ public class TestCommand {
             helpCommand = true,
             permission = CorePermission.ADMIN
     )
-    public static void test(CommandSender sender, HelpCommandResult result) {
+    public void test(CommandSender sender, HelpCommandResult result) {
     }
 
     @Command(
@@ -33,7 +33,7 @@ public class TestCommand {
             arguments = "<사운드> (볼륨) (Pitch)",
             permission = CorePermission.ADMIN
     )
-    public static void test_sound(Player player, CommandResult result) {
+    public void test_sound(Player player, CommandResult result) {
         String soundName = result.getArgument(0);
         Sound sound = Sound.valueOf(soundName);
         if (sound == null) {
@@ -60,7 +60,7 @@ public class TestCommand {
             arguments = "(페이지) (볼륨) (Pitch)",
             permission = CorePermission.ADMIN
     )
-    public static void test_soundList(CommonPlayer player, CommandResult result) {
+    public void test_soundList(CommonPlayer player, CommandResult result) {
         Float volume = result.getArgumentAsFloat(1);
         if (volume == null) {
             volume = 1.0F;

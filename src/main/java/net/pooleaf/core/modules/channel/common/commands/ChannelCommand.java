@@ -24,7 +24,7 @@ public class ChannelCommand {
           helpCommand = true,
           permission = ChannelPermission.ADMIN
   )
-  public static void channel(CommonCommandSender sender, HelpCommandResult result) {
+  public void channel(CommonCommandSender sender, HelpCommandResult result) {
   }
 
   @Command(
@@ -33,7 +33,7 @@ public class ChannelCommand {
           description = "채널 목록을 확인합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_list(CommonCommandSender sender, CommandResult result) {
+  public void channel_list(CommonCommandSender sender, CommandResult result) {
     sender.nmessage("§e[ 채널 목록 ]");
     for (Channel channel : ChannelModule.getChannels()) {
       if (channel.isOnline()) {
@@ -55,7 +55,7 @@ public class ChannelCommand {
           description = "채널 정보를 확인합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_info(CommonCommandSender sender, CommandResult result) {
+  public void channel_info(CommonCommandSender sender, CommandResult result) {
     Channel channel = ChannelModule.getChannel(result.getEnteredArguments());
     if (channel == null) {
       sender.nwarning("존재하지 않는 채널입니다.");
@@ -84,7 +84,7 @@ public class ChannelCommand {
           description = "채널의 이름 표기를 설정합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_setDisplayName(CommonCommandSender sender, CommandResult result) {
+  public void channel_setDisplayName(CommonCommandSender sender, CommandResult result) {
     Channel channel = ChannelModule.getChannel(result.getArgument(0));
     if (channel == null) {
       sender.nwarning("존재하지 않는 채널입니다.");
@@ -103,7 +103,7 @@ public class ChannelCommand {
           description = "채널의 그룹을 설정합니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_setGroup(CommonCommandSender sender, CommandResult result) {
+  public void channel_setGroup(CommonCommandSender sender, CommandResult result) {
     Channel channel = ChannelModule.getChannel(result.getArgument(0));
     if (channel == null) {
       sender.nwarning("존재하지 않는 채널입니다.");
@@ -127,7 +127,7 @@ public class ChannelCommand {
           description = "채널로 이동하거나 플레이어를 해당 채널로 이동시킵니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_join(CommonCommandSender sender, CommandResult result) {
+  public void channel_join(CommonCommandSender sender, CommandResult result) {
     // 콘솔이면 반드시 이동시킬 타겟을 입력해야함
     if (sender.isConsole() && result.getArgumentsLength() < 2) {
       result.sendUsage(sender);
@@ -185,7 +185,7 @@ public class ChannelCommand {
           description = "채널에 공지 메시지를 보냅니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_broadcast(CommonCommandSender sender, CommandResult result) {
+  public void channel_broadcast(CommonCommandSender sender, CommandResult result) {
     String message = ChatColor.translateAlternateColorCodes('&', result.subArgument(1));
 
     // 전체 채널에 공지하기
@@ -216,7 +216,7 @@ public class ChannelCommand {
           description = "채널의 콘솔에 원격 명령어를 보냅니다.",
           permission = ChannelPermission.ADMIN
   )
-  public static void channel_remoteCommand(CommonCommandSender sender, CommandResult result) {
+  public void channel_remoteCommand(CommonCommandSender sender, CommandResult result) {
     String commandLine = result.subArgument(1);
 
     // 전체 채널에 명령어 보내기
