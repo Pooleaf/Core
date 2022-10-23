@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.eventsupport.bukkit.listeners;
 
+import net.pooleaf.core.modules.eventsupport.bukkit.events.damage.EntityDamageByPlayerEvent;
 import net.pooleaf.core.modules.eventsupport.bukkit.events.damage.PlayerDamageByEntityEvent;
 import net.pooleaf.core.modules.eventsupport.bukkit.events.damage.PlayerDamageByPlayerEvent;
 import net.pooleaf.core.modules.eventsupport.bukkit.events.damage.PlayerDamageEvent;
@@ -24,29 +25,31 @@ public class PlayerDamageListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDamageByEntity(EntityDamageByEntityEvent e) {
-        // 플레이어인지 확인
-        if (!(e.getEntity() instanceof Player)) return;
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        boolean damagedIsPlayer = e.getEntity() instanceof Player; // 데미지를 받은 엔티티가 플레이어인지 확인
+        boolean damagerIsPlayer = e.getDamager() instanceof Player // 데미지를 준 엔티티가 플레이어인지 확인
+                || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player); // 발사체일 경우, 발사한 엔티티가 플레이어인지 확인
 
-        PlayerDamageByEntityEvent event = new PlayerDamageByEntityEvent(e);
-        Bukkit.getPluginManager().callEvent(event);
-        e.setCancelled(event.isCancelled());
-    }
+        if (damagedIsPlayer) {
+            PlayerDamageByEntityEvent event = new PlayerDamageByEntityEvent(e);
+            event.setCancelled(e.isCancelled());
+            Bukkit.getPluginManager().callEvent(event);
+            e.setCancelled(event.isCancelled());
+        }
 
-    @EventHandler
-    public void onPlayerDamageByPlayer(EntityDamageByEntityEvent e) {
-        // 데미지를 받은 엔티티가 플레이어인지 확인
-        if (!(e.getEntity() instanceof Player)) return;
+        if (damagerIsPlayer) {
+            EntityDamageByPlayerEvent event = new EntityDamageByPlayerEvent(e);
+            event.setCancelled(e.isCancelled());
+            Bukkit.getPluginManager().callEvent(event);
+            e.setCancelled(event.isCancelled());
+        }
 
-        // 발사체일 경우, 발사한 엔티티가 플레이어인지 확인
-        else if (e.getEntity() instanceof Projectile && !(((Projectile) e.getEntity()).getShooter() instanceof Player)) return;
-
-        // 데미지를 준 엔티티가 플레이어인지 확인
-        else if (!(e.getDamager() instanceof Player)) return;
-
-        PlayerDamageByPlayerEvent event = new PlayerDamageByPlayerEvent(e);
-        Bukkit.getPluginManager().callEvent(event);
-        e.setCancelled(event.isCancelled());
+        if (damagedIsPlayer && damagerIsPlayer) {
+            PlayerDamageByPlayerEvent event = new PlayerDamageByPlayerEvent(e);
+            event.setCancelled(e.isCancelled());
+            Bukkit.getPluginManager().callEvent(event);
+            e.setCancelled(event.isCancelled());
+        }
     }
 
 }

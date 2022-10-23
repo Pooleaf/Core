@@ -42,11 +42,10 @@ public class PlayerDamageByPlayerEvent extends CancellableEvent {
      */
     public Player getDamager() {
         if (isProjectileDamager()) {
-            Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
-            return (Player) projectile.getShooter();
+            return (Player) getProjectileDamager().getShooter();
         }
 
-        return (Player) getProjectileDamager();
+        return (Player) entityDamageByEntityEvent.getDamager();
     }
 
 }

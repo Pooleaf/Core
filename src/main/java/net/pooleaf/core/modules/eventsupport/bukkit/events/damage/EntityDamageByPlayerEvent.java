@@ -8,7 +8,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 @AllArgsConstructor
-public class PlayerDamageByEntityEvent extends CancellableEvent {
+public class EntityDamageByPlayerEvent extends CancellableEvent {
 
     private EntityDamageByEntityEvent entityDamageByEntityEvent;
 
@@ -22,11 +22,11 @@ public class PlayerDamageByEntityEvent extends CancellableEvent {
     }
 
     /**
-     * 데미지를 받은 Player를 반환합니다.
-     * @return 데미지를 받은 Player
+     * 데미지를 받은 Entity를 반환합니다.
+     * @return 데미지를 받은 Entity
      */
-    public Player getPlayer() {
-        return (Player) entityDamageByEntityEvent.getEntity();
+    public Entity getEntity() {
+        return entityDamageByEntityEvent.getEntity();
     }
 
     /**
@@ -38,15 +38,15 @@ public class PlayerDamageByEntityEvent extends CancellableEvent {
     }
 
     /**
-     * 데미지를 입힌 Entity를 반환합니다.
-     * @return 데미지를 입힌 Entity, 발사체를 쏜 게 Entity가 아닐 경우 null
+     * 데미지를 입힌 Player를 반환합니다.
+     * @return 데미지를 입힌 Player
      */
-    public Entity getDamager() {
+    public Player getDamager() {
         if (isProjectileDamager()) {
-            return (Entity) getProjectileDamager().getShooter();
+            return (Player) getProjectileDamager().getShooter();
         }
 
-        return entityDamageByEntityEvent.getDamager();
+        return (Player) entityDamageByEntityEvent.getDamager();
     }
 
 }
