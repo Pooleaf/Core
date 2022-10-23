@@ -29,7 +29,7 @@ public class AbstractPlayer<T> {
     }
 
     public boolean isOnline() {
-        return getCommonPlayer().isOnline();
+        return getCommonPlayer() != null && getCommonPlayer().isOnline();
     }
 
 }
