@@ -42,13 +42,13 @@ public class CommonSchedulerModule extends CoreModule {
 
 
     public static CommonSchedulerAdapter<BukkitScheduler> bukkit() {
-        Preconditions.checkArgument(Platform.getCurrentPlatform() == Platform.BUKKIT, "Bukkit에서만 사용할 수 있습니다.");
+        Preconditions.checkArgument(Platform.getCurrentPlatform() == Platform.BUKKIT, "Bukkit 플랫폼에서만 사용할 수 있습니다.");
 
         return schedulerAdapter;
     }
 
     public static CommonSchedulerAdapter<BungeeScheduler> bungee() {
-        Preconditions.checkArgument(Platform.getCurrentPlatform() == Platform.BUNGEECORD, "Bukkit에서만 사용할 수 있습니다.");
+        Preconditions.checkArgument(Platform.getCurrentPlatform() == Platform.BUNGEECORD, "BungeeCord 플랫폼에서만 사용할 수 있습니다.");
 
         return schedulerAdapter;
     }

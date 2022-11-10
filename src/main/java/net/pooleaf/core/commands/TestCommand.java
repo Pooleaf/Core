@@ -8,6 +8,7 @@ import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.modules.support.common.pageable.PageableCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,14 +31,14 @@ public class TestCommand {
     @Command(
             parent = "core test",
             name = {"sound"},
-            arguments = "<사운드> (볼륨) (Pitch)",
+            arguments = "<사운드> (볼륨) (Pitch) (플레이어)",
             permission = CorePermission.ADMIN
     )
-    public void test_sound(Player player, CommandResult result) {
+    public void test_sound(CommandSender sender, CommandResult result) {
         String soundName = result.getArgument(0);
         Sound sound = Sound.valueOf(soundName);
         if (sound == null) {
-            player.sendMessage("§c존재하지 않는 Sound입니다.");
+            sender.sendMessage("§c존재하지 않는 Sound입니다.");
             return;
         }
 
@@ -51,7 +52,22 @@ public class TestCommand {
             pitch = 1.0F;
         }
 
-        player.playSound(player.getLocation(), sound, volume, pitch);
+        String targetPlayerName = result.getArgument(3);
+        Player targetPlayer = null;
+        if (targetPlayerName == null) {
+            if (sender instanceof Player) {
+                targetPlayer = (Player) sender;
+            }
+        } else {
+            targetPlayer = Bukkit.getPlayer(targetPlayerName);
+        }
+
+        if (targetPlayer == null) {
+            sender.sendMessage("§c존재하지 않는 플레이어입니다.");
+            return;
+        }
+
+        targetPlayer.playSound(targetPlayer.getLocation(), sound, volume, pitch);
     }
 
     @Command(
