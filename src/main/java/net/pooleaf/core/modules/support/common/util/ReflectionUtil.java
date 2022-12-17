@@ -66,7 +66,13 @@ public class ReflectionUtil {
      */
     @SneakyThrows(Exception.class)
     public static Field getField(Class<?> targetClass, String name) {
-        return targetClass.getDeclaredField(name);
+        for (Field field : targetClass.getDeclaredFields()) {
+            if (field.getName().equals(name)) {
+                return field;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -321,8 +327,14 @@ public class ReflectionUtil {
         for (Field field : ReflectionUtil.getAllField(to.getClass())) {
             field.setAccessible(true);
 
-            Object value = field.get(from);
-            if (Cloneable.class.isAssignableFrom(value.getClass())) {
+            Field fromField = getField(from.getClass(), field.getName());
+            if (fromField == null) {
+                continue;
+            }
+            fromField.setAccessible(true);
+
+            Object value = fromField.get(from);
+            if (value != null && Cloneable.class.isAssignableFrom(value.getClass())) {
                 Method cloneMethod = getMethod(value.getClass(), "clone");
                 value = cloneMethod.invoke(value);
             }
