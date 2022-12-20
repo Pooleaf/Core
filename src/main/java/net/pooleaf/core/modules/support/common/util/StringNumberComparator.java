@@ -15,6 +15,17 @@ public class StringNumberComparator implements Comparator<String> {
     private static final Pattern numberPattern = Pattern.compile("[0-9]+");
 
 
+    private static StringNumberComparator instance;
+
+    public static StringNumberComparator getInstance() {
+        if (instance == null) {
+            instance = new StringNumberComparator();
+        }
+
+        return instance;
+    }
+
+
     @Override
     public int compare(String o1, String o2) {
         Matcher numberMatcher1 = numberPattern.matcher(o1);

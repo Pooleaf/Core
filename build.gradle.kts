@@ -4,9 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     kotlin("jvm") version "1.7.20"
-    kotlin("plugin.lombok") version "1.7.20"
-    id("io.freefair.lombok") version "5.3.0"
-
 
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }

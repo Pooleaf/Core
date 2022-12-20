@@ -2,8 +2,11 @@ package net.pooleaf.core.modules.channel.bukkit.platform;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import lombok.Getter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.channel.ChannelModule;
+import net.pooleaf.core.modules.channel.bukkit.tasks.BukkitChannelTpsInfoUpdateTask;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channel.ChannelStatus;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
@@ -12,6 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class BukkitChannelAdapter implements ChannelAdapter {
+
+  @Getter
+  private BukkitChannelTpsInfoUpdateTask bukkitChannelTpsInfoUpdateTask;
+
 
   @Override
   public void onEnable() {
@@ -30,10 +37,16 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     channel.setPlayerUuids(Bukkit.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toSet()));
     channel.save();
 
+    // 서버 실행 완료 후 채널 정보 업데이트
     Bukkit.getScheduler().runTask((Plugin) Core.getPlugin(), () -> {
+      channel.setTps(Bukkit.spigot().getTPS()[0]);
       channel.setChannelStatus(ChannelStatus.RUNNING);
       channel.setAllowFastJoin(true);
       channel.save();
+
+      // 10초마다 TPS 업데이트
+      bukkitChannelTpsInfoUpdateTask = new BukkitChannelTpsInfoUpdateTask();
+      bukkitChannelTpsInfoUpdateTask.runTaskTimerAsynchronously((Plugin) Core.getPlugin(), 200L, 200L);
     });
   }
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.module.CoreModule;
 import net.pooleaf.core.modules.channel.common.channel.ChannelStatus;
+import net.pooleaf.core.modules.channel.common.channelgroup.LobbyChannelGroup;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
@@ -97,6 +98,10 @@ public class ChannelModule extends CoreModule {
 
   public static ChannelGroup getChannelGroupHasPlayer(UUID uuid) {
     return channelGroupManager.getHasPlayer(uuid);
+  }
+
+  public static LobbyChannelGroup getLobbyChannelGroup() {
+    return channelGroupManager.getLobbyChannelGroup();
   }
 
 

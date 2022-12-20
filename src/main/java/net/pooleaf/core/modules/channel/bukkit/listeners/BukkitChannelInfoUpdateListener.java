@@ -13,6 +13,7 @@ public class BukkitChannelInfoUpdateListener implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     Channel channel = ChannelModule.getCurrentChannel();
+    channel.setTps(Bukkit.spigot().getTPS()[0]);
     channel.setPlayerCount(Bukkit.getOnlinePlayers().size());
     channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
     channel.getPlayerNames().add(event.getPlayer().getName());
@@ -23,6 +24,7 @@ public class BukkitChannelInfoUpdateListener implements Listener {
   @EventHandler
   public void onQuit(PlayerQuitEvent event) {
     Channel channel = ChannelModule.getCurrentChannel();
+    channel.setTps(Bukkit.spigot().getTPS()[0]);
     channel.setPlayerCount(Bukkit.getOnlinePlayers().size() - 1);
     channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
     channel.getPlayerNames().remove(event.getPlayer().getName());

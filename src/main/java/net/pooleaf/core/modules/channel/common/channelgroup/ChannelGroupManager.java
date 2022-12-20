@@ -1,15 +1,22 @@
 package net.pooleaf.core.modules.channel.common.channelgroup;
 
-import java.util.UUID;
+import lombok.Getter;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.manager.AbstractManager;
 
 import java.util.TreeMap;
+import java.util.UUID;
 
 public class ChannelGroupManager extends AbstractManager<String, ChannelGroup> {
 
+    @Getter
+    private LobbyChannelGroup lobbyChannelGroup = new LobbyChannelGroup();
+
+
     public ChannelGroupManager() {
         super(new TreeMap<String, ChannelGroup>(String.CASE_INSENSITIVE_ORDER));
+
+        set(lobbyChannelGroup.getName(), lobbyChannelGroup);
     }
 
 

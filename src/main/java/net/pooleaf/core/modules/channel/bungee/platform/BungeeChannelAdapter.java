@@ -70,7 +70,7 @@ public class BungeeChannelAdapter implements ChannelAdapter {
     Map<String, ChannelGroup> newChannelGroupDatas = new HashMap<>();
 
     if (!channelConfig.getFile().exists()) {
-      channelConfig.setDefault("채널그룹.그룹1.표기", "그룹1");
+      channelConfig.setDefault("채널그룹.lobby.표기", "로비");
       channelConfig.save();
     }
 

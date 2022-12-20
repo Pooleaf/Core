@@ -1,19 +1,20 @@
 package net.pooleaf.core.modules.channel.common.channel;
 
 import com.google.gson.internal.LinkedTreeMap;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import lombok.Data;
 import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
+import net.pooleaf.core.modules.support.common.util.StringNumberComparator;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @Data
-public class Channel {
+public class Channel implements Comparable<Channel> {
 
     private final String name;
     private String displayName;
@@ -22,6 +23,7 @@ public class Channel {
     private boolean online;
     private boolean allowFastJoin;
     private int channelStatus;
+    private double tps;
 
     private int playerCount;
     private int maxPlayerCount;
@@ -192,6 +194,11 @@ public class Channel {
      */
     public void sendData(String task, Object... datas) {
         ChannelModule.getChannelAdapter().sendData(name, task, datas);
+    }
+
+    @Override
+    public int compareTo(@NotNull Channel o) {
+        return StringNumberComparator.getInstance().compare(this.getName(), o.getName());
     }
 
 }
