@@ -5,7 +5,7 @@ DB에 간편하게 데이터를 저장하고 불러올 수 있는 모듈입니�
 ## 예시
 ### TestPlugin
 ```
-public class SqlManager extends JavaPlugin {
+public class TestPlugin extends JavaPlugin {
     
     private TestSqlManager sqlManager;
     
