@@ -1,0 +1,81 @@
+buildscript{
+    repositories{
+        jcenter()
+    }
+
+    dependencies{
+        classpath'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+dependencies {
+    implementation project(':java')
+    implementation project(':kotlin')
+}
+
+allprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' } // BungeeCord
+        maven { url 'https://repo.s8u.kr/repository/maven-minecraft/' } // Bukkit
+        maven { url 'https://repo.s8u.kr/repository/maven-pooleaf/' } // Core
+        maven { url 'https://repo.dmulloy2.net/repository/public/' } // XSeries
+    }
+
+    dependencies {
+        // Platform
+        compileOnly 'io.papermc:paper:1.8.8'
+        compileOnly 'net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT'
+
+        // Bukkit Library
+        compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
+        implementation 'com.github.cryptomorin:XSeries:9.1.0'
+
+        // SQL
+        implementation 'com.zaxxer:HikariCP:4.0.3'
+        implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
+
+        // Redis
+        implementation 'io.lettuce:lettuce-core:6.0.0.RELEASE'
+
+        // JSON
+        implementation 'com.google.code.gson:gson:2.10.1'
+
+        // Lombok
+        compileOnly 'org.projectlombok:lombok:1.18.20'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    }
+}
+
+processResources {
+    filesMatching('**/*.yml') {
+        expand(project.properties)
+    }
+}
+
+shadowJar {
+    archiveBaseName.set(pluginName)
+    archiveClassifier.set('')
+
+    relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
+}
+
+task copyToServerWindows(type: Copy) {
+    from(shadowJar)
+    into('D:\\서버\\1.8.9 테스트 서버\\update')
+}
