@@ -11,6 +11,7 @@ buildscript{
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'maven-publish'
 }
 
 java {
@@ -73,6 +74,24 @@ shadowJar {
     archiveClassifier.set('')
 
     relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
+}
+
+publishing {
+    repositories {
+        maven {
+            url "https://repo.s8u.kr/repository/maven-pooleaf/"
+            credentials {
+                username = System.getenv("NEXUS_USERNAME")
+                password = System.getenv("NEXUS_PASSWORD")
+            }
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            artifact(shadowJar)
+        }
+    }
 }
 
 task copyToServerWindows(type: Copy) {
