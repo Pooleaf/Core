@@ -11,7 +11,6 @@ public class AbstractPlayer<T> {
 
     protected final UUID uuid;
 
-
     public CommonPlayer<T> getCommonPlayer() {
         return CommonSenderModule.getPlayer(uuid);
     }

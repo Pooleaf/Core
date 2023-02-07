@@ -29,37 +29,37 @@ public class CommonPlayerDao extends SqlDao {
     }
 
 
-    public CommonPlayer selectPlayerInfoByUuid(UUID uuid) {
+    public CommonPlayer selectPlayerInfoByUuid(UUID uuid, Class<? extends CommonPlayer> playerClass) {
         return playerInfoTable.select()
                 .where("uuid = ?")
                 .parameters(uuid)
-                .execute(CommonPlayer.class);
+                .execute(playerClass);
     }
 
-    public CommonPlayer selectPlayerInfoByName(String name) {
+    public CommonPlayer selectPlayerInfoByName(String name, Class<? extends CommonPlayer> playerClass) {
         return playerInfoTable.select()
                 .where("name = ?")
                 .parameters(name)
-                .execute(CommonPlayer.class);
+                .execute(playerClass);
     }
 
-    public CommonPlayer selectPlayerInfoByDisplayName(String displayName) {
+    public CommonPlayer selectPlayerInfoByDisplayName(String displayName, Class<? extends CommonPlayer> playerClass) {
         return playerInfoTable.select()
                 .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?")
                 .parameters(displayName)
-                .execute(CommonPlayer.class);
+                .execute(playerClass);
     }
 
-    public CommonPlayer selectPlayerInfo(CommonPlayer commonPlayer) {
+    public CommonPlayer selectPlayerInfo(CommonPlayer commonPlayer, Class<? extends CommonPlayer> playerClass) {
         return playerInfoTable.select()
                 .where("uuid = ?")
                 .parameters(commonPlayer.getUuid())
                 .execute(commonPlayer);
     }
 
-    public void insertPlayerInfo(CommonPlayer playerInfo) {
+    public void insertPlayerInfo(CommonPlayer commonPlayer) {
         playerInfoTable.insertInto()
-                .valuesByObject(playerInfo)
+                .valuesByObject(commonPlayer)
                 .onDuplicateKeyUpdate()
                 .execute();
     }

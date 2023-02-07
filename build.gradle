@@ -41,7 +41,7 @@ allprojects {
     dependencies {
         // Platform
         compileOnly 'io.papermc:paper:1.8.8'
-        compileOnly 'net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT'
+        compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
 
         // Bukkit Library
         compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
@@ -56,6 +56,9 @@ allprojects {
 
         // JSON
         implementation 'com.google.code.gson:gson:2.10.1'
+
+        // Cache
+        implementation 'net.sf.ehcache:ehcache:2.10.9.2'
 
         // Lombok
         compileOnly 'org.projectlombok:lombok:1.18.20'

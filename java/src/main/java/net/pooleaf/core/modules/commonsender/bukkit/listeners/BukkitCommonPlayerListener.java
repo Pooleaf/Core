@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class BukkitPlayerListener implements Listener {
+public class BukkitCommonPlayerListener implements Listener {
 
     /**
      * 비동기로 CommonPlayer 불러오기
@@ -45,7 +45,7 @@ public class BukkitPlayerListener implements Listener {
 
     private void handlePlayerLogin(UUID uuid, String name, String ip) {
         // 불러오기
-        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().getOrLoad(uuid);
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(uuid);
         if (player == null) {
             player = new BukkitPlayer();
             player.setUuid(uuid);

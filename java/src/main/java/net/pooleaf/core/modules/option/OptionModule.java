@@ -13,7 +13,7 @@ import java.util.UUID;
 public class OptionModule extends CoreModule {
 
     @Getter
-    private static PlayerOptionManager playerOptionManager = new PlayerOptionManager();
+    private static PlayerOptionManager playerOptionManager;
 
     @Getter
     private static OptionRedisManager redisManager;
@@ -29,11 +29,13 @@ public class OptionModule extends CoreModule {
 
     @Override
     public String[] getDepends() {
-        return new String[] { "AnnoConfig", "RedisLib", "CommonEvent" };
+        return new String[] { "AnnoConfig", "RedisLib", "CommonEvent", "CommonSender" };
     }
 
     @Override
     public void onEnable(CorePlugin plugin) {
+        playerOptionManager = new PlayerOptionManager();
+
         redisManager = new OptionRedisManager(plugin);
         redisManager.connect();
 
@@ -47,7 +49,7 @@ public class OptionModule extends CoreModule {
 
 
     public static Option getPlayerOption(UUID uuid) {
-        return playerOptionManager.loadNoCache(uuid);
+        return playerOptionManager.loadWithoutCache(uuid);
     }
 
     public static Option getPlayerOptionByName(String name) {
@@ -56,7 +58,7 @@ public class OptionModule extends CoreModule {
             return null;
         }
 
-        return playerOptionManager.loadNoCache(uuid);
+        return playerOptionManager.loadWithoutCache(uuid);
     }
 
 }

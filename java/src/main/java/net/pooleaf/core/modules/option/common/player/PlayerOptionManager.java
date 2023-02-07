@@ -1,21 +1,42 @@
 package net.pooleaf.core.modules.option.common.player;
 
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.option.OptionModule;
 import net.pooleaf.core.modules.option.common.Option;
-import net.pooleaf.core.modules.support.common.manager.AbstractManager;
+import net.pooleaf.core.modules.support.common.manager.AbstractEhcacheManager;
 
 import java.util.UUID;
 
-public class PlayerOptionManager extends AbstractManager<UUID, Option> {
+public class PlayerOptionManager extends AbstractEhcacheManager<UUID, Option> {
+
+    // 오프라인 플레이어 미접근 시 남아있을 시간
+    private static final int IDLE_SECONDS = 60;
+
 
     @Override
-    public Option loadNoCache(UUID key) {
+    public Option loadWithoutCache(UUID key) {
         Option option = get(key);
+
         if (option == null) {
             option = new Option(OptionModule.getRedisManager().PLAYER_OPTION_PREFIX + key.toString());
         }
 
         option.load();
+
+        return option;
+    }
+
+    @Override
+    public Option load(UUID key) {
+        Option option = super.load(key);
+
+        if (option != null) {
+            CommonPlayer commonPlayer = CommonSenderModule.getPlayer(key);
+            if (commonPlayer == null || !commonPlayer.isOnline()) {
+                setTimeToLive(key, IDLE_SECONDS);
+            }
+        }
 
         return option;
     }

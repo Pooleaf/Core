@@ -210,7 +210,7 @@ public class InsertContext extends DslContext<InsertContext> implements Cloneabl
 
         @Cleanup PreparedStatement statement = sqlManager.preparedStatement(sql);
         for (List<Object> batchValues : batches) {
-            Debugger.log("[SQLib] Insert Parameters: [" + batchValues.stream().map(value -> (String) value).collect(Collectors.joining(", ")) + "]");
+            Debugger.log("[SQLib] Insert Parameters: [" + batchValues.stream().map(value -> String.valueOf(value)).collect(Collectors.joining(", ")) + "]");
 
             // 값 처리
             int i = 1;

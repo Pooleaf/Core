@@ -3,7 +3,9 @@ package net.pooleaf.core.modules.commonsender;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import net.pooleaf.core.module.CoreModule;
+import net.pooleaf.core.modules.commonsender.bukkit.BukkitPlayer;
 import net.pooleaf.core.modules.commonsender.bukkit.BukkitSenderAdapter;
+import net.pooleaf.core.modules.commonsender.bungee.BungeePlayer;
 import net.pooleaf.core.modules.commonsender.bungee.BungeeSenderAdapter;
 import net.pooleaf.core.modules.commonsender.common.*;
 import net.pooleaf.core.modules.commonsender.common.sql.CommonSenderSqlManager;
@@ -20,7 +22,7 @@ import java.util.UUID;
 public class CommonSenderModule extends CoreModule {
 
     @Getter
-    private static CommonPlayerManager commonPlayerManager = new CommonPlayerManager();
+    private static CommonPlayerManager commonPlayerManager;
 
     @Getter
     private static CommonSenderSqlManager sqlManager;
@@ -46,6 +48,8 @@ public class CommonSenderModule extends CoreModule {
 
     @Override
     public void onEnable(CorePlugin plugin) {
+        commonPlayerManager = new CommonPlayerManager();
+
         sqlManager = new CommonSenderSqlManager();
         sqlManager.connect();
 
@@ -75,13 +79,27 @@ public class CommonSenderModule extends CoreModule {
 
 
     /**
+     * 현재 플랫폼에 맞는 CommonPlayer 클래스를 반환합니다.
+     */
+    public static Class<? extends CommonPlayer> getPlatformPlayerClass() {
+        switch (Platform.getCurrentPlatform()) {
+            case BUKKIT:
+                return BukkitPlayer.class;
+            case BUNGEECORD:
+                return BungeePlayer.class;
+        }
+
+        return null;
+    }
+
+    /**
      * 플레이어의 UUID로 닉네임을 불러옵니다.
      * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param uuid 닉네임을 불러올 플레이어의 UUID
      * @return 닉네임
      */
     public static String getName(UUID uuid) {
-        return Optional.ofNullable(commonPlayerManager.getOrLoadNoCache(uuid))
+        return Optional.ofNullable(commonPlayerManager.getOrLoadWithoutCache(uuid))
                 .map(CommonPlayer::getName)
                 .orElse(null);
     }
@@ -93,7 +111,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 가상닉네임
      */
     public static String getDisplayName(UUID uuid) {
-        return Optional.ofNullable(commonPlayerManager.getOrLoadNoCache(uuid))
+        return Optional.ofNullable(commonPlayerManager.getOrLoadWithoutCache(uuid))
                 .map(CommonPlayer::getDisplayName)
                 .orElse(null);
     }
@@ -172,12 +190,12 @@ public class CommonSenderModule extends CoreModule {
 
     /**
      * 해당 UUID를 가진 플레이어를 반환합니다.
-     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * 접속 중이 아닐 경우 []
      * @param uuid 찾을 플레이어의 UUID
      * @return 해당 UUID를 가진 플레이어
      */
     public static CommonPlayer getPlayer(UUID uuid) {
-        return commonPlayerManager.getOrLoadNoCache(uuid);
+        return commonPlayerManager.getOrLoad(uuid);
     }
 
     /**
@@ -187,7 +205,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 닉네임을 가진 플레이어
      */
     public static CommonPlayer getPlayerByName(String name) {
-        return commonPlayerManager.getOrLoadNoCacheByName(name);
+        return commonPlayerManager.getOrLoadByNameWithoutCache(name);
     }
 
     /**
@@ -197,7 +215,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 가상닉네임을 가진 플레이어
      */
     public static CommonPlayer getPlayerByDisplayName(String displayName) {
-        return commonPlayerManager.getOrLoadNoCacheByDisplayName(displayName);
+        return commonPlayerManager.getOrLoadByDisplayNameWithoutCache(displayName);
     }
 
     /**

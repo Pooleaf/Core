@@ -12,12 +12,12 @@ import net.md_5.bungee.event.EventPriority;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.bungee.BungeePlayer;
 
-public class BungeePlayerListener implements Listener {
+public class BungeeCommonPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPreLogin(LoginEvent e) {
         // 불러오기
-        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().getOrLoad(e.getConnection().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getConnection().getUniqueId());
         if (player == null) {
             player = new BungeePlayer();
             player.setUuid(e.getConnection().getUniqueId());

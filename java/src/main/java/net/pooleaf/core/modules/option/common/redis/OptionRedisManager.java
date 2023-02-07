@@ -11,6 +11,7 @@ public class OptionRedisManager extends AbstractRedisManager {
     public static final String PLAYER_OPTION_PREFIX = "player_option:";
     public static final String SERVER_OPTION_NAME = "server_option";
 
+
     private OptionDao optionDao = new OptionDao(this);
 
 

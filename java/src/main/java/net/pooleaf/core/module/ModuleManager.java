@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.pooleaf.core.modules.option.OptionModule;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import lombok.SneakyThrows;
 import net.pooleaf.core.Core;
@@ -34,6 +35,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
     int beforeCount = datas.size();
     int count = 0;
 
+    // 모듈 불러오기
     while (beforeCount != count) {
       beforeCount = count;
       count = 0;
@@ -43,7 +45,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
 
         boolean canEnable = true;
 
-        // Depends에 있는 플러그인들이 활성화 되었는지 확인
+        // Depends에 있는 모듈들이 활성화 되었는지 확인
         if (module.getDepends() != null) {
           int enabled = 0;
 
@@ -57,7 +59,7 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
           canEnable = canEnable && module.getDepends().length == enabled;
         }
 
-        // SoftDepends에 있는 플러그인들이 활성화 되었는지 확인
+        // SoftDepends에 있는 모듈들이 활성화 되었는지 확인
         if (module.getSoftDepends() != null) {
           int enabled = 0;
 
@@ -88,6 +90,11 @@ public class ModuleManager extends AbstractManager<String, CoreModule> {
         }
       }
     }
+
+    // 불러오지 못한 모듈 알림
+    values().stream()
+            .filter(module -> !module.isEnabled())
+            .forEach(module -> Logger.warning(module.getName() + " 모듈 초기화에 실패했습니다."));
   }
 
   public void endModules() {

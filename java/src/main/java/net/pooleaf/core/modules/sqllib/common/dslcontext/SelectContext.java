@@ -1,22 +1,22 @@
 package net.pooleaf.core.modules.sqllib.common.dslcontext;
 
+import lombok.SneakyThrows;
+import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
+import net.pooleaf.core.modules.sqllib.common.CachedResult;
+import net.pooleaf.core.modules.sqllib.common.CachedResultRow;
+import net.pooleaf.core.modules.sqllib.common.SqlTable;
+import net.pooleaf.core.modules.support.common.debugger.Debugger;
+import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
+import net.pooleaf.core.modules.support.common.util.StringUtil;
+
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.UUID;
-
-import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
-import net.pooleaf.core.modules.sqllib.common.CachedResult;
-import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
-import net.pooleaf.core.modules.support.common.util.StringUtil;
-import lombok.SneakyThrows;
-import net.pooleaf.core.modules.sqllib.common.CachedResultRow;
-import net.pooleaf.core.modules.sqllib.common.SqlTable;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SelectContext extends DslContext<SelectContext> {
 
@@ -112,6 +112,11 @@ public class SelectContext extends DslContext<SelectContext> {
         List<Object> resultObjects = new ArrayList<>();
 
         CachedResult result = execute();
+        Debugger.log("Select result: ");
+        for (int i = 0; i < result.getRows().size(); i++) {
+            Debugger.log(i + ": " + result.getRow(i).getDatas());
+        }
+
         for (CachedResultRow row : result.getRows()) {
             Object object = objectClass.newInstance();
 
@@ -125,7 +130,11 @@ public class SelectContext extends DslContext<SelectContext> {
                     targetField.set(object, value);
                 }
             }
+
+            resultObjects.add(object);
         }
+
+        Debugger.log("Select result objects: " + resultObjects);
 
         return (List<T>) resultObjects;
     }
@@ -149,6 +158,12 @@ public class SelectContext extends DslContext<SelectContext> {
     @SneakyThrows
     public <T> T execute(T object) {
         CachedResult result = execute();
+
+        Debugger.log("Select result: ");
+        for (int i = 0; i < result.getRows().size(); i++) {
+            Debugger.log(i + ": " + result.getRow(i).getDatas());
+        }
+
         for (CachedResultRow row : result.getRows()) {
             for (String key : row.getDatas().keySet()) {
                 String targetFieldName = StringUtil.convertSnakeCaseToLowerCamelCase(key);
@@ -161,6 +176,8 @@ public class SelectContext extends DslContext<SelectContext> {
                 }
             }
         }
+
+        Debugger.log("Select result object: " + object);
 
         return object;
     }
