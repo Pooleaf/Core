@@ -7,7 +7,7 @@ import net.sf.ehcache.Element;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class AbstractEhcacheManager<K, V> implements ILoadableManager<K, V> {
+public abstract class AbstractEhcacheManager<K, V> implements Manager<K, V> {
 
     private CacheManager cacheManager;
     private Cache cache;

@@ -1,6 +1,6 @@
 package net.pooleaf.core.modules.support.common.manager;
 
-public interface ILoadableManager<K, V> extends IManager<K, V> {
+public interface LoadableManager<K, V> extends Manager<K, V> {
 
     /**
      * 데이터베이스 등에서 해당 키에 맞는 값을 캐싱 없이 불러와 반환합니다.

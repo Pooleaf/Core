@@ -1,14 +1,13 @@
 package net.pooleaf.core.modules.support.common.manager;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * 인스턴스를 관리하는 Manager 인터페이스
  * @param <K> 키
  * @param <V> 값
  */
-public interface IManager<K, V> {
+public interface Manager<K, V> {
 
     /**
      * 해당 키에 값을 설정합니다.

@@ -3,10 +3,11 @@ package net.pooleaf.core.modules.commonsender.common;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.support.common.manager.AbstractEhcacheManager;
+import net.pooleaf.core.modules.support.common.manager.LoadableManager;
 
 import java.util.UUID;
 
-public class CommonPlayerManager extends AbstractEhcacheManager<UUID, CommonPlayer> {
+public class CommonPlayerManager extends AbstractEhcacheManager<UUID, CommonPlayer> implements LoadableManager<UUID, CommonPlayer> {
 
     // 오프라인 플레이어 미접근 시 남아있을 시간
     private static final int IDLE_SECONDS = 60;
@@ -26,7 +27,7 @@ public class CommonPlayerManager extends AbstractEhcacheManager<UUID, CommonPlay
 
     @Override
     public CommonPlayer load(UUID key) {
-        CommonPlayer commonPlayer = super.load(key);
+        CommonPlayer commonPlayer = LoadableManager.super.load(key);
 
         if (commonPlayer != null) {
             setTimeToIdle(key, IDLE_SECONDS);

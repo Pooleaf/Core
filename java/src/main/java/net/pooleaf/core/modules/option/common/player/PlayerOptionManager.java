@@ -5,10 +5,11 @@ import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.option.OptionModule;
 import net.pooleaf.core.modules.option.common.Option;
 import net.pooleaf.core.modules.support.common.manager.AbstractEhcacheManager;
+import net.pooleaf.core.modules.support.common.manager.LoadableManager;
 
 import java.util.UUID;
 
-public class PlayerOptionManager extends AbstractEhcacheManager<UUID, Option> {
+public class PlayerOptionManager extends AbstractEhcacheManager<UUID, Option> implements LoadableManager<UUID, Option> {
 
     // 오프라인 플레이어 미접근 시 남아있을 시간
     private static final int IDLE_SECONDS = 60;
@@ -29,7 +30,7 @@ public class PlayerOptionManager extends AbstractEhcacheManager<UUID, Option> {
 
     @Override
     public Option load(UUID key) {
-        Option option = super.load(key);
+        Option option = LoadableManager.super.load(key);
 
         if (option != null) {
             CommonPlayer commonPlayer = CommonSenderModule.getPlayer(key);

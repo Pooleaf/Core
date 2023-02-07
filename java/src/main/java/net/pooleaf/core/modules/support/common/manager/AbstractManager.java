@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractManager<K, V> implements IManager<K, V> {
+public abstract class AbstractManager<K, V> implements Manager<K, V> {
 
     @Setter
     @Getter
