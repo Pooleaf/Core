@@ -11,13 +11,13 @@ public class SmallPageableGui extends PageableGui {
 
         // Panel 생성
         setItemPanel(createPanel("itemPanel", 1, 1, 7, 3));
-        setPagePanel(createPanel("pagePanel", 9, 1, 1, 1));
+        setPagePanel(createPanel("pagePanel", 8, 1, 2, 3));
 
         // 장식 아이템 배치
-        ItemStack decoItem = new ItemBuilder(Material.STAINED_GLASS_PANE).displayName("").build();
-        getMainPanel().set(8, 1, decoItem);
-        getMainPanel().set(8, 2, decoItem);
-        getMainPanel().set(8, 3, decoItem);
+        ItemStack decoItem = new ItemBuilder(Material.STAINED_GLASS_PANE).displayName("§f").build();
+        getPagePanel().set(8, 1, decoItem);
+        getPagePanel().set(8, 2, decoItem);
+        getPagePanel().set(8, 3, decoItem);
 
         // 페이지 Icon 배치
         getPagePanel().set(9, 1, getPreviousPageIcon());

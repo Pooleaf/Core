@@ -50,16 +50,16 @@ public class PageableGui extends InventoryGui {
      * @return ItemStack 또는 Icon 목록
      */
     public List<Object> getPageItems(int page) {
+        List<Object> pageItems = new ArrayList<>();
+
         int panelSize = (itemPanel.getWidth() * itemPanel.getHeight());
         for (int i = (currentPage - 1) * panelSize; i < getMaxPage() * panelSize; i++) {
             if (items.size() <= i) break;
 
-            itemPanel.add(items.get(i));
+            pageItems.add(items.get(i));
         }
 
-
-        // TODO 이거 만들다 만듯
-        return null;
+        return pageItems;
     }
 
     /**
@@ -68,7 +68,7 @@ public class PageableGui extends InventoryGui {
      * @return 최대 페이지
      */
     public int getMaxPage() {
-        return (int) Math.ceil((float) items.size() / itemPanel.getWidth() * itemPanel.getHeight());
+        return items.isEmpty() ? 1 : (int) Math.ceil((float) items.size() / itemPanel.getWidth() * itemPanel.getHeight());
     }
 
     /**
@@ -76,7 +76,7 @@ public class PageableGui extends InventoryGui {
      * @param page 이동할 페이지
      */
     public void gotoPage(int page) {
-        Preconditions.checkArgument(page > getMaxPage(), "page는 최대 페이지보다 클 수 없습니다. (page: %d, 최대 페이지: %d)", page, getMaxPage());
+        Preconditions.checkArgument(page <= getMaxPage(), "page는 최대 페이지보다 클 수 없습니다. (page: %s, 최대 페이지: %s)", page, getMaxPage());
 
         currentPage = page;
 
@@ -95,7 +95,7 @@ public class PageableGui extends InventoryGui {
         return new InventoryIcon() {
             @Override
             protected ItemStack updateItem() {
-                if (currentPage == 1) return null;
+                if (currentPage <= 1) return null;
 
                 return new ItemBuilder(Material.PAPER)
                         .displayName("§e§l이전")
@@ -140,10 +140,16 @@ public class PageableGui extends InventoryGui {
             @Override
             protected ItemStack updateItem() {
                 return new ItemBuilder(Material.BOOK)
-                        .displayName("§f§l" + currentPage + " §e§l페이지")
+                        .displayName("§f§l" + currentPage + " / " + getMaxPage() +" §e§l페이지")
                         .build();
             }
         };
     }
 
+    @Override
+    public void onUpdate() {
+        if (currentPage == 0) {
+            gotoPage(1);
+        }
+    }
 }
