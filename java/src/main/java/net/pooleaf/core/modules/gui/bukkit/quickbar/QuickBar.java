@@ -10,12 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 public class QuickBar {
 
     private Map<Integer, Slot> slots = new HashMap<>();
+
+    private long clickDelayMillis = 200L;
 
 
     /**
@@ -42,12 +46,41 @@ public class QuickBar {
         return slots.get(x);
     }
 
+    /**
+     * 이 퀵바를 보고 있는 플레이어 목록을 반환합니다.
+     * @return 퀵바를 보고 있는 플레이어 목록
+     */
+    public List<Player> getWatchers() {
+        return GuiModule.getQuickBarManager().getDatas().entrySet().stream()
+                .filter(entry -> entry.getValue().equals(this))
+                .map(entry -> Bukkit.getPlayer(entry.getKey()))
+                .collect(Collectors.toList());
+    }
+
     public void onUpdate() {}
 
     public void update() {
         onUpdate();
 
         slots.values().forEach(slot -> slot.update());
+        updateFakeIcons();
+    }
+
+    public void updateFakeIcons() {
+        List<Player> watchers = getWatchers();
+
+        for (int i = 1; i <= 9; i++) {
+            Slot slot = slots.get(i);
+
+            if (slot == null) {
+                continue;
+            }
+
+            if (slot instanceof FakeSlot) {
+                int itemPosition = i;
+                watchers.forEach(watchPlayer -> ((FakeSlot) slot).update(watchPlayer, itemPosition - 1));
+            }
+        }
     }
 
     public void updateAsynchronously() {

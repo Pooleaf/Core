@@ -15,7 +15,14 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class InventoryGuiListener implements Listener {
+
+    private Map<UUID, Long> lastGuiClick = new HashMap<>();
+
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -23,6 +30,8 @@ public class InventoryGuiListener implements Listener {
         if (GuiModule.getInventoryGuiManager().exists(event.getPlayer().getUniqueId())) {
             event.getPlayer().closeInventory();
         }
+
+        lastGuiClick.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -82,6 +91,15 @@ public class InventoryGuiListener implements Listener {
             event.setCancelled(true);
             return;
         }
+
+        UUID uuid = event.getWhoClicked().getUniqueId();
+
+        // 클릭 딜레이 체크
+        if (lastGuiClick.containsKey(uuid) && System.currentTimeMillis() - lastGuiClick.get(uuid) < gui.getClickDelayMillis()) {
+            return;
+        }
+        lastGuiClick.put(uuid, System.currentTimeMillis());
+
 
         // GuiClickEvent
         InevntoryGuiClickEvent guiClickEvent = new InevntoryGuiClickEvent(event);

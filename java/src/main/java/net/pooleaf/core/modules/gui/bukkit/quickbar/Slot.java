@@ -15,11 +15,11 @@ public abstract class Slot {
 
     protected abstract ItemStack updateItem();
 
-    public void update() {
+    public final void update() {
         item = updateItem();
     }
 
-    public void updateAsynchronously() {
+    public final void updateAsynchronously() {
         Bukkit.getScheduler().runTaskAsynchronously((Plugin) Core.getPlugin(), () -> update());
     }
 

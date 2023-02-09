@@ -30,6 +30,8 @@ public class InventoryGui {
 
     private Map<Integer, InventoryPanel> panels = new HashMap<>();
 
+    private long clickDelayMillis = 200L;
+
 
     public InventoryGui(String title, int row) {
         this.title = title;
@@ -40,18 +42,18 @@ public class InventoryGui {
         panels.put(0, new InventoryPanel(MAIN_PANEL, 9, row));
     }
 
-    public InventoryPanel createPanel(String name, int x, int y, int width, int height) {
+    public final InventoryPanel createPanel(String name, int x, int y, int width, int height) {
         InventoryPanel newPanel = new InventoryPanel(name, width, height);
         panels.put(InventoryPositionCalculator.calculatePosition(x, y), newPanel);
 
         return newPanel;
     }
 
-    public InventoryPanel getMainPanel() {
+    public final InventoryPanel getMainPanel() {
         return panels.get(0);
     }
 
-    public InventoryPanel getPanel(String name) {
+    public final InventoryPanel getPanel(String name) {
         for (InventoryPanel panel : panels.values()) {
             if (panel.getName().equals(name)) return panel;
         }
@@ -59,7 +61,7 @@ public class InventoryGui {
         return null;
     }
 
-    public Object get(int x, int y) {
+    public final Object get(int x, int y) {
         Preconditions.checkArgument(1 <= x && x <= 9 && 1 <= y && y <= row, "아이템 위치가 Gui 범위를 벗어났습니다. (x: %s, y: %s, row: %s)", x, y, row);
 
         for (Map.Entry<Integer, InventoryPanel> entry : panels.entrySet()) {
@@ -85,7 +87,7 @@ public class InventoryGui {
      * @param y Item Y
      * @return 0: Item, 1: Panel
      */
-    public Object[] getWithPanel(int x, int y) {
+    public final Object[] getWithPanel(int x, int y) {
         Preconditions.checkArgument(1 <= x && x <= 9 && 1 <= y && y <= row, "아이템 위치가 Gui 범위를 벗어났습니다. (x: %s, y: %s, row: %s)", x, y, row);
 
         for (Map.Entry<Integer, InventoryPanel> entry : panels.entrySet()) {
@@ -105,37 +107,37 @@ public class InventoryGui {
         return null;
     }
 
-    public Object get(int position) {
+    public final Object get(int position) {
         int x = InventoryPositionCalculator.getX(position, 9);
         int y = InventoryPositionCalculator.getY(position, 9);
 
         return get(x, y);
     }
 
-    public Object[] getWithPanel(int position) {
+    public final Object[] getWithPanel(int position) {
         int x = InventoryPositionCalculator.getX(position, 9);
         int y = InventoryPositionCalculator.getY(position, 9);
 
         return getWithPanel(x, y);
     }
 
-    public ItemStack getItem(int position) {
+    public final ItemStack getItem(int position) {
         return (ItemStack) get(position);
     }
 
-    public ItemStack getItem(int x, int y) {
+    public final ItemStack getItem(int x, int y) {
         return getItem(InventoryPositionCalculator.calculatePosition(x, y));
     }
 
-    public InventoryIcon getIcon(int position) {
+    public final InventoryIcon getIcon(int position) {
         return (InventoryIcon) get(position);
     }
 
-    public InventoryIcon getIcon(int x, int y) {
+    public final InventoryIcon getIcon(int x, int y) {
         return getIcon(InventoryPositionCalculator.calculatePosition(x, y));
     }
 
-    public List<InventoryIcon> getIcons() {
+    public final List<InventoryIcon> getIcons() {
         List<InventoryIcon> icons = new ArrayList<>();
 
         panels.values().forEach(panel -> icons.addAll(
@@ -152,7 +154,7 @@ public class InventoryGui {
      * 이 GUI를 보고 있는 플레이어 목록을 반환합니다.
      * @return 이 GUI를 보고 있는 플레이어 목록
      */
-    public List<Player> getWatchers() {
+    public final List<Player> getWatchers() {
         List<Player> watchers = new ArrayList<>();
 
         for (Map.Entry<UUID, InventoryGui> entry : GuiModule.getInventoryGuiManager().getDatas().entrySet()) {
@@ -169,7 +171,7 @@ public class InventoryGui {
 
     public void onUpdate() {}
 
-    public void update() {
+    public final void update() {
         onUpdate();
 
         panels.forEach((panelPosition, panel) -> {
@@ -190,12 +192,14 @@ public class InventoryGui {
                 } else if (item instanceof InventoryIcon) {
                     ((InventoryIcon) item).update();
                     inventory.setItem(realPosition, ((InventoryIcon) item).getItem());
+                } else if (item instanceof FakeInventoryIcon) {
+                    getWatchers().forEach(watchPlayer -> ((FakeInventoryIcon) item).update(watchPlayer, realPosition));
                 }
             });
         });
     }
 
-    public void updateAsynchronously() {
+    public final void updateAsynchronously() {
         Bukkit.getScheduler().runTaskAsynchronously((Plugin) Core.getPlugin(), () -> update());
     }
 
@@ -207,14 +211,38 @@ public class InventoryGui {
 
     public void onDrag(InventoryGuiDragEvent event) {}
 
-    public void open(Player player) {
+    public final void open(Player player) {
         player.closeInventory();
 
         GuiModule.getInventoryGuiManager().set(player.getUniqueId(), this);
         player.openInventory(inventory);
+
+        panels.forEach((panelPosition, panel) -> {
+            int panelX = InventoryPositionCalculator.getX(panelPosition, 9);
+            int panelY = InventoryPositionCalculator.getY(panelPosition, 9);
+
+            panel.getItems().forEach((itemPosition, item) -> {
+                if (!(item instanceof FakeInventoryIcon)) {
+                    return;
+                }
+
+                int offsetX = InventoryPositionCalculator.getX(itemPosition, panel.getWidth());
+                int offsetY = InventoryPositionCalculator.getY(itemPosition, panel.getWidth());
+
+                int realX = panelX + offsetX - 1;
+                int realY = panelY + offsetY - 1;
+
+                int realPosition = InventoryPositionCalculator.calculatePosition(realX, realY);
+
+                getWatchers().forEach(watchPlayer -> ((FakeInventoryIcon) item).update(watchPlayer, realPosition));
+            });
+        });
     }
 
-    public void closeAll() {
+    /**
+     * 이 GUI를 보고 있는 모든 플레이어의 GUI를 닫습니다.
+     */
+    public final void closeAll() {
         Iterator<Player> iterator = getWatchers().iterator();
         while (iterator.hasNext()) {
             iterator.next().closeInventory();
