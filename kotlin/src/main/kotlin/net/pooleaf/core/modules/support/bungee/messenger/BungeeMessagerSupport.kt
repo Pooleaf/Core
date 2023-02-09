@@ -4,6 +4,7 @@ import net.md_5.bungee.api.CommandSender
 import net.md_5.bungee.api.chat.BaseComponent
 import net.md_5.bungee.api.connection.ProxiedPlayer
 import net.pooleaf.core.modules.support.common.messager.Messager
+import org.bukkit.entity.Player
 
 /**
  * CommandSender
@@ -35,4 +36,20 @@ fun ProxiedPlayer.sendMessageSafelyWithPrefix(message: String) {
 
 fun ProxiedPlayer.sendMessageSafelyWithPrefix(vararg baseComponents: BaseComponent) {
     if (this.isConnected) Messager.sendMessageWithPrefix(this, baseComponents)
+}
+
+fun ProxiedPlayer.sendWarningSafely(message: String) {
+    if (this.isConnected) Messager.sendWarning(this, message)
+}
+
+fun ProxiedPlayer.sendWarningSafely(vararg baseComponents: BaseComponent) {
+    if (this.isConnected) Messager.sendWarning(this, baseComponents)
+}
+
+fun ProxiedPlayer.sendWarningSafelyWithPrefix(message: String) {
+    if (this.isConnected) Messager.sendWarningWithPrefix(this, message)
+}
+
+fun ProxiedPlayer.sendWarningSafelyWithPrefix(vararg baseComponents: BaseComponent) {
+    if (this.isConnected) Messager.sendWarningWithPrefix(this, baseComponents)
 }

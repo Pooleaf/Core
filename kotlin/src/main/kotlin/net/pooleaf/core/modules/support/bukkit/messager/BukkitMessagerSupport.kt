@@ -36,3 +36,19 @@ fun Player.sendMessageSafelyWithPrefix(message: String) {
 fun Player.sendMessageSafelyWithPrefix(vararg baseComponents: BaseComponent) {
     if (this.isOnline) Messager.sendMessageWithPrefix(this, baseComponents)
 }
+
+fun Player.sendWarningSafely(message: String) {
+    if (this.isOnline) Messager.sendWarning(this, message)
+}
+
+fun Player.sendWarningSafely(vararg baseComponents: BaseComponent) {
+    if (this.isOnline) Messager.sendWarning(this, baseComponents)
+}
+
+fun Player.sendWarningSafelyWithPrefix(message: String) {
+    if (this.isOnline) Messager.sendWarningWithPrefix(this, message)
+}
+
+fun Player.sendWarningSafelyWithPrefix(vararg baseComponents: BaseComponent) {
+    if (this.isOnline) Messager.sendWarningWithPrefix(this, baseComponents)
+}
