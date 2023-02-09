@@ -59,22 +59,22 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
             page = 1;
         }
         if (page < 1 || page > getMaxPage()) {
-            Messager.nwarning(sender, "페이지는 1 ~ " + getMaxPage() + "의 정수만 입력할 수 있습니다.");
+            Messager.sendWarning(sender, "페이지는 1 ~ " + getMaxPage() + "의 정수만 입력할 수 있습니다.");
             return;
         }
 
         // 헤더
-        Messager.nmessage(sender, "");
+        Messager.sendMessage(sender, "");
 
         String headerMessage = getHeaderColor() + "[ " + getHeaderMessage() + " ]";
         String pageMessage = "( " + page + " / " + getMaxPage() + " )";
 
         if (getHeaderMessage() != null) {
             if (getMaxPage() <= 1) {
-                Messager.nmessage(sender, headerMessage);
+                Messager.sendMessage(sender, headerMessage);
             } else {
                 if (sender.isConsole()) {
-                    Messager.nmessage(sender, headerMessage + " " + pageMessage);
+                    Messager.sendMessage(sender, headerMessage + " " + pageMessage);
                 } else {
                     SimpleComponentBuilder builder = new SimpleComponentBuilder(headerMessage + " " + pageMessage + " ");
 
@@ -103,7 +103,7 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
                                 .build());
                     }
 
-                    Messager.nmessage(sender, builder.build());
+                    Messager.sendMessage(sender, builder.build());
                 }
             }
         }
@@ -112,7 +112,7 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
         List<T> pageValues = getPage(page);
         List<Integer> pageIndexes = getPageIndexes(page);
         for (int i = 0; i < pageValues.size(); i++) {
-            Messager.nmessage(sender, handleValue(pageValues.get(i), pageIndexes.get(i)));
+            Messager.sendMessage(sender, handleValue(pageValues.get(i), pageIndexes.get(i)));
         }
     }
 

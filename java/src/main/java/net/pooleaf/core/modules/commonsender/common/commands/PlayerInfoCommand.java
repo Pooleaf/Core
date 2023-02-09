@@ -21,16 +21,16 @@ public class PlayerInfoCommand {
     public void playerInfo(CommonCommandSender sender, CommandResult result) {
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(result.getArgument(0));
         if (targetPlayer == null) {
-            sender.nwarning("존재하지 않는 플레이어입니다.");
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
         }
 
-        sender.nmessage("§e[ §f" + targetPlayer.getName() + " §e정보 ]");
-        sender.nmessage("§eUUID §f:" + targetPlayer.getUuid());
-        sender.nmessage("§e닉네임: §f" + targetPlayer.getName());
-        sender.nmessage("§e닉네임 표기: §f" + (targetPlayer.hasDisplayName() ? targetPlayer.getDisplayName() : "없음"));
-        sender.nmessage("§eIP: §f" + targetPlayer.getIp());
-        sender.nmessage("§e마지막 로그인: §f" + targetPlayer.getLastLogin().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분 ss초")));
+        sender.sendMessage("§e[ §f" + targetPlayer.getName() + " §e정보 ]");
+        sender.sendMessage("§eUUID §f:" + targetPlayer.getUuid());
+        sender.sendMessage("§e닉네임: §f" + targetPlayer.getName());
+        sender.sendMessage("§e닉네임 표기: §f" + (targetPlayer.hasDisplayName() ? targetPlayer.getDisplayName() : "없음"));
+        sender.sendMessage("§eIP: §f" + targetPlayer.getIp());
+        sender.sendMessage("§e마지막 로그인: §f" + targetPlayer.getLastLogin().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분 ss초")));
     }
 
 }

@@ -36,7 +36,7 @@ public class PlayerOptionCommand {
         String optionValue = result.subArgument(2);
 
         if (!CommonSenderModule.existsPlayerByName(playerName)) {
-            sender.nwarning("존재하지 않는 플레이어입니다.");
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
         }
 
@@ -44,7 +44,7 @@ public class PlayerOptionCommand {
                 .set(optionName, optionValue)
                 .save();
 
-        sender.nmessage("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e를 §f" + optionValue + "§e로 설정했습니다.");
+        sender.sendMessage("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e를 §f" + optionValue + "§e로 설정했습니다.");
     }
 
     @Command(
@@ -59,7 +59,7 @@ public class PlayerOptionCommand {
         String optionName = result.getArgument(1);
 
         if (!CommonSenderModule.existsPlayerByName(playerName)) {
-            sender.nwarning("존재하지 않는 플레이어입니다.");
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
         }
 
@@ -67,7 +67,7 @@ public class PlayerOptionCommand {
                 .delete(optionName)
                 .save();
 
-        sender.nmessage("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e를 삭제했습니다.");
+        sender.sendMessage("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e를 삭제했습니다.");
     }
 
     @Command(
@@ -82,17 +82,17 @@ public class PlayerOptionCommand {
         String optionName = result.getArgument(1);
 
         if (!CommonSenderModule.existsPlayerByName(playerName)) {
-            sender.nwarning("존재하지 않는 플레이어입니다.");
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
         }
 
         String value = OptionModule.getPlayerOptionByName(playerName).getString(optionName);
         if (value == null) {
-            sender.nwarning("존재하지 않는 옵션입니다.");
+            sender.sendWarning("존재하지 않는 옵션입니다.");
             return;
         }
 
-        sender.nmessage("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e의 값: §f" + value);
+        sender.sendMessage("§f" + playerName + " §e플레이어의 옵션 §f" + optionName + "§e의 값: §f" + value);
     }
 
     @Command(
@@ -105,15 +105,15 @@ public class PlayerOptionCommand {
     public void playerOption_list(CommonCommandSender sender, CommandResult result) {
         String playerName = result.getArgument(0);
         if (!CommonSenderModule.existsPlayerByName(playerName)) {
-            sender.nwarning("존재하지 않는 플레이어입니다.");
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
         }
 
         Option playerOption = OptionModule.getPlayerOptionByName(playerName);
 
-        sender.nmessage("§e[ §f" + playerName + " §e플레이어 옵션 목록 ]");
+        sender.sendMessage("§e[ §f" + playerName + " §e플레이어 옵션 목록 ]");
         for (Map.Entry<String, String> entry : playerOption.getDatas().entrySet()) {
-            sender.nmessage("§e" + entry.getKey() + ": §f" + entry.getValue());
+            sender.sendMessage("§e" + entry.getKey() + ": §f" + entry.getValue());
         }
     }
 

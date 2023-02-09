@@ -53,4 +53,10 @@ public class Title {
         BukkitReflectionUtil.sendPacket(player, titlePacket);
     }
 
+    public void sendSafely(Player player) {
+        if (player != null && player.isOnline()) {
+            send(player);
+        }
+    }
+
 }

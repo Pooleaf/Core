@@ -23,7 +23,7 @@ public class DisplayNameCommand {
 
         CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(name);
         if (targetPlayer == null) {
-            sender.nwarning("존재하지 않는 플레이어입니다.");
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
         }
 
@@ -35,7 +35,7 @@ public class DisplayNameCommand {
         }
         CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(targetPlayer);
 
-        sender.nmessage(targetPlayer.getName() + " §e님의 닉네임을 §f" + displayName + "§e(으)로 설정했습니다.");
+        sender.sendMessage(targetPlayer.getName() + " §e님의 닉네임을 §f" + displayName + "§e(으)로 설정했습니다.");
     }
 
 }

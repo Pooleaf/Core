@@ -1,6 +1,8 @@
 package net.pooleaf.core.modules.commonsender.common;
 
 import lombok.Data;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.pooleaf.core.modules.gui.bukkit.title.Title;
 import net.pooleaf.core.modules.option.OptionModule;
 import net.pooleaf.core.modules.option.common.Option;
 
@@ -47,6 +49,30 @@ public class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform
     @Override
     public Option option() {
         return OptionModule.getPlayerOption(uuid);
+    }
+
+    public void sendMessageSafely(String message) {
+        if (isOnline()) {
+            sendMessage(message);
+        }
+    }
+
+    public void sendMessageSafely(BaseComponent... baseComponents) {
+        if (isOnline()) {
+            sendMessage(baseComponents);
+        }
+    }
+
+    public void sendWarningSafely(String message) {
+        if (isOnline()) {
+            sendWarning(message);
+        }
+    }
+
+    public void sendWarningSafely(BaseComponent... baseComponents) {
+        if (isOnline()) {
+            sendWarning(baseComponents);
+        }
     }
 
 }

@@ -71,7 +71,7 @@ public class Debugger {
         message = getThreadId() + prefix + message;
 
         for (Object listener : listeners) {
-            Messager.nmessage(listener, message);
+            Messager.sendMessage(listener, message);
         }
     }
 

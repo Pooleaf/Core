@@ -66,13 +66,13 @@ public class PluginManagerCommand {
     public void pluginManager_reloadConfig(CommonCommandSender sender, CommandResult commandResult) {
         CorePlugin plugin = Core.getPluginManager().getPluginByName(commandResult.getArgument(0));
         if (plugin == null) {
-            sender.nwarning("존재하지 않는 플러그인입니다.");
+            sender.sendWarning("존재하지 않는 플러그인입니다.");
             return;
         }
 
         // 메소드 구현 여부 확인
         if (ReflectionUtil.getMethod(plugin.getClass(), "onConfigLoaded") == null) {
-            sender.nwarning("설정 리로드를 지원하지 않는 플러그인입니다.");
+            sender.sendWarning("설정 리로드를 지원하지 않는 플러그인입니다.");
             return;
         }
 
@@ -90,7 +90,7 @@ public class PluginManagerCommand {
     public void pluginManager_commandList(CommonCommandSender sender, CommandResult commandResult) {
         CorePlugin plugin = Core.getPluginManager().getPluginByName(commandResult.getArgument(0));
         if (plugin == null) {
-            sender.nwarning("존재하지 않는 플러그인입니다.");
+            sender.sendWarning("존재하지 않는 플러그인입니다.");
             return;
         }
 

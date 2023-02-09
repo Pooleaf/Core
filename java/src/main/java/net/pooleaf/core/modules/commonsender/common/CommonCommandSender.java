@@ -44,8 +44,8 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
      * Messager에 등록된 Prefix를 사용합니다.
      * @param message 메시지
      */
-    public void message(String message) {
-        Messager.message(getPlatformSender(), message);
+    public void sendMessageWithPrefix(String message) {
+        Messager.sendMessageWithPrefix(getPlatformSender(), message);
     }
 
     /**
@@ -53,56 +53,56 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
      * Messager에 등록된 Prefix를 사용합니다.
      * @param components BaseComponent
      */
-    public void message(BaseComponent... components) {
-        Messager.message(getPlatformSender(), components);
+    public void sendMessageWithPrefix(BaseComponent... components) {
+        Messager.sendMessageWithPrefix(getPlatformSender(), components);
     }
 
     /**
      * Sender에게 Prefix가 없는 메시지를 보냅니다.
      * @param message 메시지
      */
-    public void nmessage(String message) {
-        Messager.nmessage(getPlatformSender(), message);
+    public void sendMessage(String message) {
+        Messager.sendMessage(getPlatformSender(), message);
     }
 
     /**
      * Sender에게 Prefix가 없는 BaseComponent를 보냅니다.
      * @param components BaseComponent
      */
-    public void nmessage(BaseComponent... components) {
-        Messager.nmessage(getPlatformSender(), components);
+    public void sendMessage(BaseComponent... components) {
+        Messager.sendMessage(getPlatformSender(), components);
     }
 
     /**
      * Sender에게 경고 메시지를 보냅니다.
      * @param message 경고 메시지
      */
-    public void warning(String message) {
-        Messager.warning(getPlatformSender(), message);
+    public void sendWarningWithPrefix(String message) {
+        Messager.sendWarningWithPrefix(getPlatformSender(), message);
     }
 
     /**
      * Sender에게 경고 BaseComponent를 보냅니다.
      * @param components 경고 BaseComponent
      */
-    public void warning(BaseComponent... components) {
-        Messager.warning(getPlatformSender(), components);
+    public void sendWarningWithPrefix(BaseComponent... components) {
+        Messager.sendWarningWithPrefix(getPlatformSender(), components);
     }
 
     /**
      * Sender에게 Prefix가 없는 경고 메시지를 보냅니다.
      * @param message 경고 메시지
      */
-    public void nwarning(String message) {
-        Messager.nwarning(getPlatformSender(), message);
+    public void sendWarning(String message) {
+        Messager.sendWarning(getPlatformSender(), message);
     }
 
     /**
      * Sender에게 Prefix가 없는 경고 BaseComponent를 보냅니다.
      * @param components 경고 BaseComponent
      */
-    public void nwarning(BaseComponent... components) {
-        Messager.nwarning(getPlatformSender(), components);
+    public void sendWarning(BaseComponent... components) {
+        Messager.sendWarning(getPlatformSender(), components);
     }
 
     public abstract Option option();

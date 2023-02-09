@@ -36,7 +36,7 @@ public class ServerOptionCommand {
                 .set(optionName, optionValue)
                 .save();
 
-        sender.nmessage("§e서버 옵션 §f" + optionName + "§e(을)를 §f" + optionValue + "§e로 설정했습니다.");
+        sender.sendMessage("§e서버 옵션 §f" + optionName + "§e(을)를 §f" + optionValue + "§e로 설정했습니다.");
     }
 
     @Command(
@@ -53,7 +53,7 @@ public class ServerOptionCommand {
                 .delete(optionName)
                 .save();
 
-        sender.nmessage("§e서버 옵션 §f" + optionName + "§e를 삭제했습니다.");
+        sender.sendMessage("§e서버 옵션 §f" + optionName + "§e를 삭제했습니다.");
     }
 
     @Command(
@@ -68,11 +68,11 @@ public class ServerOptionCommand {
 
         String value = OptionModule.getServerOption().getString(optionName);
         if (value == null) {
-            sender.nwarning("존재하지 않는 옵션입니다.");
+            sender.sendWarning("존재하지 않는 옵션입니다.");
             return;
         }
 
-        sender.nmessage("§e서버 옵션 §f" + optionName + "§e의 값: §f" + value);
+        sender.sendMessage("§e서버 옵션 §f" + optionName + "§e의 값: §f" + value);
     }
 
     @Command(
@@ -82,9 +82,9 @@ public class ServerOptionCommand {
             permission = CorePermission.ADMIN
     )
     public void serverOption_list(CommonCommandSender sender, CommandResult result) {
-        sender.nmessage("§e[ 서버 옵션 목록 ]");
+        sender.sendMessage("§e[ 서버 옵션 목록 ]");
         for (Map.Entry<String, String> entry : OptionModule.getServerOption().getDatas().entrySet()) {
-            sender.nmessage("§e" + entry.getKey() + ": §f" + entry.getValue());
+            sender.sendMessage("§e" + entry.getKey() + ": §f" + entry.getValue());
         }
     }
 

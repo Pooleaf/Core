@@ -101,7 +101,7 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
     @Override
     public void sendMessage(Object sender, String message) {
         if (sender instanceof CommonCommandSender) {
-            ((CommonCommandSender) sender).nmessage(message);
+            ((CommonCommandSender) sender).sendMessage(message);
         } else {
             ((CommandSender) sender).sendMessage(message);
         }
@@ -110,7 +110,7 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
     @Override
     public void sendMessage(Object sender, BaseComponent... component) {
         if (sender instanceof CommonCommandSender) {
-            ((CommonCommandSender) sender).nmessage(component);
+            ((CommonCommandSender) sender).sendMessage(component);
         } else if (sender instanceof Player) {
             ((Player) sender).sendMessage(component);
         } else {

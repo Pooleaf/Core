@@ -57,6 +57,19 @@ public class ActionBar {
     }
 
     /**
+     * 플레이어가 온라인인지 확인한 후 ActionBar를 보여줍니다.
+     * @param player 대상 플레이어
+     * @param message 메시지
+     */
+    public static void showSafely(Player player, String message) {
+        Preconditions.checkNotNull(player);
+
+        if (player.isOnline()) {
+            show(player, message);
+        }
+    }
+
+    /**
      * 플레이어에게 ActionBar를 seconds초 동안 보여줍니다.
      * 플레이어가 접속을 종료할 경우 중단됩니다.
      * @param player 대상 플레이어

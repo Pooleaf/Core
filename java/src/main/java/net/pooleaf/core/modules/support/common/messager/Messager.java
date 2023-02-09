@@ -13,7 +13,7 @@ public class Messager extends Prefixer {
     private static MessagerAdapter messagerAdapter;
 
 
-    public static void nmessage(Object sender, Object message) {
+    public static void sendMessage(Object sender, Object message) {
         Preconditions.checkNotNull(messagerAdapter, "messeageAdapter가 초기화되지 않았습니다.");
         Preconditions.checkNotNull(sender, "sender가 null 입니다.");
 
@@ -25,15 +25,15 @@ public class Messager extends Prefixer {
         messagerAdapter.message(sender, message);
     }
 
-    public static void nmessageFormat(Object sender, Object message, Object... params) {
-        nmessage(sender, String.format((String) message, params));
+    public static void sendMessageFormat(Object sender, Object message, Object... params) {
+        sendMessage(sender, String.format((String) message, params));
     }
 
 
-    public static void message(Object sender, Object message) {
+    public static void sendMessageWithPrefix(Object sender, Object message) {
         // BaseComponent
         if (message instanceof BaseComponent) {
-            nmessage(sender, new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"))
+            sendMessage(sender, new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"))
                     .addExtra((BaseComponent) message)
                     .build());
         }
@@ -43,23 +43,23 @@ public class Messager extends Prefixer {
             for (BaseComponent component : ((BaseComponent[]) message)) {
                 builder.addExtra(component);
             }
-            nmessage(sender, builder.build());
+            sendMessage(sender, builder.build());
         }
         // String
         else {
-            nmessage(sender, getCurrentPluginPrefix(" §f") + message);
+            sendMessage(sender, getCurrentPluginPrefix(" §f") + message);
         }
     }
 
-    public static void messageFormat(Object sender, Object message, Object... params) {
-        message(sender, String.format((String) message, params));
+    public static void sendMessageFormatWithPrefix(Object sender, Object message, Object... params) {
+        sendMessageWithPrefix(sender, String.format((String) message, params));
     }
 
 
-    public static void nwarning(Object sender, Object message) {
+    public static void sendWarning(Object sender, Object message) {
         // BaseComponent
         if (message instanceof BaseComponent) {
-            nmessage(sender, new SimpleComponentBuilder("§c")
+            sendMessage(sender, new SimpleComponentBuilder("§c")
                     .addExtra((BaseComponent) message)
                     .build());
         }
@@ -69,27 +69,27 @@ public class Messager extends Prefixer {
             for (BaseComponent component : ((BaseComponent[]) message)) {
                 builder.addExtra(component);
             }
-            nmessage(sender, builder.build());
+            sendMessage(sender, builder.build());
         }
         // String
         else {
-            nmessage(sender, "§c" + message);
+            sendMessage(sender, "§c" + message);
         }
     }
 
-    public static void nwarning(Object sender, BaseComponent... components) {
-        nwarning(sender, components);
+    public static void sendWarning(Object sender, BaseComponent... components) {
+        sendWarning(sender, components);
     }
 
-    public static void nwarningFormat(Object sender, Object message, Object... params) {
-        nwarning(sender, String.format((String) message, params));
+    public static void sendWarningFormat(Object sender, Object message, Object... params) {
+        sendWarning(sender, String.format((String) message, params));
     }
 
 
-    public static void warning(Object sender, Object message) {
+    public static void sendWarningWithPrefix(Object sender, Object message) {
         // BaseComponent
         if (message instanceof BaseComponent) {
-            nmessage(sender, new SimpleComponentBuilder(getCurrentPluginPrefix(" §c"))
+            sendMessage(sender, new SimpleComponentBuilder(getCurrentPluginPrefix(" §c"))
                     .addExtra((BaseComponent) message)
                     .build());
         }
@@ -99,39 +99,39 @@ public class Messager extends Prefixer {
             for (BaseComponent component : ((BaseComponent[]) message)) {
                 builder.addExtra(component);
             }
-            nmessage(sender, builder.build());
+            sendMessage(sender, builder.build());
         }
         // String
         else {
-            nmessage(sender, getCurrentPluginPrefix(" §c") + message);
+            sendMessage(sender, getCurrentPluginPrefix(" §c") + message);
         }
     }
 
-    public static void warning(Object sender, BaseComponent... components) {
-        warning(sender, components);
+    public static void sendWarningWithPrefix(Object sender, BaseComponent... components) {
+        sendWarningWithPrefix(sender, components);
     }
 
-    public static void warningFormat(Object sender, Object message, Object... params) {
-        warning(sender, String.format((String) message, params));
+    public static void sendWarningFormatWithPrefix(Object sender, Object message, Object... params) {
+        sendWarningWithPrefix(sender, String.format((String) message, params));
     }
 
 
-    public static void nbroadcast(Object message) {
+    public static void broadcast(Object message) {
         messagerAdapter.broadcast(message);
     }
 
-    public static void nbroadcast(BaseComponent... components) {
-        nbroadcast(components);
+    public static void broadcast(BaseComponent... components) {
+        broadcast(components);
     }
 
-    public static void nbroadcastFormat(Object message, Object... params) {
-         nbroadcast(String.format((String) message, params));
+    public static void broadcastFormat(Object message, Object... params) {
+         broadcast(String.format((String) message, params));
     }
 
-    public static void broadcast(Object message) {
+    public static void broadcastWithPrefix(Object message) {
         // BaseComponent
         if (message instanceof BaseComponent) {
-            nbroadcast(new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"))
+            broadcast(new SimpleComponentBuilder(getCurrentPluginPrefix(" §f"))
                     .addExtra((BaseComponent) message)
                     .build());
         }
@@ -141,20 +141,20 @@ public class Messager extends Prefixer {
             for (BaseComponent component : ((BaseComponent[]) message)) {
                 builder.addExtra(component);
             }
-            nbroadcast(builder.build());
+            broadcast(builder.build());
         }
         // String
         else {
-            nbroadcast(getCurrentPluginPrefix(" §f") + message);
+            broadcast(getCurrentPluginPrefix(" §f") + message);
         }
     }
 
-    public static void broadcast(BaseComponent... components) {
-        broadcast(components);
+    public static void broadcastWithPrefix(BaseComponent... components) {
+        broadcastWithPrefix(components);
     }
 
-    public static void broadcastFormat(Object message, Object... params) {
-        broadcast(String.format((String) message, params));
+    public static void broadcastFormatWithPrefix(Object message, Object... params) {
+        broadcastWithPrefix(String.format((String) message, params));
     }
 
 }

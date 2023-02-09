@@ -34,16 +34,16 @@ public class ChannelCommand {
           permission = ChannelPermission.ADMIN
   )
   public void channel_list(CommonCommandSender sender, CommandResult result) {
-    sender.nmessage("§e[ 채널 목록 ]");
+    sender.sendMessage("§e[ 채널 목록 ]");
     for (Channel channel : ChannelModule.getChannels()) {
       if (channel.isOnline()) {
-        sender.nmessage(new SimpleComponentBuilder("§a" + channel.getName() + " (" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount() + "): §f"
+        sender.sendMessage(new SimpleComponentBuilder("§a" + channel.getName() + " (" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount() + "): §f"
                 + channel.getPlayerNames().stream().collect(Collectors.joining(", ")))
                 .hoverShowText("클릭 시 " + channel.getName() + " 채널로 이동합니다.")
                 .clickRunCommand("/channel join " + channel.getName())
                 .build());
       } else {
-        sender.nmessage("§7" + channel.getName());
+        sender.sendMessage("§7" + channel.getName());
       }
     }
   }
@@ -58,22 +58,22 @@ public class ChannelCommand {
   public void channel_info(CommonCommandSender sender, CommandResult result) {
     Channel channel = ChannelModule.getChannel(result.getEnteredArguments());
     if (channel == null) {
-      sender.nwarning("존재하지 않는 채널입니다.");
+      sender.sendWarning("존재하지 않는 채널입니다.");
       return;
     }
 
-    sender.nmessage("§e[ 채널 정보 ]");
-    sender.nmessage("§e이름: §f" + channel.getName());
-    sender.nmessage("§e이름 표기: §f" + (channel.hasDisplayName() ? channel.getDisplayName() : "없음"));
-    sender.nmessage("§e그룹: §f" + (channel.hasGroup() ? channel.getGroupName() : "없음"));
-    sender.nmessage("§e온라인 :§f" + (channel.isOnline() ? "§a온라인" : "§7오프라인"));
-    sender.nmessage("§e상태 :§f" + ChannelStatus.getMessage(channel.getChannelStatus()) + "(" + channel.getChannelStatus() + ")");
-    sender.nmessage("§e빠른접속 허용 :§f" + channel.isAllowFastJoin());
-    sender.nmessage("§e접속자 수: §f" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
-    sender.nmessage("§e접속자 목록: §f" + channel.getPlayerNames());
-    sender.nmessage("§e데이터: §f" + (channel.getDatas().isEmpty() ? "없음" : ""));
+    sender.sendMessage("§e[ 채널 정보 ]");
+    sender.sendMessage("§e이름: §f" + channel.getName());
+    sender.sendMessage("§e이름 표기: §f" + (channel.hasDisplayName() ? channel.getDisplayName() : "없음"));
+    sender.sendMessage("§e그룹: §f" + (channel.hasGroup() ? channel.getGroupName() : "없음"));
+    sender.sendMessage("§e온라인 :§f" + (channel.isOnline() ? "§a온라인" : "§7오프라인"));
+    sender.sendMessage("§e상태 :§f" + ChannelStatus.getMessage(channel.getChannelStatus()) + "(" + channel.getChannelStatus() + ")");
+    sender.sendMessage("§e빠른접속 허용 :§f" + channel.isAllowFastJoin());
+    sender.sendMessage("§e접속자 수: §f" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
+    sender.sendMessage("§e접속자 목록: §f" + channel.getPlayerNames());
+    sender.sendMessage("§e데이터: §f" + (channel.getDatas().isEmpty() ? "없음" : ""));
     if (!channel.getDatas().isEmpty()) {
-      channel.getDatas().forEach((key, value) -> sender.nmessage("§eㄴ " + key + ": §f" + value));
+      channel.getDatas().forEach((key, value) -> sender.sendMessage("§eㄴ " + key + ": §f" + value));
     }
   }
 
@@ -87,13 +87,13 @@ public class ChannelCommand {
   public void channel_setDisplayName(CommonCommandSender sender, CommandResult result) {
     Channel channel = ChannelModule.getChannel(result.getArgument(0));
     if (channel == null) {
-      sender.nwarning("존재하지 않는 채널입니다.");
+      sender.sendWarning("존재하지 않는 채널입니다.");
       return;
     }
 
     String displayName = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
     channel.setDisplayName(displayName);
-    sender.nmessage(channel.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
+    sender.sendMessage(channel.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
   }
 
   @Command(
@@ -106,18 +106,18 @@ public class ChannelCommand {
   public void channel_setGroup(CommonCommandSender sender, CommandResult result) {
     Channel channel = ChannelModule.getChannel(result.getArgument(0));
     if (channel == null) {
-      sender.nwarning("존재하지 않는 채널입니다.");
+      sender.sendWarning("존재하지 않는 채널입니다.");
       return;
     }
 
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(1));
     if (channelGroup == null) {
-      sender.nwarning("존재하지 않는 채널 그룹입니다.");
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
     }
 
     channel.setGroupName(channelGroup.getName());
-    sender.nmessage(channel.getName() + " §e채널의 그룹을 §f" + channelGroup.getName() + "§e(으)로 설정했습니다.");
+    sender.sendMessage(channel.getName() + " §e채널의 그룹을 §f" + channelGroup.getName() + "§e(으)로 설정했습니다.");
   }
 
   @Command(
@@ -136,7 +136,7 @@ public class ChannelCommand {
 
     Channel channel = ChannelModule.getChannel(result.getArgument(0));
     if (channel == null) {
-      sender.nwarning("존재하지 않는 채널입니다.");
+      sender.sendWarning("존재하지 않는 채널입니다.");
       return;
     }
 
@@ -144,7 +144,7 @@ public class ChannelCommand {
     // 현재 채널 플레이어 이동시키기
     if (target.equals("현재") || target.equalsIgnoreCase("current")) {
       if (sender.isConsole()) {
-        sender.nwarning("콘솔에서는 현재를 사용할 수 없습니다.");
+        sender.sendWarning("콘솔에서는 현재를 사용할 수 없습니다.");
         return;
       }
 
@@ -158,7 +158,7 @@ public class ChannelCommand {
         }
       }
 
-      sender.nmessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channel.getName() + " §e채널로 이동시키는데 성공했습니다.");
+      sender.sendMessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channel.getName() + " §e채널로 이동시키는데 성공했습니다.");
     }
     // 모든 플레이어 이동시키기
     else if (target.equals("전체") || target.equalsIgnoreCase("all")) {
@@ -170,7 +170,7 @@ public class ChannelCommand {
         }
       }
 
-      sender.nmessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channel.getName() + " §e채널로 이동시키는데 성공했습니다.");
+      sender.sendMessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channel.getName() + " §e채널로 이동시키는데 성공했습니다.");
     }
     // 내가 채널에 접속하기
     else {
@@ -194,18 +194,18 @@ public class ChannelCommand {
         channel.broadcast(sender.getName(), message);
       }
 
-      sender.nmessage(ChannelModule.getChannels().size() + "§e개의 채널에 §f'" + message + "' §e메시지를 공지했습니다.");
+      sender.sendMessage(ChannelModule.getChannels().size() + "§e개의 채널에 §f'" + message + "' §e메시지를 공지했습니다.");
     }
     // 특정 채널에 공지하기
     else {
       Channel channel = ChannelModule.getChannel(result.getArgument(0));
       if (channel == null) {
-        sender.nwarning("존재하지 않는 채널입니다.");
+        sender.sendWarning("존재하지 않는 채널입니다.");
         return;
       }
 
       channel.broadcast(sender.getName(), message);
-      sender.nmessage(channel.getName() + " §e채널에 §f'" + message + "' §e메시지를 공지했습니다.");
+      sender.sendMessage(channel.getName() + " §e채널에 §f'" + message + "' §e메시지를 공지했습니다.");
     }
   }
 
@@ -225,18 +225,18 @@ public class ChannelCommand {
         channel.remoteCommand(sender.getName(), commandLine);
       }
 
-      sender.nmessage(ChannelModule.getChannels().size() + "§e개의 채널에 §f'" + commandLine + "' §e명령어를 보냈습니다.");
+      sender.sendMessage(ChannelModule.getChannels().size() + "§e개의 채널에 §f'" + commandLine + "' §e명령어를 보냈습니다.");
     }
     // 특정 채널에 명령어 보내기
     else {
       Channel channel = ChannelModule.getChannel(result.getArgument(0));
       if (channel == null) {
-        sender.nwarning("존재하지 않는 채널입니다.");
+        sender.sendWarning("존재하지 않는 채널입니다.");
         return;
       }
 
       channel.remoteCommand(sender.getName(), commandLine);
-      sender.nmessage(channel.getName() + " §e채널에 §f'" + commandLine + "' §e명령어를 보냈습니다.");
+      sender.sendMessage(channel.getName() + " §e채널에 §f'" + commandLine + "' §e명령어를 보냈습니다.");
     }
   }
 

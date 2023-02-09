@@ -89,7 +89,7 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
     String message = "설정을 불러왔습니다. (" + (System.currentTimeMillis() - startTime) + " ms)";
     Logger.log(message);
     if (sender != null && !sender.isConsole()) {
-      sender.message(message);
+      sender.sendMessageWithPrefix(message);
     }
   }
 

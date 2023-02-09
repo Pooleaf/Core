@@ -32,9 +32,9 @@ public class ChannelGroupCommand {
           permission = ChannelPermission.ADMIN
   )
   public void channelGroup_list(CommonCommandSender sender, CommandResult result) {
-    sender.nmessage("§e[ 채널 그룹 목록 ]");
+    sender.sendMessage("§e[ 채널 그룹 목록 ]");
     for (ChannelGroup channelGroup : ChannelModule.getChannelGroups()) {
-      sender.nmessage(new SimpleComponentBuilder(channelGroup.getName() + "§e(" + channelGroup.getDisplayName() + ") (" + channelGroup.getPlayerCount() + ")")
+      sender.sendMessage(new SimpleComponentBuilder(channelGroup.getName() + "§e(" + channelGroup.getDisplayName() + ") (" + channelGroup.getPlayerCount() + ")")
               .hoverShowText("클릭 시 " + channelGroup.getName() + " 채널 그룹으로 이동합니다.")
               .clickRunCommand("/channelGroup join " + channelGroup.getName())
               .build());
@@ -51,28 +51,28 @@ public class ChannelGroupCommand {
   public void channelGroup_info(CommonCommandSender sender, CommandResult result) {
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getEnteredArguments());
     if (channelGroup == null) {
-      sender.nwarning("존재하지 않는 채널 그룹입니다.");
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
     }
 
-    sender.nmessage("§e[ 채널 그룹 정보 ]");
-    sender.nmessage("§e이름: §f" + channelGroup.getName());
-    sender.nmessage("§e이름 표기: §f" + (channelGroup.hasDisplayName() ? channelGroup.getDisplayName() : "없음"));
-    sender.nmessage("§e채널 수: §f" + channelGroup.getChannels().size() + "개 중 " + channelGroup.getOnlineChannels().size() + "개 온라인");
-    sender.nmessage("§e채널 목록: §f" + (channelGroup.getChannels().isEmpty() ? "없음" : ""));
+    sender.sendMessage("§e[ 채널 그룹 정보 ]");
+    sender.sendMessage("§e이름: §f" + channelGroup.getName());
+    sender.sendMessage("§e이름 표기: §f" + (channelGroup.hasDisplayName() ? channelGroup.getDisplayName() : "없음"));
+    sender.sendMessage("§e채널 수: §f" + channelGroup.getChannels().size() + "개 중 " + channelGroup.getOnlineChannels().size() + "개 온라인");
+    sender.sendMessage("§e채널 목록: §f" + (channelGroup.getChannels().isEmpty() ? "없음" : ""));
     if (!channelGroup.getChannels().isEmpty()) {
       for (Channel channel : channelGroup.getChannels()) {
         if (channel.isOnline()) {
-          sender.nmessage("§a" + channel.getName() + "(" + ChannelStatus.getMessage(channel.getChannelStatus()) + "): " + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
+          sender.sendMessage("§a" + channel.getName() + "(" + ChannelStatus.getMessage(channel.getChannelStatus()) + "): " + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
         } else {
-          sender.nmessage("§7" + channel.getName());
+          sender.sendMessage("§7" + channel.getName());
         }
       }
     }
-    sender.nmessage("§e접속자 수: §f" + channelGroup.getPlayerCount());
-    sender.nmessage("§e접속자 목록: §f" + channelGroup.getPlayerNames());
+    sender.sendMessage("§e접속자 수: §f" + channelGroup.getPlayerCount());
+    sender.sendMessage("§e접속자 목록: §f" + channelGroup.getPlayerNames());
     Channel fastJoinTarget = channelGroup.getFastJoinChannel();
-    sender.nmessage("§e빠른접속 타겟: §f" + (fastJoinTarget == null ? "없음" : fastJoinTarget.getName()));
+    sender.sendMessage("§e빠른접속 타겟: §f" + (fastJoinTarget == null ? "없음" : fastJoinTarget.getName()));
   }
 
   @Command(
@@ -85,13 +85,13 @@ public class ChannelGroupCommand {
   public void channelGroup_setDisplayName(CommonCommandSender sender, CommandResult result) {
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getEnteredArguments());
     if (channelGroup == null) {
-      sender.nwarning("존재하지 않는 채널 그룹입니다.");
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
     }
 
     String displayName = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
     channelGroup.setDisplayName(displayName);
-    sender.nmessage(channelGroup.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
+    sender.sendMessage(channelGroup.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
   }
 
   @Command(
@@ -110,7 +110,7 @@ public class ChannelGroupCommand {
 
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
     if (channelGroup == null) {
-      sender.nwarning("존재하지 않는 채널 그룹입니다.");
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
     }
 
@@ -118,7 +118,7 @@ public class ChannelGroupCommand {
     // 현재 채널 플레이어 이동시키기
     if (target.equals("현재") || target.equalsIgnoreCase("current")) {
       if (sender.isConsole()) {
-        sender.nwarning("콘솔에서는 현재를 사용할 수 없습니다.");
+        sender.sendWarning("콘솔에서는 현재를 사용할 수 없습니다.");
         return;
       }
 
@@ -132,7 +132,7 @@ public class ChannelGroupCommand {
         }
       }
 
-      sender.nmessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channelGroup.getName() + " §e그룹의 채널로 빠른접속 시키는데 성공했습니다.");
+      sender.sendMessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channelGroup.getName() + " §e그룹의 채널로 빠른접속 시키는데 성공했습니다.");
     }
     // 모든 플레이어 이동시키기
     else if (target.equals("전체") || target.equalsIgnoreCase("all")) {
@@ -144,7 +144,7 @@ public class ChannelGroupCommand {
         }
       }
 
-      sender.nmessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channelGroup.getName() + " §e그룹의 채널로 빠른접속 시키는데 성공했습니다.");
+      sender.sendMessage(joinRequestCount + "§e명의 플레이어 중 §f" + joinSuccessCount + "§e명의 플레이어를 §f" + channelGroup.getName() + " §e그룹의 채널로 빠른접속 시키는데 성공했습니다.");
     }
     // 내가 채널에 접속하기
     else {
@@ -164,12 +164,12 @@ public class ChannelGroupCommand {
 
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
     if (channelGroup == null) {
-      sender.nwarning("존재하지 않는 채널 그룹입니다.");
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
     }
 
     channelGroup.broadcast(sender.getName(), message);
-    sender.nmessage(channelGroup.getName() + " §e채널 그룹에 §f'" + message + "' §e메시지를 공지했습니다.");
+    sender.sendMessage(channelGroup.getName() + " §e채널 그룹에 §f'" + message + "' §e메시지를 공지했습니다.");
   }
 
   @Command(
@@ -184,12 +184,12 @@ public class ChannelGroupCommand {
 
     ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
     if (channelGroup == null) {
-      sender.nwarning("존재하지 않는 채널 그룹입니다.");
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
     }
 
     channelGroup.remoteCommand(sender.getName(), commandLine);
-    sender.nmessage(channelGroup.getName() + " §e채널 그룹에 §f'" + commandLine + "' §e명령어를 보냈습니다.");
+    sender.sendMessage(channelGroup.getName() + " §e채널 그룹에 §f'" + commandLine + "' §e명령어를 보냈습니다.");
   }
 
 }
