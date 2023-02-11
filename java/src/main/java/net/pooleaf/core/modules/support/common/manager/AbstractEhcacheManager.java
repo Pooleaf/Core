@@ -95,8 +95,8 @@ public abstract class AbstractEhcacheManager<K, V> implements Manager<K, V> {
 
     @Override
     public List<V> values() {
-        return (List<V>) cache.getKeys().stream()
-                .map(key -> cache.get(key).getObjectValue())
+        return (List<V>) cache.getAll(cache.getKeys()).values().stream()
+                .map(element -> element.getObjectValue())
                 .collect(Collectors.toList());
     }
 
