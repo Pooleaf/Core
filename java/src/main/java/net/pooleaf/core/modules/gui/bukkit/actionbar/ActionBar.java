@@ -13,10 +13,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionBar {
 
-    private static Map<UUID, BukkitTask> showTasks = new HashMap<>(); // ActionBar를 계속해서 보여주는 Task
+    private static Map<UUID, BukkitTask> showTasks = new ConcurrentHashMap<>(); // ActionBar를 계속해서 보여주는 Task
 
 
     /**
@@ -26,34 +27,32 @@ public class ActionBar {
      */
     @SneakyThrows
     public static void show(Player player, String message) {
-       synchronized (showTasks) {
-           // 기존 Task가 있을 경우 종료
-           cancelShowTask(player);
+        // 기존 Task가 있을 경우 종료
+        cancelShowTask(player);
 
-           Preconditions.checkNotNull(player);
-           Preconditions.checkNotNull(message);
+        Preconditions.checkNotNull(player);
+        Preconditions.checkNotNull(message);
 
-           message = ChatColor.translateAlternateColorCodes('&', message);
+        message = ChatColor.translateAlternateColorCodes('&', message);
 
-           Class<?> chatComponentClass = BukkitReflectionUtil.getNmsClass("IChatBaseComponent");
-           Class<?> chatPacketClass = BukkitReflectionUtil.getNmsClass("PacketPlayOutChat");
+        Class<?> chatComponentClass = BukkitReflectionUtil.getNmsClass("IChatBaseComponent");
+        Class<?> chatPacketClass = BukkitReflectionUtil.getNmsClass("PacketPlayOutChat");
 
-           Object chatComponentText = BukkitReflectionUtil.getNmsClass("ChatComponentText").getConstructor(String.class).newInstance(message);
-           Object chatPacket;
-           if (NmsVersion.getCurrentVersion().isBefore(NmsVersion.v1_11_R1)) {
-               chatPacket = chatPacketClass
-                       .getConstructor(chatComponentClass, Byte.TYPE)
-                       .newInstance(chatComponentText, (byte) 2);
-           } else {
-               Class<?> chatMessageTypeClass = BukkitReflectionUtil.getNmsClass("ChatMessageType");
+        Object chatComponentText = BukkitReflectionUtil.getNmsClass("ChatComponentText").getConstructor(String.class).newInstance(message);
+        Object chatPacket;
+        if (NmsVersion.getCurrentVersion().isBefore(NmsVersion.v1_11_R1)) {
+            chatPacket = chatPacketClass
+                    .getConstructor(chatComponentClass, Byte.TYPE)
+                    .newInstance(chatComponentText, (byte) 2);
+        } else {
+            Class<?> chatMessageTypeClass = BukkitReflectionUtil.getNmsClass("ChatMessageType");
 
-               chatPacket = chatPacketClass
-                       .getConstructor(chatComponentClass, chatMessageTypeClass)
-                       .newInstance(chatComponentText, chatMessageTypeClass.getField("GAME_INFO").get(null));
-           }
+            chatPacket = chatPacketClass
+                    .getConstructor(chatComponentClass, chatMessageTypeClass)
+                    .newInstance(chatComponentText, chatMessageTypeClass.getField("GAME_INFO").get(null));
+        }
 
-           BukkitReflectionUtil.sendPacket(player, chatPacket);
-       }
+        BukkitReflectionUtil.sendPacket(player, chatPacket);
     }
 
     /**
@@ -77,7 +76,7 @@ public class ActionBar {
      * @param seconds 보여줄 시간(초)
      */
     public static void show(Player player, String message, int seconds) {
-      synchronized (showTasks) {
+      synchronized (ActionBar.class) {
           // 기존 Task가 있을 경우 종료
           cancelShowTask(player);
 
@@ -96,7 +95,7 @@ public class ActionBar {
      * @param message 메시지
      */
     public static void showForever(Player player, String message) {
-       synchronized (showTasks) {
+       synchronized (ActionBar.class) {
            // 기존 Task가 있을 경우 종료
            cancelShowTask(player);
 
@@ -110,11 +109,9 @@ public class ActionBar {
      * @param player 대상 플레이어
      */
     public static void remove(Player player) {
-       synchronized (showTasks) {
-           cancelShowTask(player);
+        cancelShowTask(player);
 
-           show(player, "");
-       }
+        show(player, "");
     }
 
     /**
@@ -124,9 +121,9 @@ public class ActionBar {
         if (showTasks.containsKey(player.getUniqueId())) {
             BukkitTask beforeTask = showTasks.get(player.getUniqueId());
 
-            if (Bukkit.getScheduler().isCurrentlyRunning(beforeTask.getTaskId())) {
-                beforeTask.cancel();
-            }
+            Bukkit.getScheduler().cancelTask(beforeTask.getTaskId());
+
+            showTasks.remove(player.getUniqueId());
         }
     }
 

@@ -17,3 +17,7 @@ fun Player.showActionBarSafely(message: String) {
 fun Player.showActionBarForever(message: String) {
     ActionBar.showForever(this, message)
 }
+
+fun Player.removeActionBar() {
+    ActionBar.remove(this)
+}
