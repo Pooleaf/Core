@@ -19,7 +19,7 @@ public class PageableGui extends InventoryGui {
     private InventoryPanel itemPanel;
     private InventoryPanel pagePanel;
 
-    private int currentPage;
+    private int currentPage = 1;
 
     private List<Object> items = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class PageableGui extends InventoryGui {
         List<Object> pageItems = new ArrayList<>();
 
         int panelSize = (itemPanel.getWidth() * itemPanel.getHeight());
-        for (int i = (currentPage - 1) * panelSize; i < getMaxPage() * panelSize; i++) {
+        for (int i = (page - 1) * panelSize; i < page * panelSize; i++) {
             if (items.size() <= i) break;
 
             pageItems.add(items.get(i));
@@ -81,6 +81,9 @@ public class PageableGui extends InventoryGui {
         currentPage = page;
 
         itemPanel.getItems().clear();
+        System.out.println("items: " + items);
+        System.out.println("page: " + page);
+        System.out.println("pageItems: " + getPageItems(page));
         getPageItems(page).forEach(item -> itemPanel.add(item));
 
         itemPanel.updateAsynchronously();
@@ -146,10 +149,4 @@ public class PageableGui extends InventoryGui {
         };
     }
 
-    @Override
-    public void onUpdate() {
-        if (currentPage == 0) {
-            gotoPage(1);
-        }
-    }
 }

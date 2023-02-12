@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -20,6 +21,7 @@ public class PlayerDamageListener implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
 
         PlayerDamageEvent event = new PlayerDamageEvent(e);
+        event.setCancelled(e.isCancelled());
         Bukkit.getPluginManager().callEvent(event);
         e.setCancelled(event.isCancelled());
     }

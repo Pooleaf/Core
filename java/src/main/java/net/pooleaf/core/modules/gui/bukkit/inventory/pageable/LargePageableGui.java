@@ -14,7 +14,7 @@ public class LargePageableGui extends PageableGui {
         setPagePanel(createPanel("pagePanel", 1, 5, 9, 2));
 
         // 장식 아이템 배치
-        ItemStack decoItem = new ItemBuilder(Material.STAINED_GLASS_PANE).displayName("").build();
+        ItemStack decoItem = new ItemBuilder(Material.STAINED_GLASS_PANE).displayName("§f").build();
         for (int i = 1; i <= 9; i++) {
             getPagePanel().set(i, 1, decoItem);
         }

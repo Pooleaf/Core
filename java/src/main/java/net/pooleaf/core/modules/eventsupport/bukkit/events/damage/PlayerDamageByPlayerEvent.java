@@ -1,11 +1,13 @@
 package net.pooleaf.core.modules.eventsupport.bukkit.events.damage;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import net.pooleaf.core.modules.eventsupport.bukkit.events.CancellableEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+@Data
 @AllArgsConstructor
 public class PlayerDamageByPlayerEvent extends CancellableEvent {
 
