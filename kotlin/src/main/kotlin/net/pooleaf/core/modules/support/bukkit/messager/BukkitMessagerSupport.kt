@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
  * CommandSender
  */
 
-fun CommandSender.sendMessageWithPrefix(message: String) {
+fun CommandSender.sendMessageWithPrefix(message: String?) {
     Messager.sendMessageWithPrefix(this, message)
 }
 
@@ -17,11 +17,19 @@ fun CommandSender.sendMessageWithPrefix(vararg baseComponents: BaseComponent) {
     Messager.sendMessageWithPrefix(this, baseComponents)
 }
 
+fun CommandSender.sendWarning(message: String?) {
+    Messager.sendWarning(this, message)
+}
+
+fun CommandSender.sendWarningWithPrefix(message: String?) {
+    Messager.sendWarningWithPrefix(this, message)
+}
+
 /**
  * Player
  */
 
-fun Player.sendMessageSafely(message: String) {
+fun Player.sendMessageSafely(message: String?) {
     if (this.isOnline) Messager.sendMessage(this, message)
 }
 
@@ -29,7 +37,7 @@ fun Player.sendMessageSafely(vararg baseComponents: BaseComponent) {
     if (this.isOnline) Messager.sendMessage(this, baseComponents)
 }
 
-fun Player.sendMessageSafelyWithPrefix(message: String) {
+fun Player.sendMessageSafelyWithPrefix(message: String?) {
     if (this.isOnline) Messager.sendMessageWithPrefix(this, message)
 }
 
@@ -37,7 +45,7 @@ fun Player.sendMessageSafelyWithPrefix(vararg baseComponents: BaseComponent) {
     if (this.isOnline) Messager.sendMessageWithPrefix(this, baseComponents)
 }
 
-fun Player.sendWarningSafely(message: String) {
+fun Player.sendWarningSafely(message: String?) {
     if (this.isOnline) Messager.sendWarning(this, message)
 }
 
@@ -45,7 +53,7 @@ fun Player.sendWarningSafely(vararg baseComponents: BaseComponent) {
     if (this.isOnline) Messager.sendWarning(this, baseComponents)
 }
 
-fun Player.sendWarningSafelyWithPrefix(message: String) {
+fun Player.sendWarningSafelyWithPrefix(message: String?) {
     if (this.isOnline) Messager.sendWarningWithPrefix(this, message)
 }
 

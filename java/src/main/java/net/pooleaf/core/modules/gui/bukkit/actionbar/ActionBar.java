@@ -20,16 +20,8 @@ public class ActionBar {
     private static Map<UUID, BukkitTask> showTasks = new ConcurrentHashMap<>(); // ActionBar를 계속해서 보여주는 Task
 
 
-    /**
-     * 플레이어에게 ActionBar를 보여줍니다.
-     * @param player 대상 플레이어
-     * @param message 메시지
-     */
     @SneakyThrows
-    public static void show(Player player, String message) {
-        // 기존 Task가 있을 경우 종료
-        cancelShowTask(player);
-
+    private static void sendPacket(Player player, String message) {
         Preconditions.checkNotNull(player);
         Preconditions.checkNotNull(message);
 
@@ -53,6 +45,20 @@ public class ActionBar {
         }
 
         BukkitReflectionUtil.sendPacket(player, chatPacket);
+    }
+
+    /**
+     * 플레이어에게 ActionBar를 보여줍니다.
+     * @param player 대상 플레이어
+     * @param message 메시지
+     */
+    @SneakyThrows
+    public static void show(Player player, String message) {
+        // 기존 Task가 있을 경우 종료
+        cancelShowTask(player);
+
+        // 액션바 패킷 보내기
+        sendPacket(player, message);
     }
 
     /**
@@ -100,7 +106,7 @@ public class ActionBar {
            cancelShowTask(player);
 
            // 1초마다 ActionBar를 보여주는 Task 등록
-           showTasks.put(player.getUniqueId(), new ShowTask(player, message, -1).runTaskTimerAsynchronously(BukkitCoreBootstrapPlugin.getInstance(), 0, 20L));
+           showTasks.put(player.getUniqueId(), new ShowTask(player, message, -1).runTaskTimerAsynchronously(BukkitCoreBootstrapPlugin.getInstance(), 0, 40L));
        }
     }
 
@@ -153,7 +159,7 @@ public class ActionBar {
                 return;
             }
 
-            ActionBar.show(player, message);
+            sendPacket(player, message);
 
             // seconds가 -1일 경우 무한 반복
             if (seconds == -1) {

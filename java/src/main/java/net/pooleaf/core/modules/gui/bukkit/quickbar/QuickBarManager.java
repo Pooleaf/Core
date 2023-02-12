@@ -2,13 +2,14 @@ package net.pooleaf.core.modules.gui.bukkit.quickbar;
 
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.support.common.manager.AbstractManager;
+import net.pooleaf.core.modules.support.common.manager.AbstractSyncManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
-public class QuickBarManager extends AbstractManager<UUID, QuickBar> {
+public class QuickBarManager extends AbstractSyncManager<UUID, QuickBar> {
 
     public void setTo(Player player, QuickBar quickBar) {
         set(player.getUniqueId(), quickBar);
