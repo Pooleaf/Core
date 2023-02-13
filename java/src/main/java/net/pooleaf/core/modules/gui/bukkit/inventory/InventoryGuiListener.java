@@ -1,10 +1,12 @@
 package net.pooleaf.core.modules.gui.bukkit.inventory;
 
+import net.pooleaf.core.BukkitCoreBootstrapPlugin;
+import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiDragEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiOpenEvent;
-import net.pooleaf.core.modules.gui.GuiModule;
+import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -86,13 +88,34 @@ public class InventoryGuiListener implements Listener {
         InventoryGui gui = GuiModule.getInventoryGuiManager().get(event.getWhoClicked().getUniqueId());
         if (gui == null) return;
 
+        Player player = (Player) event.getWhoClicked();
+        UUID uuid = player.getUniqueId();
+
         // Gui 범위 밖 클릭 캔슬
         if (event.getSlot() < 0) {
             event.setCancelled(true);
+
+            if (event.getWhoClicked().isOp()) {
+                if (lastGuiClick.containsKey(uuid) && System.currentTimeMillis() - lastGuiClick.get(uuid) < 500L) {
+                    gui.updateAsynchronously();
+                    Messager.sendMessage(event.getWhoClicked(), "GUI를 강제로 새로고침했습니다.");
+                    return;
+                }
+
+                lastGuiClick.put(uuid, System.currentTimeMillis());
+            }
             return;
         }
 
-        UUID uuid = event.getWhoClicked().getUniqueId();
+        // GuiClickEvent
+        InevntoryGuiClickEvent guiClickEvent = new InevntoryGuiClickEvent(event);
+
+        // FakeInventoryIcon 새로고침
+        if (guiClickEvent.getClicked() instanceof FakeInventoryIcon) {
+            player.updateInventory();
+        }
+
+        Bukkit.getScheduler().runTaskLater(BukkitCoreBootstrapPlugin.getInstance(), () -> gui.updateFakeIcon(player), 1L);
 
         // 클릭 딜레이 체크
         if (lastGuiClick.containsKey(uuid) && System.currentTimeMillis() - lastGuiClick.get(uuid) < gui.getClickDelayMillis()) {
@@ -100,9 +123,6 @@ public class InventoryGuiListener implements Listener {
         }
         lastGuiClick.put(uuid, System.currentTimeMillis());
 
-
-        // GuiClickEvent
-        InevntoryGuiClickEvent guiClickEvent = new InevntoryGuiClickEvent(event);
         try {
             gui.onClick(guiClickEvent);
         } catch (Exception e) {

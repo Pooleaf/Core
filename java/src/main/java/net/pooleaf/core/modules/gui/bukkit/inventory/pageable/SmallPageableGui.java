@@ -20,9 +20,9 @@ public class SmallPageableGui extends PageableGui {
         getPagePanel().set(8, 3, decoItem);
 
         // 페이지 Icon 배치
-        getPagePanel().set(9, 1, getPreviousPageIcon());
-        getPagePanel().set(9, 2, getCurrentPageIcon());
-        getPagePanel().set(9, 3, getNextPageIcon());
+        getPagePanel().set(9, 1, createPreviousPageIcon());
+        getPagePanel().set(9, 2, createCurrentPageIcon());
+        getPagePanel().set(9, 3, createNextPageIcon());
     }
 
 }

@@ -20,9 +20,9 @@ public class LargePageableGui extends PageableGui {
         }
 
         // 페이지 Icon 배치
-        getPagePanel().set(4, 2, getPreviousPageIcon());
-        getPagePanel().set(5, 2, getCurrentPageIcon());
-        getPagePanel().set(6, 2, getNextPageIcon());
+        getPagePanel().set(4, 2, createPreviousPageIcon());
+        getPagePanel().set(5, 2, createCurrentPageIcon());
+        getPagePanel().set(6, 2, createNextPageIcon());
     }
 
 }

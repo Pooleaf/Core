@@ -1,13 +1,13 @@
 package net.pooleaf.core.modules.gui.bukkit.inventory;
 
 import com.google.common.base.Preconditions;
+import lombok.Data;
+import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.gui.GuiModule;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiDragEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiOpenEvent;
-import lombok.Data;
-import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.gui.GuiModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -43,8 +43,12 @@ public class InventoryGui {
     }
 
     public final InventoryPanel createPanel(String name, int x, int y, int width, int height) {
+        return createPanel(name, InventoryPositionCalculator.calculatePosition(x, y), width, height);
+    }
+
+    public final InventoryPanel createPanel(String name, int position, int width, int height) {
         InventoryPanel newPanel = new InventoryPanel(name, width, height);
-        panels.put(InventoryPositionCalculator.calculatePosition(x, y), newPanel);
+        panels.put(position, newPanel);
 
         return newPanel;
     }
@@ -171,9 +175,10 @@ public class InventoryGui {
 
     public void onUpdate() {}
 
-    public final void update() {
+    public void update() {
         onUpdate();
 
+        inventory.clear();
         panels.forEach((panelPosition, panel) -> {
             int panelX = InventoryPositionCalculator.getX(panelPosition, 9);
             int panelY = InventoryPositionCalculator.getY(panelPosition, 9);
@@ -199,6 +204,27 @@ public class InventoryGui {
         });
     }
 
+    public void updateFakeIcon(Player player) {
+        panels.forEach((panelPosition, panel) -> {
+            int panelX = InventoryPositionCalculator.getX(panelPosition, 9);
+            int panelY = InventoryPositionCalculator.getY(panelPosition, 9);
+
+            panel.getItems().forEach((itemPosition, item) -> {
+                if (item instanceof FakeInventoryIcon) {
+                    int offsetX = InventoryPositionCalculator.getX(itemPosition, panel.getWidth());
+                    int offsetY = InventoryPositionCalculator.getY(itemPosition, panel.getWidth());
+
+                    int realX = panelX + offsetX - 1;
+                    int realY = panelY + offsetY - 1;
+
+                    int realPosition = InventoryPositionCalculator.calculatePosition(realX, realY);
+
+                    ((FakeInventoryIcon) item).update(player, realPosition);
+                }
+            });
+        });
+    }
+
     public final void updateAsynchronously() {
         Bukkit.getScheduler().runTaskAsynchronously((Plugin) Core.getPlugin(), () -> update());
     }
@@ -211,7 +237,7 @@ public class InventoryGui {
 
     public void onDrag(InventoryGuiDragEvent event) {}
 
-    public final void open(Player player) {
+    public void open(Player player) {
         player.closeInventory();
 
         GuiModule.getInventoryGuiManager().set(player.getUniqueId(), this);

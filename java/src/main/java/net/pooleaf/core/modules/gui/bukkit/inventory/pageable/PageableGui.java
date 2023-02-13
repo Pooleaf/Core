@@ -1,17 +1,21 @@
 package net.pooleaf.core.modules.gui.bukkit.inventory.pageable;
 
-import com.google.common.base.Preconditions;
-import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
 import lombok.Data;
+import lombok.SneakyThrows;
+import net.pooleaf.core.modules.gui.bukkit.inventory.FakeInventoryIcon;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryIcon;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryPanel;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
+import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class PageableGui extends InventoryGui {
@@ -19,9 +23,9 @@ public class PageableGui extends InventoryGui {
     private InventoryPanel itemPanel;
     private InventoryPanel pagePanel;
 
-    private int currentPage = 1;
-
     private List<Object> items = new ArrayList<>();
+
+    private Map<Player, PageGui> playerPageGuis = new HashMap<>();
 
 
     public PageableGui(String title, int row) {
@@ -68,37 +72,44 @@ public class PageableGui extends InventoryGui {
      * @return 최대 페이지
      */
     public int getMaxPage() {
-        return items.isEmpty() ? 1 : (int) Math.ceil((float) items.size() / itemPanel.getWidth() * itemPanel.getHeight());
+        return items.isEmpty() ? 1 : (int) Math.ceil((float) items.size() / (itemPanel.getWidth() * itemPanel.getHeight()));
     }
 
-    /**
-     * 해당하는 페이지로 이동합니다.
-     * @param page 이동할 페이지
-     */
-    public void gotoPage(int page) {
-        Preconditions.checkArgument(page <= getMaxPage(), "page는 최대 페이지보다 클 수 없습니다. (page: %s, 최대 페이지: %s)", page, getMaxPage());
+    public void open(Player player, int page) {
+        PageGui pageGui = new PageGui(getTitle(), getRow(), this, player);
+        playerPageGuis.put(player, pageGui);
+        pageGui.setCurrentPage(page);
+        pageGui.updateAsynchronously();
+        pageGui.open(player);
+    }
 
-        currentPage = page;
+    @Override
+    public void open(Player player) {
+        open(player, 1);
+    }
 
-        itemPanel.getItems().clear();
-        System.out.println("items: " + items);
-        System.out.println("page: " + page);
-        System.out.println("pageItems: " + getPageItems(page));
-        getPageItems(page).forEach(item -> itemPanel.add(item));
+    @Override
+    public void update() {
+        onUpdate();
 
-        itemPanel.updateAsynchronously();
-        pagePanel.updateAsynchronously();
+        for (PageGui pageGui : playerPageGuis.values()) {
+            pageGui.updateAsynchronously();
+        }
     }
 
     /**
      * 이전 페이지 Icon을 반환합니다.
      * @return 이전 페이지 Icon
      */
-    public InventoryIcon getPreviousPageIcon() {
-        return new InventoryIcon() {
+    public FakeInventoryIcon createPreviousPageIcon() {
+        return new FakeInventoryIcon() {
+
+            private PageableGui parentPageableGui = PageableGui.this;
+
             @Override
-            protected ItemStack updateItem() {
-                if (currentPage <= 1) return null;
+            protected ItemStack updateItem(Player player) {
+                PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
+                if (pageGui == null || pageGui.getCurrentPage() == parentPageableGui.getMaxPage()) return null;
 
                 return new ItemBuilder(Material.PAPER)
                         .displayName("§e§l이전")
@@ -109,8 +120,11 @@ public class PageableGui extends InventoryGui {
             public void onClick(InevntoryGuiClickEvent event) {
                 if (getItem() == null) return;
 
-                gotoPage(--currentPage);
+                Player player = event.getPlayer();
+                PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
+                parentPageableGui.open(player, pageGui.getCurrentPage() - 1);
             }
+
         };
     }
 
@@ -118,11 +132,15 @@ public class PageableGui extends InventoryGui {
      * 다음 페이지 Icon을 반환합니다.
      * @return 다음 페이지 Icon
      */
-    public InventoryIcon getNextPageIcon() {
-        return new InventoryIcon() {
+    public FakeInventoryIcon createNextPageIcon() {
+        return new FakeInventoryIcon() {
+
+            private PageableGui parentPageableGui = PageableGui.this;
+
             @Override
-            protected ItemStack updateItem() {
-                if (currentPage == getMaxPage()) return null;
+            protected ItemStack updateItem(Player player) {
+                PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
+                if (pageGui == null || pageGui.getCurrentPage() == parentPageableGui.getMaxPage()) return null;
 
                 return new ItemBuilder(Material.PAPER)
                         .displayName("§e§l다음")
@@ -133,20 +151,97 @@ public class PageableGui extends InventoryGui {
             public void onClick(InevntoryGuiClickEvent event) {
                 if (getItem() == null) return;
 
-                gotoPage(++currentPage);
+                Player player = event.getPlayer();
+                PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
+                parentPageableGui.open(player, pageGui.getCurrentPage() + 1);
+
+                event.setCancelled(true);
             }
+
         };
     }
 
-    public InventoryIcon getCurrentPageIcon() {
-        return new InventoryIcon() {
+    /**
+     * 현재 페이지 Icon을 반환합니다.
+     * @return 현재 페이지 Icon
+     */
+    public FakeInventoryIcon createCurrentPageIcon() {
+        return new FakeInventoryIcon() {
+
+            private PageableGui parentPageableGui = PageableGui.this;
+
             @Override
-            protected ItemStack updateItem() {
+            protected ItemStack updateItem(Player player) {
+                PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
+                if (pageGui == null) return null;
+
                 return new ItemBuilder(Material.BOOK)
-                        .displayName("§f§l" + currentPage + " / " + getMaxPage() +" §e§l페이지")
+                        .displayName("§f§l" + pageGui.getCurrentPage() + " / " + parentPageableGui.getMaxPage() +" §e§l페이지")
                         .build();
             }
+
         };
+    }
+
+
+    @Data
+    class PageGui extends InventoryGui {
+
+        private final PageableGui parentPageableGui;
+        private final Player player;
+
+
+        private InventoryPanel itemPanel;
+        private InventoryPanel pagePanel;
+
+        private int currentPage = 1;
+
+
+        @SneakyThrows
+        public PageGui(String title, int row, PageableGui parentPageableGui, Player player) {
+            super(title, row);
+
+            this.parentPageableGui = parentPageableGui;
+            this.player = player;
+
+            // 부모 GUI와 똑같이 패널 생성
+            for (Map.Entry<Integer, InventoryPanel> entry : parentPageableGui.getPanels().entrySet()) {
+                int position = entry.getKey();
+                InventoryPanel parentPanel = entry.getValue();
+
+                // 아이템 패널은 새로 생성
+                if (parentPanel.getName().equals(parentPageableGui.getItemPanel().getName())) {
+                    this.itemPanel = createPanel(parentPanel.getName(), position, parentPanel.getWidth(), parentPanel.getHeight());
+                }
+                // 페이지 패널은 부모 GUI거 사용
+                else if (parentPanel.getName().equals(parentPageableGui.getPagePanel().getName())) {
+                    this.pagePanel = parentPanel;
+                    getPanels().put(position, parentPanel);
+                }
+            }
+        }
+
+        @Override
+        public void onUpdate() {
+            if (currentPage > parentPageableGui.getMaxPage()) {
+                currentPage = parentPageableGui.getMaxPage();
+            }
+
+            itemPanel.getItems().clear();
+
+            for (Object pageItem : parentPageableGui.getPageItems(currentPage)) {
+                itemPanel.add(pageItem);
+            }
+
+            itemPanel.update();
+            pagePanel.update();
+        }
+
+        @Override
+        public void onClose(InventoryGuiCloseEvent event) {
+            parentPageableGui.playerPageGuis.remove(player);
+        }
+
     }
 
 }
