@@ -1,6 +1,6 @@
 package net.pooleaf.core.modules.gui.bukkit.inventory;
 
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiClickEvent;
 import lombok.Data;
 import net.pooleaf.core.Core;
 import org.bukkit.Bukkit;
@@ -23,6 +23,6 @@ public abstract class InventoryIcon {
         Bukkit.getScheduler().runTaskAsynchronously((Plugin) Core.getPlugin(), () -> update());
     }
 
-    public void onClick(InevntoryGuiClickEvent event) {}
+    public void onClick(InventoryGuiClickEvent event) {}
 
 }

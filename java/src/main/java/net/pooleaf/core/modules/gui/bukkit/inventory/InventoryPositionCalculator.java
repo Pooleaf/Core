@@ -13,7 +13,7 @@ public class InventoryPositionCalculator {
         return (position / width) + 1;
     }
 
-    public static int calculatePosition(int x, int y) {
+    public static int getPosition(int x, int y) {
         return x + ((y - 1) * 9) - 1;
     }
 

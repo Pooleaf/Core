@@ -1,19 +1,15 @@
 package net.pooleaf.core.modules.gui.bukkit.inventory.events;
 
-import net.pooleaf.core.modules.eventsupport.bukkit.events.CancellableEvent;
 import lombok.Data;
+import net.pooleaf.core.modules.eventsupport.bukkit.events.CancellableEvent;
 import net.pooleaf.core.modules.gui.GuiModule;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGuiClickAction;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryIcon;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryPanel;
-import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryPositionCalculator;
+import net.pooleaf.core.modules.gui.bukkit.inventory.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 @Data
-public class InevntoryGuiClickEvent extends CancellableEvent {
+public class InventoryGuiClickEvent extends CancellableEvent {
 
     private final Player player;
 
@@ -27,15 +23,14 @@ public class InevntoryGuiClickEvent extends CancellableEvent {
     private final InventoryClickEvent inventoryClickEvent;
 
 
-    public InevntoryGuiClickEvent(InventoryClickEvent inventoryClickEvent) {
+    public InventoryGuiClickEvent(InventoryClickEvent inventoryClickEvent) {
         this.player = (Player) inventoryClickEvent.getWhoClicked();
 
         this.gui = GuiModule.getInventoryGuiManager().get(this.player.getUniqueId());
         this.position = inventoryClickEvent.getSlot();
 
-        Object[] clickedData = gui.getWithPanel(position);
-        this.clicked = (clickedData == null) ? null : clickedData[0];
-        this.clickedPanel = (clickedData == null) ? null : (InventoryPanel) clickedData[1];
+        this.clicked = this.gui.get(this.position);
+        this.clickedPanel = this.gui.getPanel(this.position);
 
         switch (inventoryClickEvent.getAction()) {
             case PICKUP_ALL:
@@ -76,10 +71,6 @@ public class InevntoryGuiClickEvent extends CancellableEvent {
 
     public int getY() {
         return InventoryPositionCalculator.getY(position, 9);
-    }
-
-    public ItemStack getItem() {
-        return (ItemStack) clicked;
     }
 
     public InventoryIcon getIcon() {

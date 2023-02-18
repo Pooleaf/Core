@@ -2,20 +2,19 @@ package net.pooleaf.core.modules.gui.bukkit.inventory;
 
 import net.pooleaf.core.BukkitCoreBootstrapPlugin;
 import net.pooleaf.core.modules.gui.GuiModule;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiDragEvent;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiOpenEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.*;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,12 +42,15 @@ public class InventoryGuiListener implements Listener {
 
         // GuiOpenEvent
         InventoryGuiOpenEvent guiOpenEvent = new InventoryGuiOpenEvent(event);
+
+        // InventoryGui.onOpen
         try {
             gui.onOpen(guiOpenEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Bukkit Event
         try {
             Bukkit.getPluginManager().callEvent(guiOpenEvent);
         } catch (Exception e) {
@@ -63,18 +65,22 @@ public class InventoryGuiListener implements Listener {
 
         // GuiCloseEvent
         InventoryGuiCloseEvent guiCloseEvent = new InventoryGuiCloseEvent(event);
+
+        // InventoryGui.onClose
         try {
             gui.onClose(guiCloseEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Bukkit Event
         try {
             Bukkit.getPluginManager().callEvent(guiCloseEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Cancel 다시 열기
         if (guiCloseEvent.isCancelled()) {
             gui.open((Player) event.getPlayer());
         }
@@ -92,7 +98,7 @@ public class InventoryGuiListener implements Listener {
         UUID uuid = player.getUniqueId();
 
         // Gui 범위 밖 클릭 캔슬
-        if (event.getSlot() < 0) {
+        if (event.getClickedInventory() == null) {
             event.setCancelled(true);
 
             if (event.getWhoClicked().isOp()) {
@@ -107,34 +113,61 @@ public class InventoryGuiListener implements Listener {
             return;
         }
 
+        // 플레이어 인벤토리를 클릭했을 경우
+        if (event.getClickedInventory().equals(player.getInventory())) {
+            InventoryGuiPlayerInventoryClickEvent inventoryGuiPlayerInventoryClickEvent = new InventoryGuiPlayerInventoryClickEvent(event);
+
+            // InventoryGui.onPlayerInventoryClick
+            try {
+                gui.onPlayerInventoryClick(inventoryGuiPlayerInventoryClickEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Bukkit Event
+            try {
+                Bukkit.getPluginManager().callEvent(inventoryGuiPlayerInventoryClickEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Cancel
+            event.setCancelled(inventoryGuiPlayerInventoryClickEvent.isCancelled());
+
+            return;
+        }
+
         // GuiClickEvent
-        InevntoryGuiClickEvent guiClickEvent = new InevntoryGuiClickEvent(event);
+        InventoryGuiClickEvent guiClickEvent = new InventoryGuiClickEvent(event);
 
         // FakeInventoryIcon 새로고침
         if (guiClickEvent.getClicked() instanceof FakeInventoryIcon) {
             player.updateInventory();
         }
-
         Bukkit.getScheduler().runTaskLater(BukkitCoreBootstrapPlugin.getInstance(), () -> gui.updateFakeIcon(player), 1L);
 
         // 클릭 딜레이 체크
         if (lastGuiClick.containsKey(uuid) && System.currentTimeMillis() - lastGuiClick.get(uuid) < gui.getClickDelayMillis()) {
+            event.setCancelled(true);
             return;
         }
         lastGuiClick.put(uuid, System.currentTimeMillis());
 
+        // InventoryGui.onClick
         try {
             gui.onClick(guiClickEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Gui Bukkit Event
         try {
             Bukkit.getPluginManager().callEvent(guiClickEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Icon Bukkit Event
         if (guiClickEvent.isIcon()) {
             try {
                 guiClickEvent.getIcon().onClick(guiClickEvent);
@@ -143,6 +176,7 @@ public class InventoryGuiListener implements Listener {
             }
         }
 
+        // Cancel
         event.setCancelled(guiClickEvent.isCancelled());
     }
 
@@ -153,12 +187,22 @@ public class InventoryGuiListener implements Listener {
 
         // GuiDragEvent
         InventoryGuiDragEvent guiDragEvent = new InventoryGuiDragEvent(event);
+
+        // InventoryGui.onDrag
+        try {
+            gui.onDrag(guiDragEvent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Gui Bukkit Event
         try {
             Bukkit.getPluginManager().callEvent(guiDragEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Cancel
         event.setCancelled(guiDragEvent.isCancelled());
     }
 

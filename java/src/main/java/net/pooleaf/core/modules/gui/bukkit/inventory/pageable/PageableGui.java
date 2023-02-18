@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import net.pooleaf.core.modules.gui.bukkit.inventory.FakeInventoryIcon;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryPanel;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiClickEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
 import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
 import org.bukkit.Material;
@@ -117,7 +117,7 @@ public class PageableGui extends InventoryGui {
             }
 
             @Override
-            public void onClick(InevntoryGuiClickEvent event) {
+            public void onClick(InventoryGuiClickEvent event) {
                 if (getItem() == null) return;
 
                 Player player = event.getPlayer();
@@ -148,7 +148,7 @@ public class PageableGui extends InventoryGui {
             }
 
             @Override
-            public void onClick(InevntoryGuiClickEvent event) {
+            public void onClick(InventoryGuiClickEvent event) {
                 if (getItem() == null) return;
 
                 Player player = event.getPlayer();

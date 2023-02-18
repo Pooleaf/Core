@@ -4,17 +4,16 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.BlockPosition;
-import com.comphenix.protocol.wrappers.nbt.NbtCompound;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.google.common.base.Preconditions;
 import lombok.Data;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.gui.GuiModule;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -69,28 +68,23 @@ public class SignGui {
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         player.sendBlockChange(blockPosition.toLocation(player.getLocation().getWorld()), Material.WALL_SIGN, (byte) 0);
 
-        // 표지판 패킷 생성
-        PacketContainer openSignPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-        PacketContainer signDataPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.TILE_ENTITY_DATA);
+        // 표지판 내용 업데이트
+        if (Arrays.stream(lines).filter(line -> !line.isEmpty()).count() > 0) {
+            PacketContainer updateSignPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.UPDATE_SIGN);
 
-        openSignPacket.getBlockPositionModifier().write(0, blockPosition);
+            WrappedChatComponent[] lineComponents = Arrays.stream(lines)
+                    .map(line -> WrappedChatComponent.fromText(line))
+                    .toArray(WrappedChatComponent[]::new);
 
-        NbtCompound signNBT = (NbtCompound) signDataPacket.getNbtModifier().read(0);
-        for (int i = 0; i < 4; i++) {
-            signNBT.put("Text" + (i + 1), "{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', lines[i]) + "\"}");
+            updateSignPacket.getChatComponentArrays().write(0, lineComponents);
+            updateSignPacket.getBlockPositionModifier().write(0, blockPosition);
+
+            ProtocolLibrary.getProtocolManager().sendServerPacket(player, updateSignPacket);
         }
 
-        signNBT.put("x", location.getBlockX());
-        signNBT.put("y", location.getBlockY());
-        signNBT.put("z", location.getBlockZ());
-        signNBT.put("id", "minecraft:sign");
-
-        signDataPacket.getBlockPositionModifier().write(0, blockPosition);
-        signDataPacket.getIntegers().write(0, 9);
-        signDataPacket.getNbtModifier().write(0, signNBT);
-
-        // 패킷 보내기
-        ProtocolLibrary.getProtocolManager().sendServerPacket(player, signDataPacket);
+        // 표지판 열기
+        PacketContainer openSignPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
+        openSignPacket.getBlockPositionModifier().write(0, blockPosition);
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, openSignPacket);
     }
 

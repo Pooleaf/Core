@@ -229,7 +229,7 @@ public class CommandManager {
                 .stream()
                 .filter(subCommand -> subCommand.getPermission() == null || platformAdapter.hasPermission(sender, subCommand.getPermission()))
                 .flatMap(subCommand -> subCommand.getName().stream())
-                .filter(subCommandLine -> subCommandLine.startsWith(lastArgument))
+                .filter(subCommandLine -> subCommandLine.toLowerCase().startsWith(lastArgument))
                 .collect(Collectors.toList());
     }
 

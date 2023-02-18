@@ -4,10 +4,7 @@ import com.google.common.base.Preconditions;
 import lombok.Data;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.gui.GuiModule;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InevntoryGuiClickEvent;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiDragEvent;
-import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiOpenEvent;
+import net.pooleaf.core.modules.gui.bukkit.inventory.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
 @Data
 public class InventoryGui {
 
-    private static final String MAIN_PANEL = "mainPanel";
+    private static final String MAIN_PANEL_NAME = "mainPanel";
 
 
     private String title;
@@ -39,15 +36,20 @@ public class InventoryGui {
 
         inventory = Bukkit.createInventory(null, 9 * row, title);
 
-        panels.put(0, new InventoryPanel(MAIN_PANEL, 9, row));
-    }
-
-    public final InventoryPanel createPanel(String name, int x, int y, int width, int height) {
-        return createPanel(name, InventoryPositionCalculator.calculatePosition(x, y), width, height);
+        panels.put(0, createPanel(MAIN_PANEL_NAME, 1, 1, 9, row));
     }
 
     public final InventoryPanel createPanel(String name, int position, int width, int height) {
-        InventoryPanel newPanel = new InventoryPanel(name, width, height);
+        int x = InventoryPositionCalculator.getX(position, 9);
+        int y = InventoryPositionCalculator.getY(position, 9);
+
+        return createPanel(name, x, y, width, height);
+    }
+
+    public final InventoryPanel createPanel(String name, int x, int y, int width, int height) {
+        InventoryPanel newPanel = new InventoryPanel(this, name, x, y, width, height);
+        int position = InventoryPositionCalculator.getPosition(x, y);
+
         panels.put(position, newPanel);
 
         return newPanel;
@@ -65,9 +67,43 @@ public class InventoryGui {
         return null;
     }
 
+    /**
+     * 해당 좌표에 위치한 패널을 반환합니다.
+     */
+    public final InventoryPanel getPanel(int position) {
+        int x = InventoryPositionCalculator.getX(position, 9);
+        int y = InventoryPositionCalculator.getY(position, 9);
+
+        return getPanel(x, y);
+    }
+
+    /**
+     * 해당 좌표에 위치한 패널을 반환합니다.
+     */
+    public final InventoryPanel getPanel(int x, int y) {
+        Preconditions.checkArgument(1 <= x && x <= 9 && 1 <= y && y <= row, "아이템 위치가 Gui 범위를 벗어났습니다. (x: %s, y: %s, row: %s)", x, y, row);
+
+        for (Map.Entry<Integer, InventoryPanel> entry : panels.entrySet()) {
+            int panelPosition = entry.getKey();
+
+            InventoryPanel panel = entry.getValue();
+
+            int panelX = InventoryPositionCalculator.getX(panelPosition, 9);
+            int panelY = InventoryPositionCalculator.getY(panelPosition, 9);
+
+            if (panelX <= x && x <= panelX + panel.getWidth() - 1
+                    && panelY <= y && y <= panelY + panel.getHeight() - 1) {
+                return panel;
+            }
+        }
+
+        return null;
+    }
+
     public final Object get(int x, int y) {
         Preconditions.checkArgument(1 <= x && x <= 9 && 1 <= y && y <= row, "아이템 위치가 Gui 범위를 벗어났습니다. (x: %s, y: %s, row: %s)", x, y, row);
 
+        // 패널에서 찾기
         for (Map.Entry<Integer, InventoryPanel> entry : panels.entrySet()) {
             int panelPosition = entry.getKey();
             InventoryPanel panel = entry.getValue();
@@ -85,32 +121,6 @@ public class InventoryGui {
         return null;
     }
 
-    /**
-     * Get item or icon with panel
-     * @param x Item X
-     * @param y Item Y
-     * @return 0: Item, 1: Panel
-     */
-    public final Object[] getWithPanel(int x, int y) {
-        Preconditions.checkArgument(1 <= x && x <= 9 && 1 <= y && y <= row, "아이템 위치가 Gui 범위를 벗어났습니다. (x: %s, y: %s, row: %s)", x, y, row);
-
-        for (Map.Entry<Integer, InventoryPanel> entry : panels.entrySet()) {
-            int panelPosition = entry.getKey();
-            InventoryPanel panel = entry.getValue();
-
-            int panelX = InventoryPositionCalculator.getX(panelPosition, 9);
-            int panelY = InventoryPositionCalculator.getY(panelPosition, 9);
-
-            int itemX = x - (panelX - 1);
-            int itemY = y - (panelY - 1);
-
-            Object item = panel.get(itemX, itemY);
-            if (item != null) return new Object[] { item, panel };
-        }
-
-        return null;
-    }
-
     public final Object get(int position) {
         int x = InventoryPositionCalculator.getX(position, 9);
         int y = InventoryPositionCalculator.getY(position, 9);
@@ -118,19 +128,12 @@ public class InventoryGui {
         return get(x, y);
     }
 
-    public final Object[] getWithPanel(int position) {
-        int x = InventoryPositionCalculator.getX(position, 9);
-        int y = InventoryPositionCalculator.getY(position, 9);
-
-        return getWithPanel(x, y);
-    }
-
     public final ItemStack getItem(int position) {
         return (ItemStack) get(position);
     }
 
     public final ItemStack getItem(int x, int y) {
-        return getItem(InventoryPositionCalculator.calculatePosition(x, y));
+        return getItem(InventoryPositionCalculator.getPosition(x, y));
     }
 
     public final InventoryIcon getIcon(int position) {
@@ -138,7 +141,16 @@ public class InventoryGui {
     }
 
     public final InventoryIcon getIcon(int x, int y) {
-        return getIcon(InventoryPositionCalculator.calculatePosition(x, y));
+        return getIcon(InventoryPositionCalculator.getPosition(x, y));
+    }
+
+    public final ItemStack getItemInInventory(int position) {
+        return inventory.getItem(position);
+    }
+
+    public final ItemStack getItemInInventory(int x, int y) {
+        int position = InventoryPositionCalculator.getPosition(x, y);
+        return getItemInInventory(position);
     }
 
     public final List<InventoryIcon> getIcons() {
@@ -190,7 +202,7 @@ public class InventoryGui {
                 int realX = panelX + offsetX - 1;
                 int realY = panelY + offsetY - 1;
 
-                int realPosition = InventoryPositionCalculator.calculatePosition(realX, realY);
+                int realPosition = InventoryPositionCalculator.getPosition(realX, realY);
 
                 if (item instanceof ItemStack) {
                     inventory.setItem(realPosition, (ItemStack) item);
@@ -217,7 +229,7 @@ public class InventoryGui {
                     int realX = panelX + offsetX - 1;
                     int realY = panelY + offsetY - 1;
 
-                    int realPosition = InventoryPositionCalculator.calculatePosition(realX, realY);
+                    int realPosition = InventoryPositionCalculator.getPosition(realX, realY);
 
                     ((FakeInventoryIcon) item).update(player, realPosition);
                 }
@@ -233,7 +245,9 @@ public class InventoryGui {
 
     public void onClose(InventoryGuiCloseEvent event) {}
 
-    public void onClick(InevntoryGuiClickEvent event) {}
+    public void onClick(InventoryGuiClickEvent event) {}
+
+    public void onPlayerInventoryClick(InventoryGuiPlayerInventoryClickEvent event) {}
 
     public void onDrag(InventoryGuiDragEvent event) {}
 
@@ -258,7 +272,7 @@ public class InventoryGui {
                 int realX = panelX + offsetX - 1;
                 int realY = panelY + offsetY - 1;
 
-                int realPosition = InventoryPositionCalculator.calculatePosition(realX, realY);
+                int realPosition = InventoryPositionCalculator.getPosition(realX, realY);
 
                 getWatchers().forEach(watchPlayer -> ((FakeInventoryIcon) item).update(watchPlayer, realPosition));
             });
