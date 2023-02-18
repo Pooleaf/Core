@@ -221,18 +221,16 @@ public class CommandManager {
      * @return 추천 명령어 목록
      */
     public List<String> getSuggestions(Object sender, String commandLine) {
-        List<String> suggestions = new ArrayList<>();
-
-        String lastArgument = commandLine.substring(commandLine.lastIndexOf(" ")).trim();
+        String lastArgument = commandLine.substring(commandLine.lastIndexOf(" ")).toLowerCase().trim();
 
         AnnoCommand parentCommand = getCommand(commandLine);
-        getSubCommands(parentCommand, 1)
+
+        return getSubCommands(parentCommand, 1)
                 .stream()
                 .filter(subCommand -> subCommand.getPermission() == null || platformAdapter.hasPermission(sender, subCommand.getPermission()))
-                .map(subCommand -> subCommand.getName())
-                .forEach(name -> suggestions.addAll(name));
-
-        return suggestions;
+                .flatMap(subCommand -> subCommand.getName().stream())
+                .filter(subCommandLine -> subCommandLine.startsWith(lastArgument))
+                .collect(Collectors.toList());
     }
 
     /**
