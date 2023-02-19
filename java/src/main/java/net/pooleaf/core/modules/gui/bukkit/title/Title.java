@@ -26,6 +26,10 @@ public class Title {
         if (subTitle != null) {
             subTitle = ChatColor.translateAlternateColorCodes('&', subTitle);
         }
+        // 서브 타이틀을 보내지 않으면 이전 타이틀이 끝나지 않았을 때 새로운 타이틀을 보내면 이전 서브 타이틀이 적용됨
+        else {
+            subTitle = "";
+        }
 
         // Get nms class
         Class packetClass = BukkitReflectionUtil.getNmsClass("PacketPlayOutTitle");
