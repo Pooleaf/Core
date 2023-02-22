@@ -2,15 +2,18 @@ package net.pooleaf.core.modules.support.bukkit.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 
+import lombok.experimental.UtilityClass;
 import net.pooleaf.core.modules.support.common.AutoRegisterExclude;
 import lombok.SneakyThrows;
 import net.pooleaf.core.modules.support.bukkit.nms.NmsVersion;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.plugin.CorePlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -21,6 +24,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
+@UtilityClass
 public class BukkitReflectionUtil {
 
   @SneakyThrows()
@@ -142,6 +146,48 @@ public class BukkitReflectionUtil {
         }
       }
     }
+  }
+
+  @SneakyThrows
+  public static Object getNmsBlock(Block block) {
+    Method getNMSBlockMethod = block.getClass().getDeclaredMethod("getNMSBlock");
+    return getNMSBlockMethod.invoke(block);
+  }
+
+  @SneakyThrows
+  public static Object getStepSoundObject(Block block) {
+    Object nmsBlock = getNmsBlock(block);
+    return nmsBlock.getClass().getField("stepSound").get(nmsBlock);
+  }
+
+  @SneakyThrows
+  public static String getBlockBreakSound(Block block) {
+    Object stepSoundObject = getStepSoundObject(block);
+    return (String) stepSoundObject.getClass().getField("getBreakSound").get(stepSoundObject);
+  }
+
+  @SneakyThrows
+  public static String getBlockPlaceSound(Block block) {
+    // 설치 소리는 부시는 소리와 같음
+    return getBlockBreakSound(block);
+  }
+
+  @SneakyThrows
+  public static String getBlockStepSound(Block block) {
+    Object stepSoundObject = getStepSoundObject(block);
+    return (String) stepSoundObject.getClass().getField("getStepSound").get(stepSoundObject);
+  }
+
+  @SneakyThrows
+  public static float getBlockSoundVolume(Block block) {
+    Object stepSoundObject = getStepSoundObject(block);
+    return (float) stepSoundObject.getClass().getField("getVolume1").get(stepSoundObject);
+  }
+
+  @SneakyThrows
+  public static float getBlockSoundPitch(Block block) {
+    Object stepSoundObject = getStepSoundObject(block);
+    return (float) stepSoundObject.getClass().getField("getVolume2").get(stepSoundObject);
   }
 
 }
