@@ -1,15 +1,9 @@
 package net.pooleaf.core.modules.support.bukkit.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.Map;
-
-import lombok.experimental.UtilityClass;
-import net.pooleaf.core.modules.support.common.AutoRegisterExclude;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import net.pooleaf.core.modules.support.bukkit.nms.NmsVersion;
+import net.pooleaf.core.modules.support.common.AutoRegisterExclude;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.plugin.CorePlugin;
 import org.bukkit.Bukkit;
@@ -23,6 +17,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.Map;
 
 @UtilityClass
 public class BukkitReflectionUtil {
@@ -152,6 +152,12 @@ public class BukkitReflectionUtil {
   public static Object getNmsBlock(Block block) {
     Method getNMSBlockMethod = block.getClass().getDeclaredMethod("getNMSBlock");
     return getNMSBlockMethod.invoke(block);
+  }
+
+  @SneakyThrows
+  public static Object getNmsBlock(int blockTypeId) {
+    Method getNMSBlockMethod = getNmsClass("Block").getDeclaredMethod("getById", int.class);
+    return getNMSBlockMethod.invoke(null);
   }
 
   @SneakyThrows
