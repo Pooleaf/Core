@@ -7,7 +7,6 @@ import net.pooleaf.core.modules.support.common.AutoRegisterExclude;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
 import net.pooleaf.core.plugin.CorePlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -149,51 +148,53 @@ public class BukkitReflectionUtil {
   }
 
   @SneakyThrows
-  public static Object getNmsBlock(Block block) {
-    Method getNMSBlockMethod = block.getClass().getDeclaredMethod("getNMSBlock");
+  public static Object getNmsBlock(Object block) {
+    Method getNMSBlockMethod = ReflectionUtil.getMethodAll(block.getClass(), "getNMSBlock");
     return getNMSBlockMethod.invoke(block);
   }
 
   @SneakyThrows
   public static Object getNmsBlock(int blockTypeId) {
-    Method getNMSBlockMethod = getNmsClass("Block").getDeclaredMethod("getById", int.class);
-    return getNMSBlockMethod.invoke(null);
+    Object nmsClass = getNmsClass("Block");
+    Method getNMSBlockMethod = getNmsClass("Block").getMethod("getById", int.class);
+    return getNMSBlockMethod.invoke(null, blockTypeId);
   }
 
   @SneakyThrows
-  public static Object getStepSoundObject(Block block) {
-    Object nmsBlock = getNmsBlock(block);
+  public static Object getStepSoundObject(Object nmsBlock) {
     return nmsBlock.getClass().getField("stepSound").get(nmsBlock);
   }
 
   @SneakyThrows
-  public static String getBlockBreakSound(Block block) {
+  public static String getBlockBreakSound(Object block) {
     Object stepSoundObject = getStepSoundObject(block);
-    return (String) stepSoundObject.getClass().getField("getBreakSound").get(stepSoundObject);
+    Method getBreakSoundMethod = stepSoundObject.getClass().getMethod("getBreakSound");
+    getBreakSoundMethod.setAccessible(true);
+    return (String) getBreakSoundMethod.invoke(stepSoundObject);
   }
 
   @SneakyThrows
-  public static String getBlockPlaceSound(Block block) {
+  public static String getBlockPlaceSound(Object block) {
     // 설치 소리는 부시는 소리와 같음
     return getBlockBreakSound(block);
   }
 
   @SneakyThrows
-  public static String getBlockStepSound(Block block) {
+  public static String getBlockStepSound(Object block) {
     Object stepSoundObject = getStepSoundObject(block);
-    return (String) stepSoundObject.getClass().getField("getStepSound").get(stepSoundObject);
+    return (String) stepSoundObject.getClass().getMethod("getStepSound").invoke(stepSoundObject);
   }
 
   @SneakyThrows
-  public static float getBlockSoundVolume(Block block) {
+  public static float getBlockSoundVolume(Object block) {
     Object stepSoundObject = getStepSoundObject(block);
-    return (float) stepSoundObject.getClass().getField("getVolume1").get(stepSoundObject);
+    return (float) stepSoundObject.getClass().getMethod("getVolume1").invoke(stepSoundObject);
   }
 
   @SneakyThrows
-  public static float getBlockSoundPitch(Block block) {
+  public static float getBlockSoundPitch(Object block) {
     Object stepSoundObject = getStepSoundObject(block);
-    return (float) stepSoundObject.getClass().getField("getVolume2").get(stepSoundObject);
+    return (float) stepSoundObject.getClass().getMethod("getVolume2").invoke(stepSoundObject);
   }
 
 }
