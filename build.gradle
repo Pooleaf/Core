@@ -35,7 +35,7 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' } // BungeeCord
         maven { url 'https://repo.s8u.kr/repository/maven-minecraft/' } // Bukkit
         maven { url 'https://repo.s8u.kr/repository/maven-pooleaf/' } // Core
-        maven { url 'https://repo.dmulloy2.net/repository/public/' } // XSeries
+        maven { url 'https://repo.dmulloy2.net/repository/public/' } // ProtocolLib, XSeries
     }
 
     dependencies {
