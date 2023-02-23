@@ -45,11 +45,16 @@ public class ReflectionUtil {
      * @param name 찾을 Method 이름
      * @return 찾은 Method
      */
-    public static Method getMethodAll(Class<?> targetClass, String name) {
+    public static Method getMethodAll(Class<?> targetClass, String name, Class<?>... parameterClasses) {
         Class findClass = targetClass;
         while (findClass != null && findClass != Object.class) {
             for (Method method : findClass.getDeclaredMethods()) {
-                if (method.getName().equals(name)) return method;
+                if (method.getName().equals(name) && method.getParameterCount() == parameterClasses.length) {
+                    for (int i = 0; i < method.getParameterTypes().length; i++) {
+                        if (!method.getParameterTypes()[i].equals(parameterClasses[i])) continue;
+                    }
+                    return method;
+                }
             }
 
             findClass = findClass.getSuperclass();

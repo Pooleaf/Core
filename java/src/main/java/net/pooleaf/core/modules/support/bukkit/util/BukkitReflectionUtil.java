@@ -150,6 +150,7 @@ public class BukkitReflectionUtil {
   @SneakyThrows
   public static Object getNmsBlock(Object block) {
     Method getNMSBlockMethod = ReflectionUtil.getMethodAll(block.getClass(), "getNMSBlock");
+    getNMSBlockMethod.setAccessible(true);
     return getNMSBlockMethod.invoke(block);
   }
 
