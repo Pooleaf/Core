@@ -73,6 +73,8 @@ processResources {
 }
 
 shadowJar {
+    delete 'build/resources'
+
     archiveBaseName.set(pluginName)
     archiveClassifier.set('')
 
