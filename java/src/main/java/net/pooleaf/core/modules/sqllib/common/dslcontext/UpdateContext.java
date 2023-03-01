@@ -16,7 +16,8 @@ public class UpdateContext extends DslContext<UpdateContext> {
     public String buildSql() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(getSql("SET"))
+        builder.append(getSql("MAIN"))
+                .append(getSql("SET"))
                 .append(getSql("WHERE"))
                 .append(getSql("SQL"));
 
@@ -24,17 +25,17 @@ public class UpdateContext extends DslContext<UpdateContext> {
     }
 
 
-    public DslContext set(String setValues) {
+    public UpdateContext set(String setValues) {
         sqls.put("SET", setValues);
         return this;
     }
 
-    public DslContext where(String conditions) {
+    public UpdateContext where(String conditions) {
         sqls.put("WHERE", conditions);
         return this;
     }
 
-    public DslContext parameters(Object... parameters) {
+    public UpdateContext parameters(Object... parameters) {
         this.values = parameters;
         return this;
     }

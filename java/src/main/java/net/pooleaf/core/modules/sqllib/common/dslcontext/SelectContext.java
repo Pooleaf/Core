@@ -112,9 +112,9 @@ public class SelectContext extends DslContext<SelectContext> {
         List<Object> resultObjects = new ArrayList<>();
 
         CachedResult result = execute();
-        Debugger.log("Select result: ");
+        Debugger.log("[SQLib] Select result: ");
         for (int i = 0; i < result.getRows().size(); i++) {
-            Debugger.log(i + ": " + result.getRow(i).getDatas());
+            Debugger.log("[SQLib] " + i + ": " + result.getRow(i).getDatas());
         }
 
         for (CachedResultRow row : result.getRows()) {
@@ -134,7 +134,7 @@ public class SelectContext extends DslContext<SelectContext> {
             resultObjects.add(object);
         }
 
-        Debugger.log("Select result objects: " + resultObjects);
+        Debugger.log("[SQLib] Select result objects: " + resultObjects);
 
         return (List<T>) resultObjects;
     }
@@ -159,7 +159,7 @@ public class SelectContext extends DslContext<SelectContext> {
     public <T> T execute(T object) {
         CachedResult result = execute();
 
-        Debugger.log("Select result: ");
+        Debugger.log("[SQLib] Select result: ");
         for (int i = 0; i < result.getRows().size(); i++) {
             Debugger.log(i + ": " + result.getRow(i).getDatas());
         }
@@ -177,7 +177,7 @@ public class SelectContext extends DslContext<SelectContext> {
             }
         }
 
-        Debugger.log("Select result object: " + object);
+        Debugger.log("[SQLib] Select result object: " + object);
 
         return object;
     }
