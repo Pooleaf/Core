@@ -30,7 +30,7 @@ public class GsonUtil {
             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
             .registerTypeAdapter(LocalTime.class, new LocalTimeSerializer())
             .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer())
-            .setExclusionStrategies()
+            .setExclusionStrategies(new GsonExcludeStrategy())
             .serializeNulls();
 
     @Getter
@@ -73,7 +73,7 @@ public class GsonUtil {
     /**
      * 직렬화 제외 처리
      */
-    public class ExcludeStrategy implements ExclusionStrategy {
+    public class GsonExcludeStrategy implements ExclusionStrategy {
 
         @Override
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {
