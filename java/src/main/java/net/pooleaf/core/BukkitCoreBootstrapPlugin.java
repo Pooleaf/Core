@@ -27,8 +27,10 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
 
     registerEventListeners();
     Logger.log("EventListener가 등록되었습니다.");
+
     registerCommonEventListeners();
     Logger.log("CommonEventListener가 등록되었습니다.");
+
     registerCommands();
     Logger.log("명령어가 등록되었습니다.");
   }
