@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -66,6 +68,7 @@ public class GsonUtil {
     /**
      * 직렬화에서 제외시키는 어노테이션
      */
+    @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface GsonExclude {
     }
