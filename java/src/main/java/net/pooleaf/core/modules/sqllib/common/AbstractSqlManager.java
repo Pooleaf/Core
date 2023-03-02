@@ -160,6 +160,8 @@ public class AbstractSqlManager {
     public Object convertValue(Object value) {
         if (value == null) {
             return null;
+        } else if (value.getClass().getPackage() == null) {
+            return value;
         } else if (value.getClass().getPackage().getName().startsWith("java.lang")) {
             return value;
         } else {

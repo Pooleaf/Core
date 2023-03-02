@@ -3,6 +3,11 @@ package net.pooleaf.core.modules.sqllib.common;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.sql.Blob;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -73,6 +78,46 @@ public class CachedResultRow {
 
     public Double getDouble(int index) {
         return (Double) get(index);
+    }
+
+    public Timestamp getTimestamp(String key) {
+        return (Timestamp) get(key);
+    }
+
+    public Timestamp getTimestamp(int index) {
+        return (Timestamp) get(index);
+    }
+
+    public LocalDateTime getLocalDateTime(String key) {
+        return getTimestamp(key).toLocalDateTime();
+    }
+
+    public LocalDateTime getLocalDateTime(int index) {
+        return getTimestamp(index).toLocalDateTime();
+    }
+
+    public LocalDate getLocalDate(String key) {
+        return getTimestamp(key).toLocalDateTime().toLocalDate();
+    }
+
+    public LocalDate getLocalDate(int index) {
+        return getTimestamp(index).toLocalDateTime().toLocalDate();
+    }
+
+    public LocalTime getLocalTime(String key) {
+        return getTimestamp(key).toLocalDateTime().toLocalTime();
+    }
+
+    public LocalTime getLocalTime(int index) {
+        return getTimestamp(index).toLocalDateTime().toLocalTime();
+    }
+
+    public Blob getBlob(String key) {
+        return (Blob) get(key);
+    }
+
+    public Blob getBlob(int index) {
+        return (Blob) get(index);
     }
 
 }
