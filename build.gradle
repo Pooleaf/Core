@@ -75,7 +75,6 @@ processResources {
 shadowJar {
     delete 'build/resources'
 
-    archiveBaseName.set(pluginName)
     archiveClassifier.set('')
 
     relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
