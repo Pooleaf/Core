@@ -10,6 +10,10 @@ public class BukkitChannelTpsInfoUpdateTask extends BukkitRunnable {
   @Override
   public void run() {
     Channel channel = ChannelModule.getCurrentChannel();
+    if (Bukkit.getOnlinePlayers().isEmpty() && channel.getTps() >= 20.0) {
+      return;
+    }
+
     channel.setTps(Bukkit.spigot().getTPS()[0]);
     channel.save();
   }
