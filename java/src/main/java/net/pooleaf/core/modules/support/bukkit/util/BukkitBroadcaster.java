@@ -100,10 +100,6 @@ public class BukkitBroadcaster {
         Bukkit.getOnlinePlayers().forEach(player -> ActionBar.showForever(player, message));
     }
 
-    public static void broadcastWaitingActionBar(int currentJoinedCount, int startPlayerCount) {
-        broadcastActionBarForever("§e다른 플레이어를 기다리는 중입니다. §f(" + currentJoinedCount + "/" + startPlayerCount + ")");
-    }
-
     public static void removeActionBar() {
         Bukkit.getOnlinePlayers().forEach(player -> ActionBar.remove(player));
     }
@@ -111,6 +107,14 @@ public class BukkitBroadcaster {
     /**
      * Sound
      */
+
+    public static void broadcastSound(XSound sound) {
+        Bukkit.getOnlinePlayers().forEach(player -> sound.play(player, 1.0F, 1.0F));
+    }
+
+    public static void broadcastSound(XSound sound, float volume) {
+        Bukkit.getOnlinePlayers().forEach(player -> sound.play(player, volume, 1.0F));
+    }
 
     public static void broadcastSound(XSound sound, float volume, float pitch) {
         Bukkit.getOnlinePlayers().forEach(player -> sound.play(player, volume, pitch));
