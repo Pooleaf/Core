@@ -37,6 +37,39 @@ public class StringUtil {
   }
 
   /**
+   * 밀리초를 n일 n시 n분 n초로 반환합니다.
+   * n이 0일 경우 제외됩니다.
+   * 예) 1일 1초
+   * @param timeMillis 변환할 밀리초
+   * @param numberColor 숫자 색깔
+   * @param timeColor 시간 색깔
+   * @return n일 n시 n분 n초
+   */
+  public static String buildTimeStringFromMillis(long timeMillis, CommonChatColor numberColor, CommonChatColor timeColor) {
+    List<String> timeStrings = new ArrayList<>();
+
+    if ((int) (timeMillis / 86400000) > 0) timeStrings.add(numberColor.toString() + ((int) (timeMillis / 86400000)) + timeColor + "일");
+    if ((int) (timeMillis / 3600000 % 24) > 0) timeStrings.add(numberColor.toString() +((int) (timeMillis / 36000000 % 24)) + timeColor + "시");
+    if ((int) (timeMillis / 60000 % 60) > 0) timeStrings.add(numberColor.toString() + ((int) (timeMillis / 60000 % 60)) + timeColor + "분");
+    if ((int) (int) (timeMillis / 1000 % 60) > 0) timeStrings.add(numberColor.toString() + ((int) (timeMillis / 1000 % 60)) + timeColor + "초");
+
+    return String.join(" ", timeStrings);
+  }
+
+  /**
+   * 초를 n일 n시 n분 n초로 반환합니다.
+   * n이 0일 경우 제외됩니다.
+   * 예) 1일 1초
+   * @param timeMillis 변환할 밀리초
+   * @param numberColor 숫자 색깔
+   * @param timeColor 시간 색깔
+   * @return n일 n시 n분 n초
+   */
+  public static String buildTimeStringFromSeconds(long seconds, CommonChatColor numberColor, CommonChatColor timeColor) {
+    return buildTimeStringFromMillis(seconds * 1000, numberColor, timeColor);
+  }
+
+  /**
    * text에 str이 몇 번 들어가있는지 반환합니다.
    * @param text 확인할 텍스트
    * @param str 셀 문자열
