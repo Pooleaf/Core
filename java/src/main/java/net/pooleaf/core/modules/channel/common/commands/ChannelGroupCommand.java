@@ -91,6 +91,8 @@ public class ChannelGroupCommand {
 
     String displayName = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
     channelGroup.setDisplayName(displayName);
+    channelGroup.save();
+
     sender.sendMessage(channelGroup.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
   }
 

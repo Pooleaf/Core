@@ -92,7 +92,10 @@ public class ChannelCommand {
     }
 
     String displayName = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
+
     channel.setDisplayName(displayName);
+    channel.save();
+
     sender.sendMessage(channel.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
   }
 
@@ -117,6 +120,8 @@ public class ChannelCommand {
     }
 
     channel.setGroupName(channelGroup.getName());
+    channel.save();
+
     sender.sendMessage(channel.getName() + " §e채널의 그룹을 §f" + channelGroup.getName() + "§e(으)로 설정했습니다.");
   }
 
