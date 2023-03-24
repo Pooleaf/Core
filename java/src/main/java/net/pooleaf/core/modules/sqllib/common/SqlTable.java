@@ -100,10 +100,10 @@ public class SqlTable {
      * 테이블의 데이터 수를 반환합니다.
      * @return
      */
-    public int count() {
+    public long count() {
         return select("COUNT(*)")
                 .execute()
-                .getRow(0).getInt("COUNT(*)");
+                .getRow(0).getLong("COUNT(*)");
     }
 
     /**

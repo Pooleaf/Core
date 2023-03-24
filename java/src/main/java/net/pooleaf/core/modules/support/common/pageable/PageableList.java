@@ -15,7 +15,6 @@ public abstract class PageableList<T> {
 
 
     public PageableList(int valueCount, int countPerPage) {
-        Preconditions.checkArgument(valueCount > 0, "valueCount는 1보다 작을 수 없습니다.");
         Preconditions.checkArgument(countPerPage > 0, "countPerPage는 1보다 작을 수 없습니다.");
 
         this.valueCount = valueCount;
@@ -33,7 +32,7 @@ public abstract class PageableList<T> {
         List<T> pageValues = new ArrayList<>();
 
         // maxPage보다 큰 page일 경우 빈 List를 반환
-        if (page > maxPage) {
+        if (page > getMaxPage()) {
             return pageValues;
         }
 
@@ -57,7 +56,7 @@ public abstract class PageableList<T> {
         List<Integer> pageIndexes = new ArrayList<>();
 
         // maxPage보다 큰 page일 경우 빈 List를 반환
-        if (page > maxPage) {
+        if (page > getMaxPage()) {
             return pageIndexes;
         }
 

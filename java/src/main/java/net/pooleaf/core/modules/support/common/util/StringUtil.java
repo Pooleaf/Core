@@ -21,6 +21,7 @@ public class StringUtil {
     if ((int) (timeMillis / 3600000 % 24) > 0) timeStrings.add((int) (timeMillis / 36000000 % 24) + "시");
     if ((int) (timeMillis / 60000 % 60) > 0) timeStrings.add((int) (timeMillis / 60000 % 60) + "분");
     if ((int) (int) (timeMillis / 1000 % 60) > 0) timeStrings.add((int) (timeMillis / 1000 % 60) + "초");
+    if (timeStrings.isEmpty()) timeStrings.add("0초");
 
     return String.join(" ", timeStrings);
   }
@@ -52,6 +53,7 @@ public class StringUtil {
     if ((int) (timeMillis / 3600000 % 24) > 0) timeStrings.add(numberColor.toString() +((int) (timeMillis / 36000000 % 24)) + timeColor + "시");
     if ((int) (timeMillis / 60000 % 60) > 0) timeStrings.add(numberColor.toString() + ((int) (timeMillis / 60000 % 60)) + timeColor + "분");
     if ((int) (int) (timeMillis / 1000 % 60) > 0) timeStrings.add(numberColor.toString() + ((int) (timeMillis / 1000 % 60)) + timeColor + "초");
+    if (timeStrings.isEmpty()) timeStrings.add(numberColor.toString() + "0" + timeColor + "초");
 
     return String.join(" ", timeStrings);
   }
