@@ -1,6 +1,5 @@
 package net.pooleaf.core.modules.channel.bukkit.listeners;
 
-import java.util.Arrays;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.channel.common.events.ChannelMessageEvent;
@@ -13,6 +12,9 @@ import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BukkitChannelAdapterListener implements CommonEventListener {
 
@@ -45,9 +47,9 @@ public class BukkitChannelAdapterListener implements CommonEventListener {
           () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandLine));
     } else if (task.equals("SendData")) {
       String dataTask = (String) event.getDatas().get(1);
-      Object[] datas = (Object[]) event.getDatas().get(2);
+      List<Object> datas = (List<Object>) event.getDatas().get(2);
 
-      ChannelMessageEvent channelMessageEvent = new ChannelMessageEvent(dataTask, Arrays.asList(datas));
+      ChannelMessageEvent channelMessageEvent = new ChannelMessageEvent(dataTask, datas);
       CommonEventModule.callEvent(channelMessageEvent);
     }
   }

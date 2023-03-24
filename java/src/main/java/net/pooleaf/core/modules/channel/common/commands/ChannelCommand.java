@@ -19,7 +19,7 @@ public class ChannelCommand {
 
   @Command(
           parent = {"", "core"},
-          name = {"channel", "채널"},
+          name = {"channel", "ch", "채널"},
           description = "채널 명령어 목록을 확인합니다.",
           helpCommand = true,
           permission = ChannelPermission.ADMIN
@@ -36,14 +36,26 @@ public class ChannelCommand {
   public void channel_list(CommonCommandSender sender, CommandResult result) {
     sender.sendMessage("§e[ 채널 목록 ]");
     for (Channel channel : ChannelModule.getChannels()) {
+      String channelInfoMessage = channel.getName();
+
+      // 표기 이름
+      channelInfoMessage += "(" + channel.getDisplayName() + ")";
+
+      // 그룹 이름
+      if (channel.hasGroup()) {
+        channelInfoMessage += "[" + channel.getGroupName() + "]";
+      }
+
       if (channel.isOnline()) {
-        sender.sendMessage(new SimpleComponentBuilder("§a" + channel.getName() + " (" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount() + "): §f"
-                + channel.getPlayerNames().stream().collect(Collectors.joining(", ")))
+        // 접속자 리스트
+        channelInfoMessage += ": §f" + channel.getPlayerNames().stream().collect(Collectors.joining(", "));
+
+        sender.sendMessage(new SimpleComponentBuilder("§a" + channelInfoMessage)
                 .hoverShowText("클릭 시 " + channel.getName() + " 채널로 이동합니다.")
                 .clickRunCommand("/channel join " + channel.getName())
                 .build());
       } else {
-        sender.sendMessage("§7" + channel.getName());
+        sender.sendMessage("§7" + channelInfoMessage);
       }
     }
   }
@@ -56,7 +68,7 @@ public class ChannelCommand {
           permission = ChannelPermission.ADMIN
   )
   public void channel_info(CommonCommandSender sender, CommandResult result) {
-    Channel channel = ChannelModule.getChannel(result.getEnteredArguments());
+    Channel channel = ChannelModule.getChannel(result.getArgument(0));
     if (channel == null) {
       sender.sendWarning("존재하지 않는 채널입니다.");
       return;

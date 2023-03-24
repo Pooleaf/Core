@@ -1,9 +1,9 @@
 package net.pooleaf.core.modules.redislib.common.events;
 
-import com.google.gson.Gson;
-import net.pooleaf.core.modules.commonevent.common.CommonEvent;
 import lombok.Data;
 import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.commonevent.common.CommonEvent;
+import net.pooleaf.core.modules.support.common.util.GsonUtil;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ public class RedisMessageEvent extends CommonEvent {
         this.channel = channel;
         this.dataJson = dataJson;
 
-        Object[] temp = new Gson().fromJson(dataJson, Object[].class);
-        this.messageChannel = (String) temp[0];
-        this.datas = (List<Object>) temp[1];
+        List<Object> temp = GsonUtil.getGson().fromJson(dataJson, List.class);
+        this.messageChannel = (String) temp.get(0);
+        this.datas = (List<Object>) temp.get(1);
     }
 
 

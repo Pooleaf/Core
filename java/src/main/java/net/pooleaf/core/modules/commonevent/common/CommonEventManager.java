@@ -51,6 +51,7 @@ public class CommonEventManager {
 
                 registerListener(plugin, listener);
             } catch (Exception e) {
+            } catch (Error e) {
             }
         }
     }
@@ -71,10 +72,6 @@ public class CommonEventManager {
         for (CommonEventMethod eventMethod : getEventMethods(event)) {
             if (eventMethod.getPlugin().isEnabled()) {
                 eventMethod.invoke(event);
-
-                if (event instanceof Cancellable) {
-
-                }
             }
         }
     }

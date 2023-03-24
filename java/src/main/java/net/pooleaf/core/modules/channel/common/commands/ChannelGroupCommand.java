@@ -17,7 +17,7 @@ public class ChannelGroupCommand {
 
   @Command(
           parent = {"", "core"},
-          name = {"channelGroup", "채널그룹"},
+          name = {"channelGroup", "chg", "채널그룹"},
           description = "채널 그룹 명령어 목록을 확인합니다.",
           helpCommand = true,
           permission = ChannelPermission.ADMIN
@@ -49,7 +49,7 @@ public class ChannelGroupCommand {
           permission = ChannelPermission.ADMIN
   )
   public void channelGroup_info(CommonCommandSender sender, CommandResult result) {
-    ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getEnteredArguments());
+    ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
     if (channelGroup == null) {
       sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;
@@ -77,13 +77,62 @@ public class ChannelGroupCommand {
 
   @Command(
           parent = {"channelGroup", "core channelGroup"},
+          name = {"생성", "create"},
+          arguments = "<그룹이름>",
+          description = "채널 그룹을 생성합니다.",
+          permission = ChannelPermission.ADMIN
+  )
+  public void channelGroup_create(CommonCommandSender sender, CommandResult result) {
+    String channelGroupName = result.getArgument(0);
+    if (ChannelModule.getChannelGroup(channelGroupName) != null) {
+      sender.sendWarning("이미 존재하는 채널 그룹입니다.");
+      return;
+    }
+
+    ChannelGroup channelGroup = new ChannelGroup(channelGroupName);
+    channelGroup.save();
+    ChannelModule.getChannelGroupManager().set(channelGroup.getName(), channelGroup);
+
+    sender.sendMessage(channelGroup.getName() + " §e채널 그룹을 생성했습니다.");
+  }
+
+  @Command(
+          parent = {"channelGroup", "core channelGroup"},
+          name = {"삭제", "delete", "remove"},
+          arguments = "<그룹이름>",
+          description = "채널 그룹을 삭제합니다.",
+          permission = ChannelPermission.ADMIN
+  )
+  public void channelGroup_delete(CommonCommandSender sender, CommandResult result) {
+    String channelGroupName = result.getArgument(0);
+    ChannelGroup channelGroup = ChannelModule.getChannelGroup(channelGroupName);
+    if (channelGroup == null) {
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
+      return;
+    }
+
+    // 채널에서 그룹 삭제
+    for (Channel channel : channelGroup.getChannels()) {
+      channel.setGroupName(null);
+      channel.save();
+    }
+
+    // 채널 그룹 삭제
+    ChannelModule.getChannelGroupManager().remove(channelGroup.getName());
+    ChannelModule.getRedisManager().channelGroup().removeGroup(channelGroup.getName());
+
+    sender.sendMessage(channelGroup.getName() + " §e채널 그룹을 삭제했습니다.");
+  }
+
+  @Command(
+          parent = {"channelGroup", "core channelGroup"},
           name = {"이름표기설정", "setDisplayName"},
           arguments = "<채널그룹> <표기>",
           description = "채널 그룹의 이름 표기를 설정합니다.",
           permission = ChannelPermission.ADMIN
   )
   public void channelGroup_setDisplayName(CommonCommandSender sender, CommandResult result) {
-    ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getEnteredArguments());
+    ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
     if (channelGroup == null) {
       sender.sendWarning("존재하지 않는 채널 그룹입니다.");
       return;

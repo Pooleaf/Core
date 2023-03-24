@@ -1,9 +1,11 @@
 package net.pooleaf.core.plugin;
 
+import net.md_5.bungee.api.plugin.Listener;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
+import net.pooleaf.core.modules.commonevent.common.CommonEventListener;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bungee.util.BungeeReflectionUtil;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
@@ -142,14 +144,28 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
     return BungeeReflectionUtil.registerListeners(this);
   }
 
+  public void registerEventListener(Listener eventListener) {
+    ProxyServer.getInstance().getPluginManager().registerListener(this, eventListener);
+  }
+
   @Override
   public void registerCommonEventListeners() {
     CommonEventModule.registerListeners(this);
   }
 
   @Override
+  public void registerCommonEventListener(CommonEventListener commonEventListener) {
+    CommonEventModule.registerListener(this, commonEventListener);
+  }
+
+  @Override
   public void registerCommands() {
     AnnoCommandModule.registerCommands(this);
+  }
+
+  @Override
+  public void registerCommand(Class<?> commandClass) {
+    AnnoCommandModule.registerCommands(this, commandClass);
   }
 
 }

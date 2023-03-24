@@ -28,6 +28,15 @@ public class AnnoCommandModule extends CoreModule {
 
 
   /**
+   * 해당 CorePlugin의 Command를 등록합니다.
+   * @param plugin Command를 등록할 CorePlugin
+   * @param commandClass 등록할 Command Class
+   */
+  public static void registerCommands(CorePlugin plugin, Class<?> commandClass) {
+    commandManager.registerCommands(plugin, commandClass);
+  }
+
+  /**
    * 해당 CorePlugin의 모든 Command를 등록합니다.
    * @param plugin Command를 등록할 CorePlugin
    */

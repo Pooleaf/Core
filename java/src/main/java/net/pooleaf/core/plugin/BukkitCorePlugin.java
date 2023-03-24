@@ -1,23 +1,25 @@
 package net.pooleaf.core.plugin;
 
-import java.io.File;
-
-import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
-import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
-import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
-import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
-import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
-import net.pooleaf.core.modules.support.common.CommonChatColor;
-import net.pooleaf.core.modules.support.common.logger.Logger;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.pooleaf.core.Core;
+import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
+import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
+import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
+import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
+import net.pooleaf.core.modules.commonevent.common.CommonEventListener;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
+import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
@@ -126,14 +128,28 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
     return BukkitReflectionUtil.registerListeners(this);
   }
 
+  public void registerEventListener(Listener eventListener) {
+    Bukkit.getPluginManager().registerEvents(eventListener, this);
+  }
+
   @Override
   public void registerCommonEventListeners() {
     CommonEventModule.registerListeners(this);
   }
 
   @Override
+  public void registerCommonEventListener(CommonEventListener commonEventListener) {
+    CommonEventModule.registerListener(this, commonEventListener);
+  }
+
+  @Override
   public void registerCommands() {
     AnnoCommandModule.registerCommands(this);
+  }
+
+  @Override
+  public void registerCommand(Class<?> commandClass) {
+    AnnoCommandModule.registerCommands(this, commandClass);
   }
 
 }

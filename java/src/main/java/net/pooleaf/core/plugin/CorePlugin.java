@@ -1,10 +1,11 @@
 package net.pooleaf.core.plugin;
 
-import java.io.File;
-import java.io.InputStream;
-
+import net.pooleaf.core.modules.commonevent.common.CommonEventListener;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
+
+import java.io.File;
+import java.io.InputStream;
 
 public interface CorePlugin {
 
@@ -33,20 +34,29 @@ public interface CorePlugin {
   boolean detectPlugin(String name);
 
   /**
-   * 해당 플러그인의 플랫폼에 맞는 모든 Event Listener을 등록합니다.
+   * 해당 플러그인의 플랫폼에 맞는 모든 EventListener를 등록합니다.
    * @return 등록된 Listener 개수
    */
   int registerEventListeners();
 
   /**
-   * 해당 플러그인의 모든 Common Event Listener을 등록합니다.
+   * 해당 플러그인의 모든 CommonEventListener를 등록합니다.
    */
   void registerCommonEventListeners();
+
+  /**
+   * CommonEventListener를 등록합니다.
+   */
+  void registerCommonEventListener(CommonEventListener commonEventListener);
 
   /**
    * 해당 플러그인의 모든 Command를 등록합니다.
    */
   void registerCommands();
 
+  /**
+   * Command를 등록합니다.
+   */
+  void registerCommand(Class<?> commandClass);
 
 }
