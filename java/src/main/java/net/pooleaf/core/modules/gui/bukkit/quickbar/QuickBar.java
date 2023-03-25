@@ -63,6 +63,12 @@ public class QuickBar {
         onUpdate();
 
         slots.values().forEach(slot -> slot.update());
+        getWatchers().forEach(watcher -> {
+            slots.forEach((x, slot) -> watcher.getInventory().setItem(x - 1, slot.getItem()));
+
+            watcher.updateInventory();
+        });
+
         updateFakeIcons();
     }
 
