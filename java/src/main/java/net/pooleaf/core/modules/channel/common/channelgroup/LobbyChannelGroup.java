@@ -39,6 +39,10 @@ public class LobbyChannelGroup extends ChannelGroup {
                 && mainLobbyChannel.getTps() > MIN_MAIN_LOBBY_FAST_JOIN_TPS) {
             return mainLobbyChannel;
         }
+        // 로비 채널이 없으면 null 반환
+        else if (channels.size() <= 1) {
+            return null;
+        }
         // 아닐 경우 다른 로비 중 가장 사람이 적은 로비 반환
         else {
             return getFastJoinChannel(excludeChannel);

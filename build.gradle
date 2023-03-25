@@ -57,6 +57,9 @@ allprojects {
         // JSON
         implementation 'com.google.code.gson:gson:2.10.1'
 
+        // Guava
+        implementation 'com.google.guava:guava:31.1-jre'
+
         // Cache
         implementation 'net.sf.ehcache:ehcache:2.10.9.2'
 
@@ -79,6 +82,7 @@ shadowJar {
 
     relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
     relocate 'com.google.gson', 'net.pooleaf.core.lib.com.google.gson'
+    relocate 'com.google.common', 'net.pooleaf.core.lib.com.google.common'
 }
 
 publishing {
