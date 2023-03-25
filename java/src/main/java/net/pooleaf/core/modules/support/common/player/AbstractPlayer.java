@@ -1,15 +1,19 @@
 package net.pooleaf.core.modules.support.common.player;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
-import lombok.Data;
 
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AbstractPlayer<T> {
 
-    protected final UUID uuid;
+    protected UUID uuid;
 
     public CommonPlayer<T> getCommonPlayer() {
         return CommonSenderModule.getPlayer(uuid);
