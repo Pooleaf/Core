@@ -140,6 +140,7 @@ public class AbstractSqlManager {
         CachedResult cachedResult = new CachedResult(resultSet);
 
         Debugger.log("[SQLib] getResult Executed in: " + (System.currentTimeMillis() - startTime) + " ms");
+        Debugger.log("[SQLib] CachedResult: " + cachedResult);
 
         return cachedResult;
     }
