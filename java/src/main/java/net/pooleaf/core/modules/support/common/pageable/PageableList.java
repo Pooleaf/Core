@@ -37,7 +37,7 @@ public abstract class PageableList<T> {
         }
 
         for (int i = (page - 1) * countPerPage; i < page * countPerPage; i++) {
-            if (i >= valueCount) {
+            if (i >= getValueCount()) {
                 break;
             }
 
@@ -61,7 +61,7 @@ public abstract class PageableList<T> {
         }
 
         for (int i = (page - 1) * countPerPage; i < page * countPerPage; i++) {
-            if (i >= valueCount) {
+            if (i >= getValueCount()) {
                 break;
             }
 
