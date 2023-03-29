@@ -8,12 +8,13 @@ import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
 public class BukkitCommonPlayerEventListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onLogin(PlayerLoginEvent e) {
         CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
 

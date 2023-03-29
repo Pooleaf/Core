@@ -7,6 +7,7 @@ import net.pooleaf.core.plugin.CorePlugin;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CommonEventManager {
@@ -69,7 +70,12 @@ public class CommonEventManager {
     }
 
     public void callEvent(CommonEvent event) {
-        for (CommonEventMethod eventMethod : getEventMethods(event)) {
+        // 우선순위 정렬
+        List<CommonEventMethod> eventMethods = getEventMethods(event);
+        eventMethods.sort(Comparator.comparingInt(CommonEventMethod::getPriority));
+
+        // 이벤트 호출
+        for (CommonEventMethod eventMethod : eventMethods) {
             if (eventMethod.getPlugin().isEnabled()) {
                 eventMethod.invoke(event);
             }

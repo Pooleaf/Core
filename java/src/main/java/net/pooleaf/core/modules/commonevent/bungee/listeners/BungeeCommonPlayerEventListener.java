@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.commonevent.bungee.listeners;
 
+import net.md_5.bungee.event.EventPriority;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerChatEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerJoinEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerLoginEvent;
@@ -24,7 +25,7 @@ public class BungeeCommonPlayerEventListener implements Listener {
     private List<UUID> joined = new ArrayList<>();
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onLogin(LoginEvent e) {
         CommonPlayer player = CommonSenderModule.getPlayer(e.getConnection().getUniqueId());
 
