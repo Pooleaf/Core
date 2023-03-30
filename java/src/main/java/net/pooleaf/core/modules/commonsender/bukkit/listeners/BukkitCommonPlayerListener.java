@@ -1,9 +1,9 @@
 package net.pooleaf.core.modules.commonsender.bukkit.listeners;
 
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
+import net.pooleaf.core.modules.commonsender.bukkit.BukkitPlayer;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.support.common.logger.Logger;
-import net.pooleaf.core.modules.commonsender.bukkit.BukkitPlayer;
-import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -38,6 +38,12 @@ public class BukkitCommonPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent e) {
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().get(e.getPlayer().getUniqueId());
+        player.setLastOnline(LocalDateTime.now());
+
+        // 저장
+        CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(player);
+
         // 메모리 해제
         CommonSenderModule.getCommonPlayerManager().remove(e.getPlayer().getUniqueId());
     }

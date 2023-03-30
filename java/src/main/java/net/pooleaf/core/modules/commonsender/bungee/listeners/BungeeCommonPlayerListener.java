@@ -37,6 +37,12 @@ public class BungeeCommonPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerDisconnectEvent e) {
+        CommonPlayer player = CommonSenderModule.getCommonPlayerManager().get(e.getPlayer().getUniqueId());
+        player.setLastOnline(LocalDateTime.now());
+
+        // 저장
+        CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(player);
+
         // 메모리 해제
         CommonSenderModule.getCommonPlayerManager().remove(e.getPlayer().getUniqueId());
     }

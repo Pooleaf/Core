@@ -69,22 +69,6 @@ allprojects {
     }
 }
 
-processResources {
-    filesMatching('**/*.yml') {
-        expand(project.properties)
-    }
-}
-
-shadowJar {
-    delete 'build/resources'
-
-    archiveClassifier.set('')
-
-    relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
-    relocate 'com.google.gson', 'net.pooleaf.core.lib.com.google.gson'
-    relocate 'com.google.common', 'net.pooleaf.core.lib.com.google.common'
-}
-
 publishing {
     repositories {
         maven {
@@ -101,6 +85,22 @@ publishing {
             artifact(shadowJar)
         }
     }
+}
+
+processResources {
+    filesMatching('**/*.yml') {
+        expand(project.properties)
+    }
+}
+
+shadowJar {
+    delete 'build/resources'
+
+    archiveClassifier.set('')
+
+    relocate 'io.netty', 'net.pooleaf.core.lib.io.lettuce.netty'
+    relocate 'com.google.gson', 'net.pooleaf.core.lib.com.google.gson'
+    relocate 'com.google.common', 'net.pooleaf.core.lib.com.google.common'
 }
 
 task copyToServerWindows(type: Copy) {
