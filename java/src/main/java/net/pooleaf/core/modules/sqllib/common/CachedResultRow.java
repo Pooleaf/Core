@@ -1,8 +1,12 @@
 package net.pooleaf.core.modules.sqllib.common;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.ToString;
+import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
+import net.pooleaf.core.modules.support.common.util.StringUtil;
 
+import java.lang.reflect.Field;
 import java.sql.Blob;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -10,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @ToString
@@ -118,6 +123,53 @@ public class CachedResultRow {
 
     public Blob getBlob(int index) {
         return (Blob) get(index);
+    }
+
+    @SneakyThrows
+    public <T> T toObject(Class<T> objectClass) {
+        T object = objectClass.newInstance();
+        return toObject(object);
+    }
+
+    @SneakyThrows
+    public <T> T toObject(T object) {
+        for (String key : getDatas().keySet()) {
+            Class objectClass = object.getClass();
+
+            String targetFieldName = StringUtil.convertSnakeCaseToLowerCamelCase(key);
+            Field targetField = ReflectionUtil.getFieldAll(objectClass, targetFieldName);
+            if (targetField != null) {
+                Object value = replaceValue(targetField, get(key));
+
+                targetField.setAccessible(true);
+                targetField.set(object, value);
+            }
+        }
+
+        return object;
+    }
+
+    /**
+     * 값을 해당 필드에 맞는 타입으로 변환해줍니다.
+     */
+    private Object replaceValue(Field targetField, Object value) {
+        // Timestamp -> LocalDateTime 변환
+        if (value instanceof Timestamp) {
+            if (targetField.getType().isAssignableFrom(LocalDateTime.class)) {
+                value = ((Timestamp) value).toLocalDateTime();
+            } else if (targetField.getType().isAssignableFrom(LocalDate.class)) {
+                value = ((Timestamp) value).toLocalDateTime().toLocalDate();
+            } else if (targetField.getType().isAssignableFrom(LocalTime.class)) {
+                value = ((Timestamp) value).toLocalDateTime().toLocalTime();
+            }
+        }
+
+        // UUID 변환
+        if (targetField.getType().isAssignableFrom(UUID.class)) {
+            value = UUID.fromString((String) value);
+        }
+
+        return value;
     }
 
 }
