@@ -59,6 +59,7 @@ public class ChannelModule extends CoreModule {
     channelAdapter.onDisable();
   }
 
+
   public static String getCurrentChannelName() {
     return Core.getServerName();
   }
