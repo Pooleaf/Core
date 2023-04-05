@@ -58,8 +58,15 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
         if (page == null) {
             page = 1;
         }
-        if (page < 1 || page > getMaxPage()) {
-            Messager.sendWarning(sender, "페이지는 1 ~ " + getMaxPage() + "의 정수만 입력할 수 있습니다.");
+
+        int maxPage = getMaxPage();
+        if (maxPage < 1) {
+            Messager.sendWarning(sender, "목록이 없습니다.");
+            return;
+        }
+
+        if (page < 1 || page > maxPage) {
+            Messager.sendWarning(sender, "페이지는 1 ~ " + maxPage + "의 정수만 입력할 수 있습니다.");
             return;
         }
 
@@ -67,10 +74,10 @@ public abstract class PageableCommand<T> extends CachedPageableList<T> {
         Messager.sendMessage(sender, "");
 
         String headerMessage = getHeaderColor() + "[ " + getHeaderMessage() + " ]";
-        String pageMessage = "( " + page + " / " + getMaxPage() + " )";
+        String pageMessage = "( " + page + " / " + maxPage + " )";
 
         if (getHeaderMessage() != null) {
-            if (getMaxPage() <= 1) {
+            if (maxPage <= 1) {
                 Messager.sendMessage(sender, headerMessage);
             } else {
                 if (sender.isConsole()) {

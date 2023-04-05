@@ -39,7 +39,7 @@ public class CommonEventManager {
         for (Class targetClass : ReflectionUtil.getClasses(plugin)) {
             try {
                 // Listener 클래스인지 확인
-                if (!(CommonEventListener.class.isAssignableFrom(targetClass))) {
+                if (!CommonEventListener.class.isAssignableFrom(targetClass)) {
                     continue;
                 }
 

@@ -54,6 +54,8 @@ public class BungeeCommonPlayerEventListener implements Listener {
 
     @EventHandler
     public void onQuit(ServerDisconnectEvent e) {
+        joined.remove(e.getPlayer().getUniqueId());
+
         CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerQuitEvent event = new CommonPlayerQuitEvent(player);

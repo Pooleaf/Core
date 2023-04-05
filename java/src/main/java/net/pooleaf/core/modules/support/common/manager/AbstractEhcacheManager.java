@@ -3,8 +3,11 @@ package net.pooleaf.core.modules.support.common.manager;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.config.CacheConfiguration;
+import net.sf.ehcache.config.PersistenceConfiguration;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public abstract class AbstractEhcacheManager<K, V> implements Manager<K, V> {
@@ -17,8 +20,12 @@ public abstract class AbstractEhcacheManager<K, V> implements Manager<K, V> {
         cacheManager = CacheManager.create();
 
         String cacheName = getClass().getCanonicalName() + ":" + UUID.randomUUID();
-        cacheManager.addCache(cacheName);
-        cache = cacheManager.getCache(cacheName);
+
+        CacheConfiguration cacheConfig = new CacheConfiguration(cacheName, 0)
+                .persistence(new PersistenceConfiguration().strategy(PersistenceConfiguration.Strategy.NONE));
+        cache = new Cache(cacheConfig);
+
+        cacheManager.addCache(cache);
     }
 
     public void setElement(Element element) {
