@@ -19,7 +19,7 @@ public class BukkitCommonPlayerListener implements Listener {
     /**
      * 비동기로 CommonPlayer 불러오기
      */
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPreLogin(AsyncPlayerPreLoginEvent e) {
         handlePlayerLogin(e.getUniqueId(), e.getName(), e.getAddress().getHostAddress());
     }
@@ -29,16 +29,24 @@ public class BukkitCommonPlayerListener implements Listener {
      * 비동기로 CommonPlayer 정보를 불러오지 못했을 경우
      * 동기로 불러오도록 처리
      */
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent e) {
         if (!CommonSenderModule.getCommonPlayerManager().exists(e.getPlayer().getUniqueId())) {
             handlePlayerLogin(e.getPlayer().getUniqueId(), e.getPlayer().getName(), e.getAddress().getHostAddress());
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent e) {
+        if (e.getPlayer().getUniqueId() == null) {
+            return;
+        }
+
         CommonPlayer player = CommonSenderModule.getCommonPlayerManager().get(e.getPlayer().getUniqueId());
+        if (player == null) {
+            return;
+        }
+
         player.setLastOnline(LocalDateTime.now());
 
         // 저장
@@ -50,6 +58,10 @@ public class BukkitCommonPlayerListener implements Listener {
 
 
     private void handlePlayerLogin(UUID uuid, String name, String ip) {
+        if (uuid == null) {
+            return;
+        }
+
         // 불러오기
         CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(uuid);
         if (player == null) {

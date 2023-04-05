@@ -2,27 +2,27 @@ package net.pooleaf.core.modules.support.bukkit.util;
 
 import com.google.gson.*;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
 public class BukkitGsonUtil {
 
-    public static class ConfigurationSerializableSerializer implements JsonSerializer<ItemStack> {
+    public static class ConfigurationSerializableSerializer implements JsonSerializer<ConfigurationSerializable> {
 
         @Override
-        public JsonElement serialize(ItemStack configurationSerializable, Type type, JsonSerializationContext jsonSerializationContext) {
+        public JsonElement serialize(ConfigurationSerializable configurationSerializable, Type type, JsonSerializationContext jsonSerializationContext) {
             Map<String, Object> serializedMap = BukkitSerializeUtil.serializeToMap(configurationSerializable);
             return GsonUtil.getGson().toJsonTree(serializedMap);
         }
 
     }
 
-    public static class ConfigurationDeserializableSerializer implements JsonDeserializer<ItemStack> {
+    public static class ConfigurationDeserializableSerializer implements JsonDeserializer<ConfigurationSerializable> {
 
         @Override
-        public ItemStack deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public ConfigurationSerializable deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             if (!jsonElement.isJsonObject()) {
                 return null;
             }
@@ -32,7 +32,7 @@ public class BukkitGsonUtil {
                 return null;
             }
 
-            return (ItemStack) BukkitSerializeUtil.deserializeFromJson(jsonElement.toString());
+            return (ConfigurationSerializable) BukkitSerializeUtil.deserializeFromJson(jsonElement.toString());
         }
     }
 

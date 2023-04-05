@@ -110,8 +110,7 @@ public class SelectContext extends DslContext<SelectContext> {
         }
 
         for (CachedResultRow row : result.getRows()) {
-            Object object = objectClass.newInstance();
-            row.toObject(objectClass);
+            Object object = row.toObject(objectClass);
 
             resultObjects.add(object);
         }

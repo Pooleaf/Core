@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.gui.bukkit.inventory;
 
 import com.google.common.base.Preconditions;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.pooleaf.core.Core;
 import org.bukkit.Bukkit;
@@ -14,9 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@ToString(exclude = "gui")
 public class InventoryPanel {
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private final InventoryGui gui;
 
     private final String name;
