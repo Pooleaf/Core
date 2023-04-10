@@ -1,11 +1,13 @@
 package net.pooleaf.core.modules.option.common;
 
-import net.pooleaf.core.modules.option.common.events.PlayerOptionChangedEvent;
-import net.pooleaf.core.modules.option.common.events.ServerOptionChangedEvent;
 import lombok.Data;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.option.OptionModule;
+import net.pooleaf.core.modules.option.common.events.PlayerOptionChangedEvent;
+import net.pooleaf.core.modules.option.common.events.ServerOptionChangedEvent;
+import net.pooleaf.core.modules.support.common.util.GsonUtil;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -22,7 +24,15 @@ public class Option {
         if (value == null) {
             datas.remove(key);
         } else {
-            datas.put(key, value.toString());
+            String valueString;
+
+            if (value instanceof List || value instanceof Map) {
+                valueString = GsonUtil.getGson().toJson(value);
+            } else {
+                valueString = value.toString();
+            }
+
+            datas.put(key, valueString);
         }
 
         return this;
@@ -47,19 +57,57 @@ public class Option {
     }
 
     public Boolean getBoolean(String key) {
-        return Boolean.parseBoolean(getString(key));
+        String value = getString(key);
+        if (value == null) {
+            return null;
+        }
+
+        return Boolean.parseBoolean(value);
     }
 
     public Integer getInt(String key) {
-        return Integer.parseInt(getString(key));
+        String value = getString(key);
+        if (value == null) {
+            return null;
+        }
+
+        return Integer.parseInt(value);
     }
 
     public Long getLong(String key) {
-        return Long.parseLong(getString(key));
+        String value = getString(key);
+        if (value == null) {
+            return null;
+        }
+
+        return Long.parseLong(value);
     }
 
     public Double getDouble(String key) {
-        return Double.parseDouble(getString(key));
+        String value = getString(key);
+        if (value == null) {
+            return null;
+        }
+
+        return Double.parseDouble(value);
+    }
+
+    public List getList(String key) {
+        String value = getString(key);
+        if (value == null) {
+            return null;
+        }
+
+        return GsonUtil.getGson().fromJson(value, List.class);
+    }
+
+    public Map getMap(String key) {
+        String value = getString(key);
+        if (value == null) {
+            return null;
+        }
+
+        return GsonUtil.getGson().fromJson(value, Map.class);
     }
 
 
