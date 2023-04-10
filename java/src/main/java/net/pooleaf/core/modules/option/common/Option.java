@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.option.common;
 
+import com.google.common.base.Preconditions;
 import lombok.Data;
 import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.option.OptionModule;
@@ -7,10 +8,7 @@ import net.pooleaf.core.modules.option.common.events.PlayerOptionChangedEvent;
 import net.pooleaf.core.modules.option.common.events.ServerOptionChangedEvent;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 
 
 @Data
@@ -132,10 +130,35 @@ public class Option {
             String uuidString = key.substring(OptionModule.getRedisManager().PLAYER_OPTION_PREFIX.length());
             UUID uuid = UUID.fromString(uuidString);
 
-            PlayerOptionChangedEvent event = new PlayerOptionChangedEvent(uuid);
+            PlayerOptionChangedEvent event = new PlayerOptionChangedEvent(uuid, datas.keySet());
             CommonEventModule.callEvent(event);
         } else if (isServerOption()) {
-            ServerOptionChangedEvent event = new ServerOptionChangedEvent();
+            ServerOptionChangedEvent event = new ServerOptionChangedEvent(datas.keySet());
+            CommonEventModule.callEvent(event);
+        }
+
+        return this;
+    }
+
+    public Option save(String... fields) {
+        Preconditions.checkNotNull(fields);
+        Preconditions.checkArgument(fields.length != 0);
+
+        Map<String, String> saveDatas = new HashMap<>();
+        for (String field : fields) {
+            saveDatas.put(field, datas.get(field));
+        }
+
+        OptionModule.getRedisManager().option().set(key, saveDatas);
+
+        if (isPlayerOption()) {
+            String uuidString = key.substring(OptionModule.getRedisManager().PLAYER_OPTION_PREFIX.length());
+            UUID uuid = UUID.fromString(uuidString);
+
+            PlayerOptionChangedEvent event = new PlayerOptionChangedEvent(uuid, saveDatas.keySet());
+            CommonEventModule.callEvent(event);
+        } else if (isServerOption()) {
+            ServerOptionChangedEvent event = new ServerOptionChangedEvent(saveDatas.keySet());
             CommonEventModule.callEvent(event);
         }
 

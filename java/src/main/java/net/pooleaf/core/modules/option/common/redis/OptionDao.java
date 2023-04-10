@@ -30,6 +30,14 @@ public class OptionDao extends RedisDao {
         }
     }
 
+    public void set(String name, String field, String value) {
+        if (value == null) {
+            redisManager.getAsyncCommands().hdel(name, field);
+        } else {
+            redisManager.getAsyncCommands().hset(name, field, value);
+        }
+    }
+
     @SneakyThrows
     public boolean exists(String name, String key) {
         return redisManager.getAsyncCommands().hexists(name, key).get();
