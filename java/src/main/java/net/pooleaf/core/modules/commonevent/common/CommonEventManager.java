@@ -35,9 +35,20 @@ public class CommonEventManager {
         Collections.sort(eventMethods);
     }
 
-    public void registerListeners(CorePlugin plugin) {
+    public List<Class> registerListeners(CorePlugin plugin) {
+        return registerListeners(plugin, "");
+    }
+
+    public List<Class> registerListeners(CorePlugin plugin, String packageName) {
+        List<Class> registeredClass = new ArrayList<>();
+
         for (Class targetClass : ReflectionUtil.getClasses(plugin)) {
             try {
+                // 패키지 확인
+                if (!targetClass.getPackage().getName().startsWith(packageName)) {
+                    continue;
+                }
+
                 // Listener 클래스인지 확인
                 if (!CommonEventListener.class.isAssignableFrom(targetClass)) {
                     continue;
@@ -51,10 +62,13 @@ public class CommonEventManager {
                 }
 
                 registerListener(plugin, listener);
+                registeredClass.add(targetClass);
             } catch (Exception e) {
             } catch (Error e) {
             }
         }
+
+        return registeredClass;
     }
 
     public List<CommonEventMethod> getEventMethods(CommonEvent event) {

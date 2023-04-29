@@ -16,16 +16,18 @@ public class Option {
 
     private final String key;
     private Map<String, String> datas = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private Map<String, Object> cacheDatas = new HashMap<>(); // List, Map 캐시
 
 
     public Option set(String key, Object value) {
         if (value == null) {
-            datas.remove(key);
+            delete(key);
         } else {
             String valueString;
 
             if (value instanceof List || value instanceof Map) {
                 valueString = GsonUtil.getGson().toJson(value);
+                cacheDatas.put(key, value);
             } else {
                 valueString = value.toString();
             }
@@ -38,6 +40,14 @@ public class Option {
 
     public Option delete(String key) {
         datas.remove(key);
+        cacheDatas.remove(key);
+
+        return this;
+    }
+
+    public Option deleteAll() {
+        datas.clear();
+        cacheDatas.clear();
 
         return this;
     }
@@ -91,21 +101,37 @@ public class Option {
     }
 
     public List getList(String key) {
+        List list = (List) cacheDatas.get(key);
+        if (list != null) {
+            return list;
+        }
+
         String value = getString(key);
         if (value == null) {
             return null;
         }
 
-        return GsonUtil.getGson().fromJson(value, List.class);
+        list = GsonUtil.getGson().fromJson(value, List.class);
+        cacheDatas.put(key, list);
+
+        return list;
     }
 
     public Map getMap(String key) {
+        Map map = (Map) cacheDatas.get(key);
+        if (map != null) {
+            return map;
+        }
+
         String value = getString(key);
         if (value == null) {
             return null;
         }
 
-        return GsonUtil.getGson().fromJson(value, Map.class);
+        map = GsonUtil.getGson().fromJson(value, Map.class);
+        cacheDatas.put(key, map);
+
+        return map;
     }
 
 
@@ -120,6 +146,8 @@ public class Option {
 
     public Option load() {
         datas = OptionModule.getRedisManager().option().getAll(key);
+        cacheDatas.clear();
+
         return this;
     }
 
@@ -146,7 +174,9 @@ public class Option {
 
         Map<String, String> saveDatas = new HashMap<>();
         for (String field : fields) {
-            saveDatas.put(field, datas.get(field));
+            if (datas.containsKey(field)) {
+                saveDatas.put(field, datas.get(field));
+            }
         }
 
         OptionModule.getRedisManager().option().set(key, saveDatas);

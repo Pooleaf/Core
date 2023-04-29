@@ -6,6 +6,7 @@ import net.pooleaf.core.modules.support.common.CommonChatColor;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 public interface CorePlugin {
 
@@ -35,14 +36,27 @@ public interface CorePlugin {
 
   /**
    * 해당 플러그인의 플랫폼에 맞는 모든 EventListener를 등록합니다.
-   * @return 등록된 Listener 개수
+   * @return 등록된 Listener 클래스 목록
    */
-  int registerEventListeners();
+  List<Class> registerEventListeners();
+
+  /**
+   * 해당 플러그인 패키지의 플랫폼에 맞는 모든 EventListener를 등록합니다.
+   * @return 등록된 Listener 클래스 목록
+   */
+  List<Class> registerEventListeners(String packageName);
 
   /**
    * 해당 플러그인의 모든 CommonEventListener를 등록합니다.
+   * @return 등록된 CommonEventListener 클래스 목록
    */
-  void registerCommonEventListeners();
+  List<Class> registerCommonEventListeners();
+
+  /**
+   * 해당 플러그인 패키지의 모든 CommonEventListener를 등록합니다.
+   * @return 등록된 CommonEventListener 클래스 목록
+   */
+  List<Class> registerCommonEventListeners(String packageName);
 
   /**
    * CommonEventListener를 등록합니다.
@@ -53,6 +67,11 @@ public interface CorePlugin {
    * 해당 플러그인의 모든 Command를 등록합니다.
    */
   void registerCommands();
+
+  /**
+   * 해당 플러그인 패키지의 모든 Command를 등록합니다.
+   */
+  void registerCommands(String packageName);
 
   /**
    * Command를 등록합니다.

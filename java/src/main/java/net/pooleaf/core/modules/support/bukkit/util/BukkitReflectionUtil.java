@@ -20,7 +20,9 @@ import org.bukkit.plugin.SimplePluginManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 @UtilityClass
@@ -80,11 +82,20 @@ public class BukkitReflectionUtil {
     return ReflectionUtil.getMethodAll(nmsEntity.getClass(), "getBukkitEntity").invoke(nmsEntity);
   }
 
-  public static int registerListeners(CorePlugin plugin) {
-    int count = 0;
+  public static List<Class> registerListeners(CorePlugin plugin) {
+    return registerListeners(plugin, "");
+  }
+
+  public static List<Class> registerListeners(CorePlugin plugin, String packageName) {
+    List<Class> registeredClass = new ArrayList<>();
 
     for (Class targetClass : ReflectionUtil.getClasses(plugin)) {
       try {
+        // 패키지 확인
+        if (!targetClass.getPackage().getName().startsWith(packageName)) {
+          continue;
+        }
+
         // Listener 클래스인지 확인
         if (!Listener.class.isAssignableFrom(targetClass)) {
           continue;
@@ -98,13 +109,13 @@ public class BukkitReflectionUtil {
         }
 
         Bukkit.getPluginManager().registerEvents(listener, (Plugin) plugin);
-        count++;
+        registeredClass.add(targetClass);
       } catch (Exception e) {
       } catch (Error e) {
       }
     }
 
-    return count;
+    return registeredClass;
   }
 
   /**

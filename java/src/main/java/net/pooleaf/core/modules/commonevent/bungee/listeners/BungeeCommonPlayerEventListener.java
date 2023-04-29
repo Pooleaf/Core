@@ -1,20 +1,20 @@
 package net.pooleaf.core.modules.commonevent.bungee.listeners;
 
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
+import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.ServerConnectedEvent;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
+import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerChatEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerJoinEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerLoginEvent;
 import net.pooleaf.core.modules.commonevent.common.events.player.CommonPlayerQuitEvent;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.ChatEvent;
-import net.md_5.bungee.api.event.LoginEvent;
-import net.md_5.bungee.api.event.ServerConnectedEvent;
-import net.md_5.bungee.api.event.ServerDisconnectEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.event.EventHandler;
-import net.pooleaf.core.modules.commonevent.CommonEventModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class BungeeCommonPlayerEventListener implements Listener {
     }
 
     @EventHandler
-    public void onQuit(ServerDisconnectEvent e) {
+    public void onQuit(PlayerDisconnectEvent e) {
         joined.remove(e.getPlayer().getUniqueId());
 
         CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());

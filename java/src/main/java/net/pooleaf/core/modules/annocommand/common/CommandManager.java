@@ -1,11 +1,11 @@
 package net.pooleaf.core.modules.annocommand.common;
 
-import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-import net.pooleaf.core.modules.support.common.CommonChatColor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
+import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.modules.support.common.util.ReflectionUtil;
@@ -47,7 +47,6 @@ public class CommandManager {
 
     /**
      * Class에 작성된 명령어들을 등록합니다.
-     * @Command Annotation을 가지고 있고, static으로 선언된 메소드만 등록됩니다.
      * @param commandClass 명령어를 등록할 Class
      */
     @SneakyThrows
@@ -126,11 +125,19 @@ public class CommandManager {
 
     /**
      * CorePlugin의 모든 Class들에서 명령어를 찾아 등록합니다.
-     * @Command Annotation을 가지고 있고, static으로 선언된 메소드만 등록됩니다.
      * @param plugin 명령어를 등록할 CorePlugin
      */
     public void registerCommands(CorePlugin plugin) {
         ReflectionUtil.getClasses(plugin).forEach(targetClass -> registerCommands(plugin, targetClass));
+    }
+
+    /**
+     * CorePlugin의 해당 패키지에 해당하는 Class들에서 명령어를 찾아 등록합니다.
+     * @param plugin 명령어를 등록할 CorePlugin
+     */
+    public void registerCommands(CorePlugin plugin, String packageName) {
+        ReflectionUtil.getClasses(plugin).stream().filter(clazz -> clazz.getPackage().getName().startsWith(packageName))
+                .forEach(targetClass -> registerCommands(plugin, targetClass));
     }
 
     /**

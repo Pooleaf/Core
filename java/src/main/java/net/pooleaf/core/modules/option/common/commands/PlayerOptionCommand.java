@@ -1,11 +1,11 @@
 package net.pooleaf.core.modules.option.common.commands;
 
-import net.pooleaf.core.modules.commonsender.CommonSenderModule;
-import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.CorePermission;
 import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.annocommand.common.CommandResult;
 import net.pooleaf.core.modules.annocommand.common.HelpCommandResult;
+import net.pooleaf.core.modules.commonsender.CommonSenderModule;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.option.OptionModule;
 import net.pooleaf.core.modules.option.common.Option;
 
@@ -72,12 +72,34 @@ public class PlayerOptionCommand {
 
     @Command(
             parent = {"playerOption", "core playerOption"},
-            name = {"check", "확인"},
+            name = {"deleteAll", "전체삭제"},
+            arguments = "<플레이어>",
+            description= "플레이어의 모든 옵션을 삭제합니다.",
+            permission = CorePermission.ADMIN
+    )
+    public void playerOption_deleteAll(CommonCommandSender sender, CommandResult result) {
+        String playerName = result.getArgument(0);
+
+        if (!CommonSenderModule.existsPlayerByName(playerName)) {
+            sender.sendWarning("존재하지 않는 플레이어입니다.");
+            return;
+        }
+
+        OptionModule.getPlayerOptionByName(playerName)
+                .deleteAll()
+                .save();
+
+        sender.sendMessage("§f" + playerName + " §e플레이어의 모든 옵션을 삭제했습니다.");
+    }
+
+    @Command(
+            parent = {"playerOption", "core playerOption"},
+            name = {"get", "확인"},
             arguments = "<플레이어> <옵션이름>",
             description= "플레이어의 옵션 값을 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public void playerOption_check(CommonCommandSender sender, CommandResult result) {
+    public void playerOption_get(CommonCommandSender sender, CommandResult result) {
         String playerName = result.getArgument(0);
         String optionName = result.getArgument(1);
 

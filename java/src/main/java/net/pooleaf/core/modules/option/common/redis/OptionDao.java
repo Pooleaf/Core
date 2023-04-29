@@ -23,9 +23,9 @@ public class OptionDao extends RedisDao {
     }
 
     public void set(String name, Map<String, String> options) {
-        if (options.isEmpty()) {
-            redisManager.getAsyncCommands().hdel(name);
-        } else {
+        redisManager.getAsyncCommands().del(name);
+
+        if (!options.isEmpty()) {
             redisManager.getAsyncCommands().hset(name, options);
         }
     }

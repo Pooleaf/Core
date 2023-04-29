@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
 
 public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
 
@@ -124,8 +125,13 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   }
 
   @Override
-  public int registerEventListeners() {
+  public List<Class> registerEventListeners() {
     return BukkitReflectionUtil.registerListeners(this);
+  }
+
+  @Override
+  public List<Class> registerEventListeners(String packageName) {
+    return BukkitReflectionUtil.registerListeners(this, packageName);
   }
 
   public void registerEventListener(Listener eventListener) {
@@ -133,8 +139,13 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   }
 
   @Override
-  public void registerCommonEventListeners() {
-    CommonEventModule.registerListeners(this);
+  public List<Class> registerCommonEventListeners() {
+    return CommonEventModule.registerListeners(this);
+  }
+
+  @Override
+  public List<Class> registerCommonEventListeners(String packageName) {
+    return CommonEventModule.registerListeners(this, packageName);
   }
 
   @Override
@@ -145,6 +156,11 @@ public class BukkitCorePlugin extends JavaPlugin implements CorePlugin {
   @Override
   public void registerCommands() {
     AnnoCommandModule.registerCommands(this);
+  }
+
+  @Override
+  public void registerCommands(String packageName) {
+    AnnoCommandModule.registerCommands(this, packageName);
   }
 
   @Override

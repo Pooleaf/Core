@@ -1,10 +1,10 @@
 package net.pooleaf.core.modules.option.common.commands;
 
+import net.pooleaf.core.CorePermission;
+import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.annocommand.common.CommandResult;
 import net.pooleaf.core.modules.annocommand.common.HelpCommandResult;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
-import net.pooleaf.core.CorePermission;
-import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.option.OptionModule;
 
 import java.util.Map;
@@ -58,12 +58,26 @@ public class ServerOptionCommand {
 
     @Command(
             parent = {"serverOption", "core serverOption"},
-            name = {"check", "확인"},
+            name = {"deleteAll", "전체삭제"},
+            description= "모든 서버 옵션을 삭제합니다.",
+            permission = CorePermission.ADMIN
+    )
+    public void serverOption_deleteAll(CommonCommandSender sender, CommandResult result) {
+        OptionModule.getServerOption()
+                .deleteAll()
+                .save();
+
+        sender.sendMessage("§e모든 서버 옵션을 삭제했습니다.");
+    }
+
+    @Command(
+            parent = {"serverOption", "core serverOption"},
+            name = {"get", "확인"},
             arguments = "<옵션이름>",
             description= "서버 옵션 값을 확인합니다.",
             permission = CorePermission.ADMIN
     )
-    public void serverOption_check(CommonCommandSender sender, CommandResult result) {
+    public void serverOption_get(CommonCommandSender sender, CommandResult result) {
         String optionName = result.getArgument(0);
 
         String value = OptionModule.getServerOption().getString(optionName);

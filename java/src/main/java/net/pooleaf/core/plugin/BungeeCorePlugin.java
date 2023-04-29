@@ -1,28 +1,29 @@
 package net.pooleaf.core.plugin;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.api.plugin.Plugin;
+import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 import net.pooleaf.core.modules.annoconfig.common.SimpleAnnoConfig;
 import net.pooleaf.core.modules.commonconfig.CommonConfigModule;
 import net.pooleaf.core.modules.commonconfig.common.CommonConfig;
+import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.commonevent.common.CommonEventListener;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.bungee.util.BungeeReflectionUtil;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.logger.Logger;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.plugin.Plugin;
-import net.pooleaf.core.Core;
-import net.pooleaf.core.modules.commonevent.CommonEventModule;
 import net.pooleaf.core.modules.support.common.messager.Messager;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
-public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
+public class BungeeCorePlugin extends Plugin implements CorePlugin {
 
   @Setter
   @Getter
@@ -140,8 +141,13 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   }
 
   @Override
-  public int registerEventListeners() {
+  public List<Class> registerEventListeners() {
     return BungeeReflectionUtil.registerListeners(this);
+  }
+
+  @Override
+  public List<Class> registerEventListeners(String packageName) {
+    return BungeeReflectionUtil.registerListeners(this, packageName);
   }
 
   public void registerEventListener(Listener eventListener) {
@@ -149,8 +155,13 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   }
 
   @Override
-  public void registerCommonEventListeners() {
-    CommonEventModule.registerListeners(this);
+  public List<Class> registerCommonEventListeners() {
+    return CommonEventModule.registerListeners(this);
+  }
+
+  @Override
+  public List<Class> registerCommonEventListeners(String packageName) {
+    return CommonEventModule.registerListeners(this, packageName);
   }
 
   @Override
@@ -161,6 +172,11 @@ public abstract class BungeeCorePlugin extends Plugin implements CorePlugin {
   @Override
   public void registerCommands() {
     AnnoCommandModule.registerCommands(this);
+  }
+
+  @Override
+  public void registerCommands(String packageName) {
+    AnnoCommandModule.registerCommands(this, packageName);
   }
 
   @Override
