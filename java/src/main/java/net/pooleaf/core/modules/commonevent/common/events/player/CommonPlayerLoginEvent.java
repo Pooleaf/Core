@@ -1,11 +1,11 @@
 package net.pooleaf.core.modules.commonevent.common.events.player;
 
-import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import net.pooleaf.core.modules.commonevent.common.CommonEvent;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 
-@Getter
+@Data
 @RequiredArgsConstructor
 public class CommonPlayerLoginEvent<T> extends CommonEvent {
 

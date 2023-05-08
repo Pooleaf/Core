@@ -1,11 +1,11 @@
 package net.pooleaf.core.modules.commonevent.common.events.player;
 
-import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import net.pooleaf.core.modules.commonevent.common.CommonCancellableEvent;
+import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class CommonPlayerChatEvent<T> extends CommonCancellableEvent {
 
