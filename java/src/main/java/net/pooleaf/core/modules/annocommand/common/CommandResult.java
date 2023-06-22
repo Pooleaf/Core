@@ -1,8 +1,9 @@
 package net.pooleaf.core.modules.annocommand.common;
 
-import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.pooleaf.core.modules.annocommand.AnnoCommandModule;
+import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +136,10 @@ public class CommandResult {
      * @param sender 명령어 사용법을 보여줄 sender
      */
     public void sendUsage(Object sender) {
+        if (sender instanceof CommonCommandSender) {
+            sender = ((CommonCommandSender) sender).getPlatformSender();
+        }
+
         AnnoCommandModule.getCommandManager().getPlatformAdapter().sendMessage(sender, command.getUsage(entered));
     }
 
