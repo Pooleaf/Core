@@ -1,11 +1,12 @@
 package net.pooleaf.core.modules.commonsender.common.sql;
 
+import lombok.Getter;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.sqllib.common.AbstractSqlManager;
-import lombok.Getter;
 import net.pooleaf.core.modules.sqllib.common.SqlDao;
 import net.pooleaf.core.modules.sqllib.common.SqlTable;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -30,32 +31,32 @@ public class CommonPlayerDao extends SqlDao {
     }
 
 
-    public CommonPlayer selectPlayerInfoByUuid(UUID uuid, Class<? extends CommonPlayer> playerClass) {
+    public <T extends CommonPlayer> T selectPlayerInfoByUuid(UUID uuid, Class<T> playerClass) {
         return playerTable.select()
                 .where("uuid = ?")
                 .parameters(uuid)
                 .execute(playerClass);
     }
 
-    public CommonPlayer selectPlayerInfoByName(String name, Class<? extends CommonPlayer> playerClass) {
+    public <T extends CommonPlayer> T selectPlayerInfoByName(String name, Class<T> playerClass) {
         return playerTable.select()
                 .where("name = ?")
                 .parameters(name)
                 .execute(playerClass);
     }
 
-    public CommonPlayer selectPlayerInfoByDisplayName(String displayName, Class<? extends CommonPlayer> playerClass) {
+    public <T extends CommonPlayer> T selectPlayerInfoByDisplayName(String displayName, Class<T> playerClass) {
         return playerTable.select()
                 .where("REGEXP_REPLACE(display_name, '§(?i)[0-9|a-f|k-o|r]', '') = ?")
                 .parameters(displayName)
                 .execute(playerClass);
     }
 
-    public CommonPlayer selectPlayerInfo(CommonPlayer commonPlayer, Class<? extends CommonPlayer> playerClass) {
+    public <T extends CommonPlayer> List<T> selectPlayerInfosByIp(String ip, Class<T> playerClass) {
         return playerTable.select()
-                .where("uuid = ?")
-                .parameters(commonPlayer.getUuid())
-                .execute(commonPlayer);
+                .where("ip = ?")
+                .parameters(ip)
+                .executeList(playerClass);
     }
 
     public void insertPlayerInfo(CommonPlayer commonPlayer) {

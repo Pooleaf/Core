@@ -5,6 +5,7 @@ import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.support.common.manager.AbstractEhcacheManager;
 import net.pooleaf.core.modules.support.common.manager.LoadableManager;
 
+import java.util.List;
 import java.util.UUID;
 
 public class CommonPlayerManager extends AbstractEhcacheManager<UUID, CommonPlayer> implements LoadableManager<UUID, CommonPlayer> {
@@ -117,6 +118,13 @@ public class CommonPlayerManager extends AbstractEhcacheManager<UUID, CommonPlay
         }
 
         return commonPlayer;
+    }
+
+    /**
+     * 아이피로 데이터베이스에서 CommonPlayer를 찾아 목록을 캐싱 없이 반환합니다.
+     */
+    public List<CommonPlayer> loadByIpWithoutNoCache(String ip) {
+        return CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfosByIp(ip, playerClass);
     }
 
 }

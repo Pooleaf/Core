@@ -15,6 +15,7 @@ import net.pooleaf.core.plugin.CorePlugin;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * 플랫폼에 상관없이 사용할 수 있는 플레이어 객체를 제공하고,
@@ -187,6 +188,17 @@ public class CommonSenderModule extends CoreModule {
     }
 
     /**
+     * 해당 IP를 가진 접속 중인 플레이어 목록을 반환합니다.
+     * @param ip 찾을 플레이어의 IP
+     * @return 해당 IP를 가진 플레이어 목록
+     */
+    public static List<CommonPlayer> getOnlinePlayersByIp(String ip) {
+        return getOnlinePlayers().stream()
+                .filter(commonPlayer -> commonPlayer.getIp().equals(ip))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 플랫폼에 맞는 Sender를 CommonCommandSender로 변환하여 반환합니다.
      * @param platformSender 플랫폼에 맞는 Sender
      * @return 해당 Sender에 맞는 CommonCommandSender
@@ -245,11 +257,20 @@ public class CommonSenderModule extends CoreModule {
 
     /**
      * 해당 가상닉네임을 가진 플레이어가 존재하는지 확인합니다.
-     * @param displayName 찾은 플레이어의 가상닉네임
+     * @param displayName 찾을 플레이어의 가상닉네임
      * @return 플레이어 존재 여부
      */
     public static boolean existsPlayerByDisplayName(String displayName) {
         return commonPlayerManager.getOrLoadByDisplayNameWithoutCache(displayName) != null;
+    }
+
+    /**
+     * 해당 IP를 가진 모든 플레이어를 캐싱 없이 불러옵니다.
+     * @param ip 찾을 플레이어의 IP
+     * @return 해당 IP를 가진 플레이어 목록
+     */
+    public static List<CommonPlayer> getOfflinePlayersByIp(String ip) {
+        return commonPlayerManager.loadByIpWithoutNoCache(ip);
     }
 
 }
