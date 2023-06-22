@@ -184,7 +184,9 @@ public class CommonSenderModule extends CoreModule {
      * 접속 중인 모든 플레이어를 반환합니다.
      */
     public static List<CommonPlayer> getOnlinePlayers() {
-        return commonPlayerManager.values();
+        return commonPlayerManager.values().stream()
+                .filter(commonPlayer -> commonPlayer.isOnline())
+                .collect(Collectors.toList());
     }
 
     /**
