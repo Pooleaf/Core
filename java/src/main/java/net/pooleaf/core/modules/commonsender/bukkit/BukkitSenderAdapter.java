@@ -11,20 +11,23 @@ import org.bukkit.entity.Player;
 public class BukkitSenderAdapter extends CommonSenderAdapter<BukkitPlayer, BukkitConsoleSender> {
 
   @Override
-  public BukkitPlayer getPlayerByPlatformSender(Object platformSender) {
+  public BukkitPlayer getPlayerByPlatformSenderWithoutCache(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof Player, "platformSender가 Player가 아닙니다.");
 
-    return (BukkitPlayer) CommonSenderModule.getPlayer(((Player) platformSender).getUniqueId());
+    return (BukkitPlayer) CommonSenderModule.getOfflinePlayer(((Player) platformSender).getUniqueId());
   }
 
   @Override
-  public CommonCommandSender getCommandSenderByPlatformSender(Object platformSender) {
+  public CommonCommandSender getCommandSenderByPlatformSenderWithoutCache(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof CommandSender, "platformSender가 CommandSender가 아닙니다.");
 
-    if (platformSender instanceof ConsoleCommandSender) { // 콘솔일 경우
+    // 콘솔일 경우
+    if (platformSender instanceof ConsoleCommandSender) {
       return CommonSenderModule.getConsoleSender();
-    } else { // 플레이어일 경우
-      return getPlayerByPlatformSender(platformSender);
+    }
+    // 플레이어일 경우
+    else {
+      return getPlayerByPlatformSenderWithoutCache(platformSender);
     }
   }
 

@@ -27,7 +27,7 @@ public class BungeeCommonPlayerEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onLogin(LoginEvent e) {
-        CommonPlayer player = CommonSenderModule.getPlayer(e.getConnection().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getOnlinePlayer(e.getConnection().getUniqueId());
 
         CommonPlayerLoginEvent event = new CommonPlayerLoginEvent(player);
         CommonEventModule.callEvent(event);
@@ -44,7 +44,7 @@ public class BungeeCommonPlayerEventListener implements Listener {
             return;
         }
 
-        CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getOnlinePlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerJoinEvent event = new CommonPlayerJoinEvent(player);
         CommonEventModule.callEvent(event);
@@ -56,7 +56,7 @@ public class BungeeCommonPlayerEventListener implements Listener {
     public void onQuit(PlayerDisconnectEvent e) {
         joined.remove(e.getPlayer().getUniqueId());
 
-        CommonPlayer player = CommonSenderModule.getPlayer(e.getPlayer().getUniqueId());
+        CommonPlayer player = CommonSenderModule.getOnlinePlayer(e.getPlayer().getUniqueId());
 
         CommonPlayerQuitEvent event = new CommonPlayerQuitEvent(player);
         CommonEventModule.callEvent(event);
@@ -69,7 +69,7 @@ public class BungeeCommonPlayerEventListener implements Listener {
             return;
         }
 
-        CommonPlayer player = CommonSenderModule.getPlayer(((ProxiedPlayer) e.getSender()).getUniqueId());
+        CommonPlayer player = CommonSenderModule.getOnlinePlayer(((ProxiedPlayer) e.getSender()).getUniqueId());
 
         CommonPlayerChatEvent event = new CommonPlayerChatEvent(player, e.getMessage());
         CommonEventModule.callEvent(event);

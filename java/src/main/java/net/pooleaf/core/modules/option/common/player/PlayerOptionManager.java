@@ -33,7 +33,7 @@ public class PlayerOptionManager extends AbstractEhcacheManager<UUID, Option> im
         Option option = LoadableManager.super.load(key);
 
         if (option != null) {
-            CommonPlayer commonPlayer = CommonSenderModule.getPlayer(key);
+            CommonPlayer commonPlayer = CommonSenderModule.getOnlinePlayer(key);
             if (commonPlayer == null || !commonPlayer.isOnline()) {
                 setTimeToLive(key, IDLE_SECONDS);
             }

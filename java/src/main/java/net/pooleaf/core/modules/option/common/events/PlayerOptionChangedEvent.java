@@ -15,9 +15,11 @@ public class PlayerOptionChangedEvent extends CommonEvent {
 
     private final Collection<String> keys;
 
+    private CommonPlayer commonPlayer;
+
 
     public CommonPlayer getCommonPlayer() {
-        return CommonSenderModule.getPlayer(uuid);
+        return (commonPlayer == null) ? commonPlayer = CommonSenderModule.getOfflinePlayer(uuid) : commonPlayer;
     }
 
 }

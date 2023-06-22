@@ -19,7 +19,7 @@ public class PlayerInfoCommand {
             permission = CorePermission.ADMIN
     )
     public void playerInfo(CommonCommandSender sender, CommandResult result) {
-        CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(result.getArgument(0));
+        CommonPlayer targetPlayer = CommonSenderModule.getOfflinePlayerByName(result.getArgument(0));
         if (targetPlayer == null) {
             sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;

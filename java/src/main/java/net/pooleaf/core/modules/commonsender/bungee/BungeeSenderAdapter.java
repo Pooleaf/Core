@@ -10,20 +10,23 @@ import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 public class BungeeSenderAdapter extends CommonSenderAdapter<BungeePlayer, BungeeConsoleSender> {
 
   @Override
-  public BungeePlayer getPlayerByPlatformSender(Object platformSender) {
+  public BungeePlayer getPlayerByPlatformSenderWithoutCache(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof ProxiedPlayer, "platformSender가 ProxiedPlayer가 아닙니다.");
 
-    return (BungeePlayer) CommonSenderModule.getPlayer(((ProxiedPlayer) platformSender).getUniqueId());
+    return (BungeePlayer) CommonSenderModule.getOfflinePlayer(((ProxiedPlayer) platformSender).getUniqueId());
   }
 
   @Override
-  public CommonCommandSender getCommandSenderByPlatformSender(Object platformSender) {
+  public CommonCommandSender getCommandSenderByPlatformSenderWithoutCache(Object platformSender) {
     Preconditions.checkArgument(platformSender instanceof CommandSender, "platformSender가 CommandSender가 아닙니다.");
 
-    if (!(platformSender instanceof ProxiedPlayer)) { // 콘솔일 경우
+    // 콘솔일 경우
+    if (!(platformSender instanceof ProxiedPlayer)) {
       return CommonSenderModule.getConsoleSender();
-    } else { // 플레이어일 경우
-      return getPlayerByPlatformSender(platformSender);
+    }
+    // 플레이어일 경우
+    else {
+      return getPlayerByPlatformSenderWithoutCache(platformSender);
     }
   }
 

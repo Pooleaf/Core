@@ -12,6 +12,7 @@ import net.pooleaf.core.modules.commonsender.common.sql.CommonSenderSqlManager;
 import net.pooleaf.core.modules.support.common.platform.Platform;
 import net.pooleaf.core.plugin.CorePlugin;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -123,7 +124,7 @@ public class CommonSenderModule extends CoreModule {
      * @return UUID
      */
     public static UUID getUuidByName(String name) {
-        return Optional.ofNullable(commonPlayerManager.getOrLoadByName(name))
+        return Optional.ofNullable(commonPlayerManager.getOrLoadByNameWithoutCache(name))
                 .map(CommonPlayer::getUuid)
                 .orElse(null);
     }
@@ -135,14 +136,13 @@ public class CommonSenderModule extends CoreModule {
      * @return UUID
      */
     public static UUID getUuidByDisplayName(String displayName) {
-        return Optional.ofNullable(commonPlayerManager.getOrLoadByDisplayName(displayName))
+        return Optional.ofNullable(commonPlayerManager.getOrLoadByDisplayNameWithoutCache(displayName))
                 .map(CommonPlayer::getUuid)
                 .orElse(null);
     }
 
     /**
      * 해당 UUID를 가진 플레이어를 반환합니다.
-     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param uuid 찾을 플레이어의 UUID
      * @return 해당 UUID를 가진 플레이어
      */
@@ -176,7 +176,14 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 Player에 맞는 CommonPlayer
      */
     public static CommonPlayer getOnlinePlayerByPlatformSender(Object platformSender) {
-        return commonSenderAdapter.getPlayerByPlatformSender(platformSender);
+        return commonSenderAdapter.getPlayerByPlatformSenderWithoutCache(platformSender);
+    }
+
+    /**
+     * 접속 중인 모든 플레이어를 반환합니다.
+     */
+    public static List<CommonPlayer> getOnlinePlayers() {
+        return commonPlayerManager.values();
     }
 
     /**
@@ -185,17 +192,17 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 Sender에 맞는 CommonCommandSender
      */
     public static CommonCommandSender getOnlineCommandSenderByPlatformSender(Object platformSender) {
-        return commonSenderAdapter.getCommandSenderByPlatformSender(platformSender);
+        return commonSenderAdapter.getCommandSenderByPlatformSenderWithoutCache(platformSender);
     }
 
     /**
      * 해당 UUID를 가진 플레이어를 반환합니다.
-     * 접속 중이 아닐 경우 []
+     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param uuid 찾을 플레이어의 UUID
      * @return 해당 UUID를 가진 플레이어
      */
-    public static CommonPlayer getPlayer(UUID uuid) {
-        return commonPlayerManager.getOrLoad(uuid);
+    public static CommonPlayer getOfflinePlayer(UUID uuid) {
+        return commonPlayerManager.getOrLoadWithoutCache(uuid);
     }
 
     /**
@@ -204,7 +211,7 @@ public class CommonSenderModule extends CoreModule {
      * @param name 찾을 플레이어의 닉네임
      * @return 해당 닉네임을 가진 플레이어
      */
-    public static CommonPlayer getPlayerByName(String name) {
+    public static CommonPlayer getOfflinePlayerByName(String name) {
         return commonPlayerManager.getOrLoadByNameWithoutCache(name);
     }
 
@@ -214,7 +221,7 @@ public class CommonSenderModule extends CoreModule {
      * @param displayName 찾을 플레이어의 가상닉네임
      * @return 해당 가상닉네임을 가진 플레이어
      */
-    public static CommonPlayer getPlayerByDisplayName(String displayName) {
+    public static CommonPlayer getOfflinePlayerByDisplayName(String displayName) {
         return commonPlayerManager.getOrLoadByDisplayNameWithoutCache(displayName);
     }
 
@@ -224,7 +231,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 플레이어 존재 여부
      */
     public static boolean existsPlayer(UUID uuid) {
-        return commonPlayerManager.getOrLoad(uuid) != null;
+        return commonPlayerManager.getOrLoadWithoutCache(uuid) != null;
     }
 
     /**
@@ -233,7 +240,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 플레이어 존재 여부
      */
     public static boolean existsPlayerByName(String name) {
-        return commonPlayerManager.getOrLoadByName(name) != null;
+        return commonPlayerManager.getOrLoadByNameWithoutCache(name) != null;
     }
 
     /**
@@ -242,7 +249,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 플레이어 존재 여부
      */
     public static boolean existsPlayerByDisplayName(String displayName) {
-        return commonPlayerManager.getOrLoadByDisplayName(displayName) != null;
+        return commonPlayerManager.getOrLoadByDisplayNameWithoutCache(displayName) != null;
     }
 
 }

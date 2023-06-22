@@ -6,20 +6,20 @@ import java.util.UUID;
 
 public abstract class CommonSenderAdapter<P extends CommonPlayer, C extends CommonConsoleSender> {
 
-  public P getPlayer(UUID uuid) {
+  public P getPlayerWithoutCache(UUID uuid) {
     return (P) CommonSenderModule.getCommonPlayerManager().getOrLoadWithoutCache(uuid);
   }
 
-  public P getPlayerByName(String name) {
+  public P getPlayerByNameWithoutCache(String name) {
     return (P) CommonSenderModule.getCommonPlayerManager().getOrLoadByNameWithoutCache(name);
   }
 
-  public P getPlayerByDisplayName(String displayName) {
+  public P getPlayerByDisplayNameWithoutCache(String displayName) {
     return (P) CommonSenderModule.getCommonPlayerManager().getOrLoadByDisplayNameWithoutCache(displayName);
   }
 
-  public abstract P getPlayerByPlatformSender(Object platformSender);
+  public abstract P getPlayerByPlatformSenderWithoutCache(Object platformSender);
 
-  public abstract CommonCommandSender getCommandSenderByPlatformSender(Object platformSender);
+  public abstract CommonCommandSender getCommandSenderByPlatformSenderWithoutCache(Object platformSender);
 
 }

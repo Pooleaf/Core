@@ -21,7 +21,7 @@ public class DisplayNameCommand {
         String name = result.getArgument(0);
         String displayName = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
 
-        CommonPlayer targetPlayer = CommonSenderModule.getPlayerByName(name);
+        CommonPlayer targetPlayer = CommonSenderModule.getOfflinePlayerByName(name);
         if (targetPlayer == null) {
             sender.sendWarning("존재하지 않는 플레이어입니다.");
             return;
