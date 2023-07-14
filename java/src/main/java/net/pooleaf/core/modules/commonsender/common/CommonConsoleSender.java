@@ -11,6 +11,11 @@ public abstract class CommonConsoleSender<T> extends CommonCommandSender<T> {
     }
 
     @Override
+    public String getId() {
+        return "CONSOLE";
+    }
+
+    @Override
     public boolean isConsole() {
         return true;
     }

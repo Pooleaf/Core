@@ -19,6 +19,10 @@ public class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform
     protected LocalDateTime lastLogin; // 마지막 로그인
     protected LocalDateTime lastOnline; // 마지막 온라인 (퇴장 시간)
 
+    @Override
+    public String getId() {
+        return (uuid != null) ? uuid.toString() : null;
+    }
 
     @Override
     public boolean isConsole() {

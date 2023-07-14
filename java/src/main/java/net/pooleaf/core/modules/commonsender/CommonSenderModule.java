@@ -32,6 +32,9 @@ public class CommonSenderModule extends CoreModule {
     @Getter
     private static CommonConsoleSender consoleSender;
 
+    @Getter
+    private static CommonPluginSender pluginSender;
+
 
     private static CommonSenderAdapter commonSenderAdapter;
     private static BukkitSenderAdapter bukkitSenderAdapter;
@@ -57,6 +60,7 @@ public class CommonSenderModule extends CoreModule {
 
         commonSenderAdapter = new CommonSenderFactory().createCommonSenderAdapter();
         consoleSender = new CommonSenderFactory().createCommonConsoleSender();
+        pluginSender = new CommonPluginSender();
 
         switch (Platform.getCurrentPlatform()) {
             case BUKKIT:
@@ -92,6 +96,23 @@ public class CommonSenderModule extends CoreModule {
         }
 
         return null;
+    }
+
+    /**
+     * ID로 CommonCommandSender를 불러옵니다.
+     * 만약 플레이어 UUID이고 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
+     * @param id ID
+     * @return 플레이어 또는 콘솔 또는 플러그인 Sender
+     */
+    public static CommonCommandSender getById(String id) {
+        if (consoleSender.getId().equals(id)) {
+            return consoleSender;
+        } else if (pluginSender.getId().equals(id)) {
+            return pluginSender;
+        } else {
+            UUID uuid = UUID.fromString(id);
+            return getOfflinePlayer(uuid);
+        }
     }
 
     /**

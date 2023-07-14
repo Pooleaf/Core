@@ -12,14 +12,23 @@ public abstract class CommonCommandSender<T> { // T: 각 Platform에 맞는 Send
     protected String displayName; // 가상닉네임
 
 
+    /**
+     * ID를 반환합니다.
+     */
+    public abstract String getId();
+
+    /**
+     * 가상닉네임 존재 여부를 반환합니다.
+     * @return 가상닉네임 존재 여부
+     */
     public boolean hasDisplayName() {
         return displayName != null;
     }
 
     /**
-     * 플레이어의 가상닉네임을 반환합니다.
+     * 가상닉네임을 반환합니다.
      * 가상닉네임이 없을 경우 닉네임을 반환합니다.
-     * @return 플레이어의 가상닉네임 (없을 경우 실제 닉네임)
+     * @return 가상닉네임 (없을 경우 실제 닉네임)
      */
     public String getDisplayName() {
         return hasDisplayName() ? displayName : name;
