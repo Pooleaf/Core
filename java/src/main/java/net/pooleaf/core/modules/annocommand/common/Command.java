@@ -20,6 +20,15 @@ public @interface Command {
     CommonChatColor color() default CommonChatColor.RESET;
 
     boolean helpCommand() default false;
+
+    /**
+     * 현재 명령어를 특정 명령어의 도움말 명령어로 설정합니다.
+     * ""일 경우 현재 명령어를 도움말 명령어로 설정합니다.
+     *
+     * 예) '/돈 도움말' 명령어를 '/돈' 명령어의 도움말 명령어로 만들고 싶을 경우 '돈'으로 설정
+     */
+    String helpCommandTarget() default "";
+
     boolean async() default true;
 
     boolean usePlatformPrefix() default true;

@@ -41,6 +41,8 @@ public class AnnoCommand {
     private boolean consoleOnly;
 
     private boolean helpCommand;
+    private String helpCommandTarget;
+
     private boolean async;
 
     private Object executeInstance;

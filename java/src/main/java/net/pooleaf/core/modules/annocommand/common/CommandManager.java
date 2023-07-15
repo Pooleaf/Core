@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.annocommand.common;
 
+import com.google.common.base.Preconditions;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -109,6 +110,9 @@ public class CommandManager {
 
                     // 도움말 명령어인지
                     command.setHelpCommand(anno.helpCommand());
+                    if (!anno.helpCommandTarget().isEmpty()) {
+                        command.setHelpCommandTarget(anno.helpCommandTarget());
+                    }
 
                     // 비동기 명령어인지
                     command.setAsync(anno.async());
@@ -275,7 +279,13 @@ public class CommandManager {
             else if (command.isHelpCommand()) {
                 HelpCommandResult result = new HelpCommandResult(command, sender, commandLine);
 
-                List<AnnoCommand> subCommands = getSubCommands(command, 1)
+                AnnoCommand helpCommandTarget = command;
+                if (command.getHelpCommandTarget() != null) {
+                    helpCommandTarget = getCommand(command.getHelpCommandTarget());
+                    Preconditions.checkNotNull(helpCommandTarget, "도움말 명령어 타겟인 `" + command.getHelpCommandTarget() + "` 명령어가 존재하지 않습니다.");
+                }
+
+                List<AnnoCommand> subCommands = getSubCommands(helpCommandTarget, 1)
                         .stream()
                         .filter(subCommand -> subCommand.getPermission() == null || platformAdapter.hasPermission(sender, subCommand.getPermission()))
                         .collect(Collectors.toList());
@@ -303,12 +313,12 @@ public class CommandManager {
 
                 platformAdapter.sendMessage(sender, "");
                 if (maxPage <= 1) {
-                    platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ]");
+                    platformAdapter.sendMessage(sender, helpCommandTarget.getPlugin().getColor() + "[ " + helpCommandTarget.getName().get(0) + " 명령어 목록 ]");
                 } else {
                     if (platformAdapter.isConsole(sender)) {
-                        platformAdapter.sendMessage(sender, command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " ) ");
+                        platformAdapter.sendMessage(sender, helpCommandTarget.getPlugin().getColor() + "[ " + helpCommandTarget.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " ) ");
                     } else {
-                        SimpleComponentBuilder builder = new SimpleComponentBuilder(command.getPlugin().getColor() + "[ " + command.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " ) ");
+                        SimpleComponentBuilder builder = new SimpleComponentBuilder(helpCommandTarget.getPlugin().getColor() + "[ " + helpCommandTarget.getName().get(0) + " 명령어 목록 ] ( " + page + " / " + maxPage + " ) ");
 
                         // 이전 페이지
                         if (page == 1) {
@@ -316,7 +326,7 @@ public class CommandManager {
                                     .hoverShowText("이전 페이지가 없습니다.")
                                     .build());
                         } else {
-                            builder.addExtra(new SimpleComponentBuilder(command.getPlugin().getColor() + "◀")
+                            builder.addExtra(new SimpleComponentBuilder(helpCommandTarget.getPlugin().getColor() + "◀")
                                     .hoverShowText("클릭 시 이전 페이지로 이동합니다.")
                                     .clickRunCommand("/" + result.getEntered() + " " + (page - 1))
                                     .build());
@@ -329,7 +339,7 @@ public class CommandManager {
                                     .hoverShowText("다음 페이지가 없습니다.")
                                     .build());
                         } else {
-                            builder.addExtra(new SimpleComponentBuilder(command.getPlugin().getColor() + "▶")
+                            builder.addExtra(new SimpleComponentBuilder(helpCommandTarget.getPlugin().getColor() + "▶")
                                     .hoverShowText("클릭 시 다음 페이지로 이동합니다.")
                                     .clickRunCommand("/" + result.getEntered() + " " + (page + 1))
                                     .build());
