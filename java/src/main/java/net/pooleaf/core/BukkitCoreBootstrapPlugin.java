@@ -21,8 +21,6 @@ public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
     setColor(CommonChatColor.YELLOW);
     registerLoggerPrefix();
 
-    Debugger.addListener(Bukkit.getConsoleSender());
-
     Core.init(this);
 
     registerEventListeners();

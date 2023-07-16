@@ -1,11 +1,9 @@
 package net.pooleaf.core;
 
+import lombok.Getter;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.plugin.BungeeCorePlugin;
-import lombok.Getter;
-import net.md_5.bungee.api.ProxyServer;
-import net.pooleaf.core.modules.support.common.debugger.Debugger;
 
 public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
 
@@ -20,8 +18,6 @@ public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
     setPrefix("§e[ Core ]");
     setColor(CommonChatColor.YELLOW);
     registerLoggerPrefix();
-
-    Debugger.addListener(ProxyServer.getInstance().getConsole());
 
     Core.init(this);
 
