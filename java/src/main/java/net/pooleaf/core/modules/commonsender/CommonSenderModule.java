@@ -293,7 +293,7 @@ public class CommonSenderModule extends CoreModule {
      * @return 해당 IP를 가진 플레이어 목록
      */
     public static List<CommonPlayer> getOfflinePlayersByIp(String ip) {
-        return commonPlayerManager.loadByIpWithoutNoCache(ip);
+        return commonPlayerManager.loadByIpWithoutCache(ip);
     }
 
 }

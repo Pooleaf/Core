@@ -123,7 +123,7 @@ public class CommonPlayerManager extends AbstractEhcacheManager<UUID, CommonPlay
     /**
      * 아이피로 데이터베이스에서 CommonPlayer를 찾아 목록을 캐싱 없이 반환합니다.
      */
-    public List<CommonPlayer> loadByIpWithoutNoCache(String ip) {
+    public List<CommonPlayer> loadByIpWithoutCache(String ip) {
         return CommonSenderModule.getSqlManager().commonPlayer().selectPlayerInfosByIp(ip, playerClass);
     }
 

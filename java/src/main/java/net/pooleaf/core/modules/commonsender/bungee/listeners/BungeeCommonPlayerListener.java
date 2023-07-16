@@ -14,7 +14,7 @@ import net.pooleaf.core.modules.commonsender.bungee.BungeePlayer;
 
 public class BungeeCommonPlayerListener implements Listener {
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPreLogin(LoginEvent e) {
         // 불러오기
         CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getConnection().getUniqueId());
@@ -35,9 +35,13 @@ public class BungeeCommonPlayerListener implements Listener {
         CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerDisconnectEvent e) {
         CommonPlayer player = CommonSenderModule.getCommonPlayerManager().get(e.getPlayer().getUniqueId());
+        if (player == null) {
+            return;
+        }
+
         player.setLastOnline(LocalDateTime.now());
 
         // 저장
