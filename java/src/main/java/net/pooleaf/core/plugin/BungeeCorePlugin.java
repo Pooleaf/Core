@@ -121,8 +121,18 @@ public class BungeeCorePlugin extends Plugin implements CorePlugin {
     Logger.registerPrefix(getPluginPackage(), prefix);
   }
 
+  @Override
+  public void registerLoggerPrefix(String packageName) {
+    Logger.registerPrefix(packageName, prefix);
+  }
+
   public void registerMessagerPrefix() {
     Messager.registerPrefix(getPluginPackage(), prefix);
+  }
+
+  @Override
+  public void registerMessagerPrefix(String packageName) {
+    Messager.registerPrefix(packageName, prefix);
   }
 
   @Override

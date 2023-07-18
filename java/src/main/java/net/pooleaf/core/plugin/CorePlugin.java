@@ -35,6 +35,26 @@ public interface CorePlugin {
   boolean detectPlugin(String name);
 
   /**
+   * 해당 플러그인의 Prefix를 Logger에 등록합니다.
+   */
+  void registerLoggerPrefix();
+
+  /**
+   * 해당 플러그인의 Prefix를 Logger에 등록합니다.
+   */
+  void registerLoggerPrefix(String packageName);
+
+  /**
+   * 해당 플러그인의 Prefix를 Messager에 등록합니다.
+   */
+  void registerMessagerPrefix();
+
+  /**
+   * 해당 플러그인의 Prefix를 Messager에 등록합니다.
+   */
+  void registerMessagerPrefix(String packageName);
+
+  /**
    * 해당 플러그인의 플랫폼에 맞는 모든 EventListener를 등록합니다.
    * @return 등록된 Listener 클래스 목록
    */
