@@ -235,6 +235,9 @@ public class CommandManager {
         String lastArgument = commandLine.substring(commandLine.lastIndexOf(" ")).toLowerCase().trim();
 
         AnnoCommand parentCommand = getCommand(commandLine);
+        if (parentCommand == null) {
+            return new ArrayList<>();
+        }
 
         return getSubCommands(parentCommand, 1)
                 .stream()

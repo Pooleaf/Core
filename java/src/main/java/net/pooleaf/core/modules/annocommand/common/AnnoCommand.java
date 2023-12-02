@@ -97,7 +97,7 @@ public class AnnoCommand {
         if (entered == null) {
             command = "/" + getCommandLine();
         } else {
-            command = "/" + entered + " " + name.get(0);
+            command = "/" + entered;
         }
         builder.text(command)
                 .hoverShowText("클릭시 명령어가 채팅창에 입력됩니다.")
