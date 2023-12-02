@@ -14,8 +14,9 @@ public class LobbyChannelGroup extends ChannelGroup {
 
     /**
      * 가장 사람이 적은 로비를 반환합니다.
+     * 없을 경우 null을 반환합니다.
      * @param excludeChannel 제외할 채널
-     * @return 그룹에서 온라인이고 가장 사람이 적은 채널
+     * @return 그룹에서 온라인이고 가장 사람이 적은 채널, 없을 경우 null
      */
     @Override
     public Channel getFastJoinChannel(Channel excludeChannel) {
@@ -27,15 +28,10 @@ public class LobbyChannelGroup extends ChannelGroup {
             return null;
         }
 
-        Channel targetLobbyChannel = channels.get(0);
-        // 랜덤 로비가 제외할 채널에 해당되지 않을 경우 반환
-        if (!targetLobbyChannel.equals(excludeChannel)) {
-            return targetLobbyChannel;
-        }
-        // 아닐 경우 다시 계산하여 반환
-        else {
-            return getFastJoinChannel(excludeChannel);
-        }
+        // 온라인이고 제외할 채널에 해당되지 않을 경우 반환
+        return channels.stream()
+                .filter(targetLobbyChannel -> targetLobbyChannel.isOnline() && !targetLobbyChannel.equals(excludeChannel))
+                .findFirst().orElse(null);
     }
 
 }
