@@ -3,14 +3,14 @@ package net.pooleaf.core.modules.channel.common.commands;
 import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.annocommand.common.CommandResult;
 import net.pooleaf.core.modules.annocommand.common.HelpCommandResult;
+import net.pooleaf.core.modules.channel.ChannelModule;
+import net.pooleaf.core.modules.channel.common.ChannelPermission;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
-import net.pooleaf.core.modules.channel.common.channel.ChannelStatus;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
-import net.pooleaf.core.modules.channel.ChannelModule;
-import net.pooleaf.core.modules.channel.common.ChannelPermission;
+import net.pooleaf.core.modules.support.common.util.GsonUtil;
 import org.bukkit.ChatColor;
 
 import java.util.stream.Collectors;
@@ -79,7 +79,7 @@ public class ChannelCommand {
     sender.sendMessage("§e이름 표기: §f" + (channel.hasDisplayName() ? channel.getDisplayName() : "없음"));
     sender.sendMessage("§e그룹: §f" + (channel.hasGroup() ? channel.getGroupName() : "없음"));
     sender.sendMessage("§e온라인 :§f" + (channel.isOnline() ? "§a온라인" : "§7오프라인"));
-    sender.sendMessage("§e상태 :§f" + ChannelStatus.getMessage(channel.getChannelStatus()) + "(" + channel.getChannelStatus() + ")");
+    sender.sendMessage("§e상태 :§f" + GsonUtil.getGson().toJson(channel.getChannelStatus()));
     sender.sendMessage("§e빠른접속 허용 :§f" + channel.isAllowFastJoin());
     sender.sendMessage("§e접속자 수: §f" + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
     sender.sendMessage("§e접속자 목록: §f" + channel.getPlayerNames());

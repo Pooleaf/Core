@@ -4,7 +4,7 @@ import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.annocommand.common.CommandResult;
 import net.pooleaf.core.modules.annocommand.common.HelpCommandResult;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
-import net.pooleaf.core.modules.channel.common.channel.ChannelStatus;
+import net.pooleaf.core.modules.channel.common.channel.KnownChannelStatus;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
@@ -63,9 +63,9 @@ public class ChannelGroupCommand {
     if (!channelGroup.getChannels().isEmpty()) {
       for (Channel channel : channelGroup.getChannels()) {
         if (channel.isOnline()) {
-          sender.sendMessage("§a" + channel.getName() + "(" + ChannelStatus.getMessage(channel.getChannelStatus()) + "): " + channel.getPlayerCount() + " / " + channel.getMaxPlayerCount());
+          sender.sendMessage("§a" + channel.getName() + "(" + channel.getChannelStatus().getId() + ":" + channel.getChannelStatus().getMessage() + "): §f" + channel.getPlayerCount() + " §a/ §f" + channel.getMaxPlayerCount());
         } else {
-          sender.sendMessage("§7" + channel.getName());
+          sender.sendMessage("§7" + channel.getName() + "(오프라인)");
         }
       }
     }

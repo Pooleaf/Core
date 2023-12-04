@@ -21,7 +21,7 @@ public class Channel implements Comparable<Channel> {
 
     private boolean online;
     private boolean allowFastJoin;
-    private int channelStatus;
+    private ChannelStatus channelStatus;
     private double tps;
 
     private int playerCount;
@@ -41,8 +41,8 @@ public class Channel implements Comparable<Channel> {
         return online ? maxPlayerCount : 0;
     }
 
-    public int getChannelStatus() {
-        return online ? channelStatus : 0;
+    public ChannelStatus getChannelStatus() {
+        return online ? channelStatus : KnownChannelStatus.OFFLINE;
     }
 
     public Set<String> getPlayerNames() {

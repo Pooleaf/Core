@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
-import net.pooleaf.core.modules.channel.common.channel.ChannelStatus;
+import net.pooleaf.core.modules.channel.common.channel.KnownChannelStatus;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import lombok.Getter;
 import net.pooleaf.core.modules.channel.ChannelModule;
@@ -30,7 +30,7 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     Channel channel = ChannelModule.getChannelManager().getOrMake(ChannelModule.getCurrentChannelName(), new Channel(ChannelModule.getCurrentChannelName()));
 
     channel.setOnline(true);
-    channel.setChannelStatus(ChannelStatus.PREPARING);
+    channel.setChannelStatus(KnownChannelStatus.STARTING);
     channel.setPlayerCount(Bukkit.getOnlinePlayers().size());
     channel.setMaxPlayerCount(Bukkit.getMaxPlayers());
     channel.setPlayerNames(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toSet()));
@@ -40,7 +40,7 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     // 서버 실행 완료 후 채널 정보 업데이트
     Bukkit.getScheduler().runTask((Plugin) Core.getPlugin(), () -> {
       channel.setTps(Bukkit.spigot().getTPS()[0]);
-      channel.setChannelStatus(ChannelStatus.RUNNING);
+      channel.setChannelStatus(KnownChannelStatus.ONLINE);
       channel.setAllowFastJoin(true);
       channel.save();
 
@@ -57,7 +57,7 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     getCurrentChannel().getPlayerNames().clear();
     getCurrentChannel().getPlayerUuids().clear();
     getCurrentChannel().getDatas().clear();
-    getCurrentChannel().setChannelStatus(ChannelStatus.OFFLINE);
+    getCurrentChannel().setChannelStatus(KnownChannelStatus.OFFLINE);
     getCurrentChannel().setOnline(false);
     getCurrentChannel().save();
   }
