@@ -12,8 +12,7 @@ public class LobbyCommand {
   @Command(
           parent = {"", "core channel"},
           name = {"로비", "lobby", "fhql"},
-          description = "로비 채널로 이동합니다.",
-          permission = ChannelPermission.ADMIN
+          description = "로비 채널로 이동합니다."
   )
   public void lobby(CommonPlayer player, CommandResult result) {
     LobbyChannelGroup lobbyChannelGroup = ChannelModule.getLobbyChannelGroup();

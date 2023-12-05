@@ -174,7 +174,6 @@ public class CommonSenderModule extends CoreModule {
 
     /**
      * 해당 닉네임을 가진 플레이어를 반환합니다.
-     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param name 찾을 플레이어의 닉네임
      * @return 해당 닉네임을 가진 플레이어
      */
@@ -184,7 +183,6 @@ public class CommonSenderModule extends CoreModule {
 
     /**
      * 해당 가상닉네임을 가진 플레이어를 반환합니다.
-     * 접속 중이 아닐 경우 캐시 없이 불러와 반환합니다.
      * @param displayName 찾을 플레이어의 가상닉네임
      * @return 해당 가상닉네임을 가진 플레이어
      */
