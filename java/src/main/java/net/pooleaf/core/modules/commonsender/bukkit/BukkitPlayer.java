@@ -5,6 +5,7 @@ import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.gui.bukkit.title.DefaultTitleBuilder;
 import net.pooleaf.core.modules.gui.bukkit.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class BukkitPlayer extends CommonPlayer<Player> {
@@ -37,6 +38,14 @@ public class BukkitPlayer extends CommonPlayer<Player> {
   @Override
   public void kickPlayer(String message) {
     getPlatformSender().kickPlayer(message);
+  }
+
+  public void setAbsorptionHearts(float health) {
+    ((CraftPlayer) getPlatformSender()).getHandle().setAbsorptionHearts(health);
+  }
+
+  public float getAbsorptionHearts() {
+    return ((CraftPlayer) getPlatformSender()).getHandle().getAbsorptionHearts();
   }
 
   public void sendTitleSafely(Title title) {
