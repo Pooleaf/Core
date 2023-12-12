@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.commonsender.common;
 
 import lombok.Data;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.gui.bukkit.title.Title;
 import net.pooleaf.core.modules.option.OptionModule;
 import net.pooleaf.core.modules.option.common.Option;
@@ -45,6 +46,14 @@ public class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform
      */
     public boolean isOnline() {
         return getPlatformSender() != null;
+    }
+
+    /**
+     * 플레이어가 번지코드 서버에 접속 중인지 확인합니다.
+     * @return 플레이어의 번지코드 서버 접속 상태
+     */
+    public boolean isOnlineBungeeCord() {
+        return ChannelModule.isOnline(uuid);
     }
 
     public void kickPlayer(String message) {

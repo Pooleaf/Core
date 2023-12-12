@@ -52,6 +52,11 @@ public class CommonSenderModule extends CoreModule {
     }
 
     @Override
+    public String[] getSoftDepends() {
+        return new String[] { "Channel" };
+    }
+
+    @Override
     public void onEnable(CorePlugin plugin) {
         commonPlayerManager = new CommonPlayerManager();
 
