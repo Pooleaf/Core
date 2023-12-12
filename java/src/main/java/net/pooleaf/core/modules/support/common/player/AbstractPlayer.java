@@ -3,6 +3,7 @@ package net.pooleaf.core.modules.support.common.player;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.pooleaf.core.modules.channel.ChannelModule;
 import net.pooleaf.core.modules.commonsender.CommonSenderModule;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 
@@ -55,6 +56,14 @@ public class AbstractPlayer<T> {
      */
     public boolean isOnline() {
         return getCommonPlayer() != null && getCommonPlayer().isOnline();
+    }
+
+    /**
+     * 플레이어가 번지코드 서버에 접속 중인지 확인합니다.
+     * @return 플레이어의 번지코드 서버 접속 상태
+     */
+    public boolean isOnlineBungeeCord() {
+        return getCommonPlayer() != null && getCommonPlayer().isOnlineBungeeCord();
     }
 
 }
