@@ -40,7 +40,9 @@ public class BukkitChannelAdapter implements ChannelAdapter {
     // 서버 실행 완료 후 채널 정보 업데이트
     Bukkit.getScheduler().runTask((Plugin) Core.getPlugin(), () -> {
       channel.setTps(Bukkit.spigot().getTPS()[0]);
-      channel.setChannelStatus(KnownChannelStatus.ONLINE);
+      if (channel.getChannelStatus().equals(KnownChannelStatus.STARTING)) {
+        channel.setChannelStatus(KnownChannelStatus.ONLINE);
+      }
       channel.setAllowFastJoin(true);
       channel.save();
 
