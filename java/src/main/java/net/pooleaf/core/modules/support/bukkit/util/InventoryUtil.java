@@ -53,7 +53,7 @@ public class InventoryUtil {
 
         for (ItemStack inventoryItem : inventory) {
             if (inventoryItem != null && inventoryItem.isSimilar(item)) {
-                amount++;
+                amount += inventoryItem.getAmount();
             }
         }
 
@@ -67,11 +67,11 @@ public class InventoryUtil {
             ItemStack inventoryItem = inventory.getItem(i);
             if (inventoryItem != null && inventoryItem.isSimilar(item)) {
                 if (amount - take >= inventoryItem.getAmount()) {
-                    take += inventoryItem.getAmount();
                     inventory.setItem(i, null);
+                    take += inventoryItem.getAmount();
                 } else {
-                    take += (amount - take);
                     inventoryItem.setAmount(inventoryItem.getAmount() - (amount - take));
+                    take += (amount - take);
                 }
             }
         }
