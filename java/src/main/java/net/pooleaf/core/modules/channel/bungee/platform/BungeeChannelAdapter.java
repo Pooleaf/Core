@@ -148,7 +148,8 @@ public class BungeeChannelAdapter implements ChannelAdapter {
   @Override
   public void sendData(String channelName, String task, Object... datas) {
     // 채널로 보내기
-    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL, task, datas);
+    ChannelModule.getRedisManager().send(channelName, ChannelModule.MESSAGE_CHANNEL
+            , "SendData", task, datas);
   }
 
 }

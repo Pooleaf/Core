@@ -11,7 +11,6 @@ import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
-import org.bukkit.ChatColor;
 
 import java.util.stream.Collectors;
 
@@ -203,7 +202,7 @@ public class ChannelCommand {
           permission = ChannelPermission.ADMIN
   )
   public void channel_broadcast(CommonCommandSender sender, CommandResult result) {
-    String message = ChatColor.translateAlternateColorCodes('&', result.subArgument(1));
+    String message = CommonChatColor.translateAlternateColorCodes('&', result.subArgument(1));
 
     // 전체 채널에 공지하기
     if (result.getArgument(0).equals("전체") || result.getArgument(0).equalsIgnoreCase("all")) {
