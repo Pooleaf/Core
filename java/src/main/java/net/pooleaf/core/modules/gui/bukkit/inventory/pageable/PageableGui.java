@@ -2,15 +2,18 @@ package net.pooleaf.core.modules.gui.bukkit.inventory.pageable;
 
 import lombok.Data;
 import lombok.SneakyThrows;
+import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.gui.bukkit.inventory.FakeInventoryIcon;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryGui;
 import net.pooleaf.core.modules.gui.bukkit.inventory.InventoryPanel;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiClickEvent;
 import net.pooleaf.core.modules.gui.bukkit.inventory.events.InventoryGuiCloseEvent;
 import net.pooleaf.core.modules.support.bukkit.util.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,11 +79,17 @@ public class PageableGui extends InventoryGui {
     }
 
     public void open(Player player, int page) {
+        player.closeInventory();
+
         PageGui pageGui = new PageGui(getTitle(), getRow(), this, player);
         playerPageGuis.put(player, pageGui);
         pageGui.setCurrentPage(page);
-        pageGui.updateAsynchronously();
         pageGui.open(player);
+
+        Bukkit.getScheduler().runTaskAsynchronously((Plugin) Core.getPlugin(), () -> {
+            pageGui.update();
+            pageGui.updateFakeIcon(player);
+        });
     }
 
     @Override
@@ -109,7 +118,7 @@ public class PageableGui extends InventoryGui {
             @Override
             protected ItemStack updateItem(Player player) {
                 PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
-                if (pageGui == null || pageGui.getCurrentPage() == parentPageableGui.getMaxPage()) return null;
+                if (pageGui == null || pageGui.getCurrentPage() == 1) return null;
 
                 return new ItemBuilder(Material.PAPER)
                         .displayName("§e§l이전")
@@ -118,11 +127,14 @@ public class PageableGui extends InventoryGui {
 
             @Override
             public void onClick(InventoryGuiClickEvent event) {
-                if (getItem() == null) return;
-
                 Player player = event.getPlayer();
                 PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
-                parentPageableGui.open(player, pageGui.getCurrentPage() - 1);
+                if (pageGui == null || pageGui.getCurrentPage() == 1) return;
+
+                pageGui.setCurrentPage(pageGui.getCurrentPage() - 1);
+                pageGui.updateAsynchronously();
+
+                event.setCancelled(true);
             }
 
         };
@@ -149,11 +161,12 @@ public class PageableGui extends InventoryGui {
 
             @Override
             public void onClick(InventoryGuiClickEvent event) {
-                if (getItem() == null) return;
-
                 Player player = event.getPlayer();
                 PageGui pageGui = parentPageableGui.playerPageGuis.get(player);
-                parentPageableGui.open(player, pageGui.getCurrentPage() + 1);
+                if (pageGui == null || pageGui.getCurrentPage() == getMaxPage()) return;
+
+                pageGui.setCurrentPage(pageGui.getCurrentPage() + 1);
+                pageGui.updateAsynchronously();
 
                 event.setCancelled(true);
             }
