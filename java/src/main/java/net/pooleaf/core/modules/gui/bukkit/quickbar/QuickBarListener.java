@@ -2,7 +2,6 @@ package net.pooleaf.core.modules.gui.bukkit.quickbar;
 
 import net.pooleaf.core.Core;
 import net.pooleaf.core.modules.gui.GuiModule;
-import net.pooleaf.core.modules.gui.bukkit.quickbar.QuickBar;
 import net.pooleaf.core.modules.gui.bukkit.quickbar.event.SlotClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -70,6 +69,8 @@ public class QuickBarListener implements Listener {
 
         // 클릭 딜레이 체크
         if (lastGuiClick.containsKey(uuid) && System.currentTimeMillis() - lastGuiClick.get(uuid) < quickBar.getClickDelayMillis()) {
+            event.setCancelled(true);
+            Bukkit.getScheduler().runTaskLater((Plugin) Core.getPlugin(), () -> quickBar.updateFakeIcons(), 1L);
             return;
         }
         lastGuiClick.put(uuid, System.currentTimeMillis());
