@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class QuickBarCommand {
 
     @Command(
-            parent = {"core"},
+            parent = {"", "core"},
             name = {"removeQuickBar", "rqb", "퀵바제거"},
             arguments = "(플레이어)",
             description = "퀵바를 강제로 제거합니다.",
