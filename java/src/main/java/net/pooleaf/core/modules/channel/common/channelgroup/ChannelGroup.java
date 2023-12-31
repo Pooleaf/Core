@@ -2,6 +2,7 @@ package net.pooleaf.core.modules.channel.common.channelgroup;
 
 import java.util.Objects;
 
+import net.pooleaf.core.modules.channel.common.channel.KnownChannelStatus;
 import net.pooleaf.core.modules.support.common.util.GsonUtil;
 import lombok.Data;
 import net.pooleaf.core.modules.channel.ChannelModule;
@@ -18,6 +19,7 @@ public class ChannelGroup {
 
     private final String name;
     private String displayName;
+    private String type = KnownChannelGroupType.NORMAL;
 
 
     public boolean hasDisplayName() {
@@ -139,16 +141,37 @@ public class ChannelGroup {
     public Channel getFastJoinChannel(Channel excludeChannel) {
         Channel fastJoinChannel = null;
 
-        for (Channel onlineChannel : getChannelsCanJoin()) {
-            if (Objects.equals(onlineChannel, excludeChannel) // 예외 채널 제외
-                || !onlineChannel.isAllowFastJoin()) { // 빠른접속 비허용 채널 제외
-                continue;
-            }
+        // 일반 채널
+        if (type.equalsIgnoreCase(KnownChannelGroupType.NORMAL)) {
+            for (Channel onlineChannel : getChannelsCanJoin()) {
+                if (Objects.equals(onlineChannel, excludeChannel) // 예외 채널 제외
+                        || !onlineChannel.isAllowFastJoin() // 빠른접속 비허용 채널 제외
+                        || onlineChannel.getPlayerCount() >= onlineChannel.getMaxPlayerCount()) { // 가득찬 채널 제외
+                    continue;
+                }
 
-            if (fastJoinChannel == null) {
-                fastJoinChannel = onlineChannel;
-            } else if (onlineChannel.getPlayerCount() < fastJoinChannel.getPlayerCount()) {
-                fastJoinChannel = onlineChannel;
+                if (fastJoinChannel == null) {
+                    fastJoinChannel = onlineChannel;
+                }  else if (onlineChannel.getPlayerCount() < fastJoinChannel.getPlayerCount()) {
+                    fastJoinChannel = onlineChannel;
+                }
+            }
+        }
+        // 게임 채널
+        else if (type.equalsIgnoreCase(KnownChannelGroupType.MINI_GAME)) {
+            for (Channel onlineChannel : getChannelsCanJoin()) {
+                if (Objects.equals(onlineChannel, excludeChannel) // 예외 채널 제외
+                        || !onlineChannel.isAllowFastJoin() // 빠른접속 비허용 채널 제외
+                        || onlineChannel.getPlayerCount() >= onlineChannel.getMaxPlayerCount() // 가득찬 채널 제외
+                        || (onlineChannel.getChannelStatus() != KnownChannelStatus.GAME_WAITING && onlineChannel.getChannelStatus() != KnownChannelStatus.GAME_STARTING)) { // 대기 중이 아닌 채널 제외
+                    continue;
+                }
+
+                if (fastJoinChannel == null) {
+                    fastJoinChannel = onlineChannel;
+                } else if (onlineChannel.getPlayerCount() > fastJoinChannel.getPlayerCount()) {
+                    fastJoinChannel = onlineChannel;
+                }
             }
         }
 

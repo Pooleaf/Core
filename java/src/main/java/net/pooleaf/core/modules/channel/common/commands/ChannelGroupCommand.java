@@ -3,14 +3,13 @@ package net.pooleaf.core.modules.channel.common.commands;
 import net.pooleaf.core.modules.annocommand.common.Command;
 import net.pooleaf.core.modules.annocommand.common.CommandResult;
 import net.pooleaf.core.modules.annocommand.common.HelpCommandResult;
+import net.pooleaf.core.modules.channel.ChannelModule;
+import net.pooleaf.core.modules.channel.common.ChannelPermission;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
-import net.pooleaf.core.modules.channel.common.channel.KnownChannelStatus;
 import net.pooleaf.core.modules.channel.common.channelgroup.ChannelGroup;
 import net.pooleaf.core.modules.commonsender.common.CommonCommandSender;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.component.SimpleComponentBuilder;
-import net.pooleaf.core.modules.channel.ChannelModule;
-import net.pooleaf.core.modules.channel.common.ChannelPermission;
 import org.bukkit.ChatColor;
 
 public class ChannelGroupCommand {
@@ -58,6 +57,7 @@ public class ChannelGroupCommand {
     sender.sendMessage("§e[ 채널 그룹 정보 ]");
     sender.sendMessage("§e이름: §f" + channelGroup.getName());
     sender.sendMessage("§e이름 표기: §f" + (channelGroup.hasDisplayName() ? channelGroup.getDisplayName() : "없음"));
+    sender.sendMessage("§e타입: §f" + channelGroup.getType());
     sender.sendMessage("§e채널 수: §f" + channelGroup.getChannels().size() + "개 중 " + channelGroup.getOnlineChannels().size() + "개 온라인");
     sender.sendMessage("§e채널 목록: §f" + (channelGroup.getChannels().isEmpty() ? "없음" : ""));
     if (!channelGroup.getChannels().isEmpty()) {
@@ -143,6 +143,27 @@ public class ChannelGroupCommand {
     channelGroup.save();
 
     sender.sendMessage(channelGroup.getName() + " §e채널의 이름 표기를 §f" + displayName + "§e(으)로 설정했습니다.");
+  }
+
+  @Command(
+          parent = {"channelGroup", "core channelGroup"},
+          name = {"타입설정", "setType"},
+          arguments = "<채널그룹> <normal|lobby|miniGame>",
+          description = "채널 그룹의 타입을 설정합니다.",
+          permission = ChannelPermission.ADMIN
+  )
+  public void channelGroup_setType(CommonCommandSender sender, CommandResult result) {
+    ChannelGroup channelGroup = ChannelModule.getChannelGroup(result.getArgument(0));
+    if (channelGroup == null) {
+      sender.sendWarning("존재하지 않는 채널 그룹입니다.");
+      return;
+    }
+
+    String type = result.subArgument(1);
+    channelGroup.setType(type);
+    channelGroup.save();
+
+    sender.sendMessage(channelGroup.getName() + " §e채널의 타입을 §f" + type + "§e(으)로 설정했습니다.");
   }
 
   @Command(
