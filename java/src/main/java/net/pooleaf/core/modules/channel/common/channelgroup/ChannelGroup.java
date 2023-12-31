@@ -163,7 +163,7 @@ public class ChannelGroup {
                 if (Objects.equals(onlineChannel, excludeChannel) // 예외 채널 제외
                         || !onlineChannel.isAllowFastJoin() // 빠른접속 비허용 채널 제외
                         || onlineChannel.getPlayerCount() >= onlineChannel.getMaxPlayerCount() // 가득찬 채널 제외
-                        || (onlineChannel.getChannelStatus() != KnownChannelStatus.GAME_WAITING && onlineChannel.getChannelStatus() != KnownChannelStatus.GAME_STARTING)) { // 대기 중이 아닌 채널 제외
+                        || (!onlineChannel.getChannelStatus().equals(KnownChannelStatus.GAME_WAITING) && !onlineChannel.getChannelStatus().equals(KnownChannelStatus.GAME_STARTING))) { // 대기 중이 아닌 채널 제외
                     continue;
                 }
 
