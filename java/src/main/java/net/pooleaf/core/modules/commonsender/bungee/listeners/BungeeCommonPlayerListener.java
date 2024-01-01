@@ -2,6 +2,8 @@ package net.pooleaf.core.modules.commonsender.bungee.listeners;
 
 import java.time.LocalDateTime;
 
+import net.md_5.bungee.api.ProxyServer;
+import net.pooleaf.core.modules.commonsender.bungee.events.BungeeFirstLoginEvent;
 import net.pooleaf.core.modules.commonsender.common.CommonPlayer;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.md_5.bungee.api.event.LoginEvent;
@@ -16,11 +18,15 @@ public class BungeeCommonPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPreLogin(LoginEvent e) {
+        boolean isFirstJoin = false;
+
         // 불러오기
         CommonPlayer player = CommonSenderModule.getCommonPlayerManager().load(e.getConnection().getUniqueId());
         if (player == null) {
             player = new BungeePlayer();
             player.setUuid(e.getConnection().getUniqueId());
+            player.setFirstJoin(LocalDateTime.now());
+            isFirstJoin = true;
         }
         player.setName(e.getConnection().getName());
         player.setIp(e.getConnection().getAddress().getAddress().getHostAddress());
@@ -33,6 +39,14 @@ public class BungeeCommonPlayerListener implements Listener {
 
         // 저장
         CommonSenderModule.getSqlManager().commonPlayer().insertPlayerInfo(player);
+
+        if (isFirstJoin) {
+            try {
+                ProxyServer.getInstance().getPluginManager().callEvent(new BungeeFirstLoginEvent(player));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

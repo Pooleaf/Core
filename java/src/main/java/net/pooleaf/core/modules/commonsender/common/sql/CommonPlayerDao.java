@@ -26,6 +26,7 @@ public class CommonPlayerDao extends SqlDao {
                 , "name VARCHAR(16)"
                 , "display_name VARCHAR(255)"
                 , "ip VARCHAR(15)"
+                , "first_join DATETIME"
                 , "last_login DATETIME"
                 , "last_online DATETIME").create();
     }

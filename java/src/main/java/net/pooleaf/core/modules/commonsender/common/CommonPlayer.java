@@ -17,6 +17,7 @@ public class CommonPlayer<T> extends CommonCommandSender<T> { // T: 각 Platform
 
     protected String ip; // 플레이어 IP
 
+    protected LocalDateTime firstJoin; // 처음 접속한 날짜
     protected LocalDateTime lastLogin; // 마지막 로그인
     protected LocalDateTime lastOnline; // 마지막 온라인 (퇴장 시간)
 
