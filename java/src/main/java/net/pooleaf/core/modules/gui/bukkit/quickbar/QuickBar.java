@@ -54,6 +54,7 @@ public class QuickBar {
         return GuiModule.getQuickBarManager().getDatas().entrySet().stream()
                 .filter(entry -> entry.getValue().equals(this))
                 .map(entry -> Bukkit.getPlayer(entry.getKey()))
+                .filter(player -> player != null && player.isOnline())
                 .collect(Collectors.toList());
     }
 
