@@ -8,10 +8,13 @@ import net.pooleaf.core.modules.support.common.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.sql.Blob;
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -159,9 +162,13 @@ public class CachedResultRow {
                 value = ((Timestamp) value).toLocalDateTime();
             } else if (targetField.getType().isAssignableFrom(LocalDate.class)) {
                 value = ((Timestamp) value).toLocalDateTime().toLocalDate();
-            } else if (targetField.getType().isAssignableFrom(LocalTime.class)) {
-                value = ((Timestamp) value).toLocalDateTime().toLocalTime();
             }
+        } else if (value instanceof Time) {
+             if (targetField.getType().isAssignableFrom(LocalTime.class)) {
+                value = ((Time) value).toLocalTime();
+            }
+        } else if (value instanceof Date) {
+            value = ((Date) value).toLocalDate();
         }
 
         // UUID 변환

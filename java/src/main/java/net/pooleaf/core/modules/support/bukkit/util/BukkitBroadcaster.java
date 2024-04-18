@@ -17,11 +17,13 @@ public class BukkitBroadcaster {
      */
 
     public static void broadcast(String message) {
-        Bukkit.broadcastMessage(message);
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));
+        Bukkit.getConsoleSender().sendMessage(message);
     }
 
     public static void broadcast(BaseComponent component) {
-        Bukkit.broadcast(component);
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(component));
+        Bukkit.getConsoleSender().sendMessage(component.toPlainText());
     }
 
     public static void broadcastWarning(String message) {
