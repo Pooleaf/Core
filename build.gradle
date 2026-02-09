@@ -32,7 +32,7 @@ allprojects {
     repositories {
         mavenCentral()
 
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' } // BungeeCord
+        maven { url 'https://libraries.minecraft.net/' } // Mojang (brigadier)
         maven { url 'https://repo.s8u.kr/repository/maven-minecraft/' } // Bukkit
         maven { url 'https://repo.s8u.kr/repository/maven-pooleaf/' } // Core
         maven { url 'https://repo.dmulloy2.net/repository/public/' } // ProtocolLib, XSeries
@@ -41,10 +41,10 @@ allprojects {
     dependencies {
         // Platform
         compileOnly 'io.papermc:paper-api:1.8.8'
-        compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
+        compileOnly 'net.md-5:bungeecord-api:1.20-R0.2'
 
         // Bukkit Library
-        compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
+        compileOnly 'com.comphenix.protocol:ProtocolLib:4.8.0'
         implementation 'com.github.cryptomorin:XSeries:9.1.0'
 
         // SQL

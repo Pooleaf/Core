@@ -78,7 +78,7 @@ public class GsonUtil {
     /**
      * 직렬화 제외 처리
      */
-    public class GsonExcludeStrategy implements ExclusionStrategy {
+    public static class GsonExcludeStrategy implements ExclusionStrategy {
 
         @Override
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {
