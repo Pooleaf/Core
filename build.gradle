@@ -64,8 +64,8 @@ allprojects {
         implementation 'net.sf.ehcache:ehcache:2.10.9.2'
 
         // Lombok
-        compileOnly 'org.projectlombok:lombok:1.18.20'
-        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
     }
 }
 

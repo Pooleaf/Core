@@ -61,7 +61,7 @@ public class ChannelModule extends CoreModule {
 
 
   public static String getCurrentChannelName() {
-    return Core.getServerName();
+    return redisManager.getChannelConfig().getServerName();
   }
 
   public static Collection<Channel> getChannels() {
