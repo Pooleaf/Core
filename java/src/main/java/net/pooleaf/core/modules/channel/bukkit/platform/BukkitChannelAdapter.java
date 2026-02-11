@@ -66,7 +66,7 @@ public class BukkitChannelAdapter implements ChannelAdapter {
 
   @Override
   public Channel getCurrentChannel() {
-    return ChannelModule.getChannel(Core.getServerName());
+    return ChannelModule.getChannel(ChannelModule.getCurrentChannelName());
   }
 
   @Override
