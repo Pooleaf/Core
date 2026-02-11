@@ -1,5 +1,6 @@
 package net.pooleaf.core.modules.channel;
 
+import lombok.Getter;
 import net.pooleaf.core.Core;
 import net.pooleaf.core.module.CoreModule;
 import net.pooleaf.core.modules.channel.common.channel.Channel;
@@ -11,7 +12,6 @@ import net.pooleaf.core.modules.channel.common.platform.ChannelAdapter;
 import net.pooleaf.core.modules.channel.common.platform.ChannelAdapterFactory;
 import net.pooleaf.core.modules.channel.common.redis.ChannelRedisManager;
 import net.pooleaf.core.plugin.CorePlugin;
-import lombok.Getter;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -61,7 +61,7 @@ public class ChannelModule extends CoreModule {
 
 
   public static String getCurrentChannelName() {
-    return redisManager.getChannelConfig().getServerName();
+    return Core.getServerName();
   }
 
   public static Collection<Channel> getChannels() {

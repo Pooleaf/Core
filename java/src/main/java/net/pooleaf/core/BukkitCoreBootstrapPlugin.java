@@ -1,41 +1,47 @@
 package net.pooleaf.core;
 
+import lombok.Getter;
+import net.pooleaf.core.modules.commonconfig.bukkit.BukkitConfigUtil;
 import net.pooleaf.core.modules.support.common.CommonChatColor;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 import net.pooleaf.core.plugin.BukkitCorePlugin;
-import lombok.Getter;
-import net.pooleaf.core.modules.support.common.debugger.Debugger;
-import org.bukkit.Bukkit;
 
 public class BukkitCoreBootstrapPlugin extends BukkitCorePlugin {
 
-  @Getter
-  private static BukkitCoreBootstrapPlugin instance;
+    @Getter
+    private static BukkitCoreBootstrapPlugin instance;
 
 
-  @Override
-  public void onStart() {
-    instance = this;
+    @Override
+    public void onStart() {
+        instance = this;
 
-    setPrefix("§e[ Core ]");
-    setColor(CommonChatColor.YELLOW);
-    registerLoggerPrefix();
+        setPrefix("§e[ Core ]");
+        setColor(CommonChatColor.YELLOW);
+        registerLoggerPrefix();
 
-    Core.init(this);
+        BukkitConfigUtil.enableUtf8Config();
+        getConfig().addDefault("서버 이름", Core.getServerName());
+        getConfig().options().copyDefaults(true);
+        saveConfig();
 
-    registerEventListeners();
-    Logger.log("EventListener가 등록되었습니다.");
+        String serverName = getConfig().getString("서버 이름", Core.getServerName());
 
-    registerCommonEventListeners();
-    Logger.log("CommonEventListener가 등록되었습니다.");
+        Core.init(this, serverName);
 
-    registerCommands();
-    Logger.log("명령어가 등록되었습니다.");
-  }
+        registerEventListeners();
+        Logger.log("EventListener가 등록되었습니다.");
 
-  @Override
-  public void onEnd() {
-    Core.getModuleManager().endModules();
-  }
+        registerCommonEventListeners();
+        Logger.log("CommonEventListener가 등록되었습니다.");
+
+        registerCommands();
+        Logger.log("명령어가 등록되었습니다.");
+    }
+
+    @Override
+    public void onEnd() {
+        Core.getModuleManager().endModules();
+    }
 
 }

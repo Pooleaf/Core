@@ -7,33 +7,33 @@ import net.pooleaf.core.plugin.BungeeCorePlugin;
 
 public class BungeeCoreBootstrapPlugin extends BungeeCorePlugin {
 
-  @Getter
-  private BungeeCoreBootstrapPlugin instance;
+    @Getter
+    private BungeeCoreBootstrapPlugin instance;
 
 
-  @Override
-  public void onStart() {
-    instance = this;
+    @Override
+    public void onStart() {
+        instance = this;
 
-    setPrefix("§e[ Core ]");
-    setColor(CommonChatColor.YELLOW);
-    registerLoggerPrefix();
+        setPrefix("§e[ Core ]");
+        setColor(CommonChatColor.YELLOW);
+        registerLoggerPrefix();
 
-    Core.init(this);
+        Core.init(this, "bungeecord");
 
-    registerEventListeners();
-    Logger.log("EventListener가 등록되었습니다.");
+        registerEventListeners();
+        Logger.log("EventListener가 등록되었습니다.");
 
-    registerCommonEventListeners();
-    Logger.log("CommonEventListener가 등록되었습니다.");
+        registerCommonEventListeners();
+        Logger.log("CommonEventListener가 등록되었습니다.");
 
-    registerCommands();
-    Logger.log("명령어가 등록되었습니다.");
-  }
+        registerCommands();
+        Logger.log("명령어가 등록되었습니다.");
+    }
 
-  @Override
-  public void onEnd() {
-    Core.getModuleManager().endModules();
-  }
+    @Override
+    public void onEnd() {
+        Core.getModuleManager().endModules();
+    }
 
 }
