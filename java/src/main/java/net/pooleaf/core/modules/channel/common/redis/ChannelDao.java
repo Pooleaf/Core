@@ -68,8 +68,14 @@ public class ChannelDao extends RedisDao {
         }
     }
 
+    private static final long CHANNEL_TTL_SECONDS = 30;
+
     public void saveChannel(Channel channel) {
-        redisManager.getAsyncCommands().set(CHANNEL_INFO_KEY + channel.getName(), channel.toJson());
+        if (channel.isOnline()) {
+            redisManager.getAsyncCommands().setex(CHANNEL_INFO_KEY + channel.getName(), CHANNEL_TTL_SECONDS, channel.toJson());
+        } else {
+            redisManager.getAsyncCommands().set(CHANNEL_INFO_KEY + channel.getName(), channel.toJson());
+        }
     }
 
     public void saveAllChannels() {
