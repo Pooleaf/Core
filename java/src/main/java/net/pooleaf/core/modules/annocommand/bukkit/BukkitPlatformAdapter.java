@@ -12,6 +12,7 @@ import net.pooleaf.core.plugin.CorePlugin;
 import net.pooleaf.core.modules.support.bukkit.util.BukkitReflectionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -38,11 +39,15 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
             command.setPlayerOnly(true);
         }
         /* Console Only */
-        else if (firstParameterType.equals(ConsoleCommandSender.class) || CommonCommandSender.class.isAssignableFrom(firstParameterType)) {
+        else if (firstParameterType.equals(ConsoleCommandSender.class) || firstParameterType.equals(RemoteConsoleCommandSender.class)) {
             command.setConsoleOnly(true);
         }
+        /* All Sender (CommonCommandSender 포함) */
+        else if (CommonCommandSender.class.isAssignableFrom(firstParameterType) || firstParameterType.isAssignableFrom(CommandSender.class)) {
+            // playerOnly, consoleOnly 모두 false → 모든 sender 허용
+        }
         /* Invalid Parameter Type */
-        else if (!firstParameterType.isAssignableFrom(CommandSender.class)) return false;
+        else return false;
 
 
         /* Register to Bukkit */
@@ -95,7 +100,7 @@ public class BukkitPlatformAdapter implements PlatformAdapter {
 
     @Override
     public boolean isConsole(Object sender) {
-        return sender instanceof ConsoleCommandSender;
+        return sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender;
     }
 
     @Override
