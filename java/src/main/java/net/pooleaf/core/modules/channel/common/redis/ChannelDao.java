@@ -82,11 +82,15 @@ public class ChannelDao extends RedisDao {
         redisManager.getAsyncCommands().del(CHANNEL_INFO_KEY + channelName);
     }
 
-    public void removeUnusedChannels() {
+    /**
+     * 등록된 서버 이름 목록에 없는 채널만 Redis에서 삭제합니다.
+     * BungeeCord 재시작 시 기존 채널 데이터를 보존하기 위해 사용됩니다.
+     */
+    public void removeUnregisteredChannels(java.util.Set<String> registeredServerNames) {
         for (String name : getAllChannelNames()) {
             name = name.substring(CHANNEL_INFO_KEY.length());
 
-            if (!ChannelModule.getChannelManager().exists(name)) {
+            if (!registeredServerNames.contains(name)) {
                 removeChannel(name);
             }
         }

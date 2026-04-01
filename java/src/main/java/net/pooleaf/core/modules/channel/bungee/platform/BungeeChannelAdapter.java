@@ -16,6 +16,8 @@ import net.pooleaf.core.modules.commonscheduler.CommonSchedulerModule;
 import net.pooleaf.core.modules.support.common.logger.Logger;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class BungeeChannelAdapter implements ChannelAdapter {
@@ -45,10 +47,14 @@ public class BungeeChannelAdapter implements ChannelAdapter {
     ChannelModule.getRedisManager().channel().loadAllChannels();
     ChannelModule.getRedisManager().channelGroup().loadAllGroups();
 
-    // 새로운 채널 생성
+    // BungeeCord ServerInfo에 등록된 서버 이름 수집
+    Set<String> registeredServerNames = new HashSet<>();
     for (ServerInfo serverInfo : ProxyServer.getInstance().getServers().values()) {
-      String channelName = serverInfo.getName();
+      registeredServerNames.add(serverInfo.getName());
+    }
 
+    // 새로운 채널만 생성 (Redis에 이미 있는 채널은 기존 데이터 유지)
+    for (String channelName : registeredServerNames) {
       if (ChannelModule.getChannelManager().exists(channelName)) {
         continue;
       }
@@ -59,8 +65,8 @@ public class BungeeChannelAdapter implements ChannelAdapter {
       ChannelModule.getChannelManager().set(channelName, channel);
     }
 
-    // Redis에서 사용하지 않는 채널 삭제
-    ChannelModule.getRedisManager().channel().removeUnusedChannels();
+    // BungeeCord ServerInfo에 등록되지 않은 채널만 Redis에서 삭제
+    ChannelModule.getRedisManager().channel().removeUnregisteredChannels(registeredServerNames);
 
     // 접속 시 로비 이동 Listener 등록
     if (gotoLobbyOnConnect) {
